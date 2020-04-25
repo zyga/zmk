@@ -1,0 +1,4 @@
+GNUmakefile.configure.mk
+hello
+hello.exe
+*.o

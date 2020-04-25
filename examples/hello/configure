@@ -1,0 +1,2 @@
+#!/bin/sh
+srcdir="$(dirname "$0")" exec "$(make -f /dev/null --eval='include z.mk' print-zmk-configure-path)" "$@"
