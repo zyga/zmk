@@ -71,6 +71,6 @@
     echo CONFIGURED=yes
 } > GNUmakefile.configure.mk
 
-if [ ! -e GNUmakefile ]; then
+if [ ! -e Makefile ] && [ ! -e GNUmakefile ]; then
     ln -s "$(dirname "$0")"/GNUmakefile GNUmakefile
 fi
