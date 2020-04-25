@@ -100,3 +100,7 @@ $$(if $$(findstring spawn,$$(DEBUG)),$$(info DEBUG: spawning »$1« as »$2«))
 $$(eval $$(call $1.spawn,$2))
 $$(if $$(findstring spawn,$$(DEBUG)),$$(foreach n,$$($1.variables),$$(info DEBUG:     instance variable »$2«.$$n=$$($2.$$n))))
 endef
+
+.PHONY: print-zmk-configure-path
+print-zmk-configure-path:
+	@echo "$(ZMK.Path)configure"
