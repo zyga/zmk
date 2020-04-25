@@ -17,7 +17,9 @@
 $(eval $(call import,Module.directories))
 
 # List of directories that need to be created and have corresponding rules.
-Data.Directories ?= 
+# All of the POSIX directories are created with a single rule from the
+# Directories module and do not need to be repeated here.
+Data.Directories = $(Directories.POSIX)
 
 # Data file. Gets installed to the desired location.  The location
 # can be set using the .install_dir instance variable. The special

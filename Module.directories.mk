@@ -48,12 +48,16 @@ man7dir ?= $(mandir)/man7
 man8dir ?= $(mandir)/man8
 man9dir ?= $(mandir)/man9
 
-# Create standard directories on demand.
-$(sort $(DESTDIR) $(addprefix $(DESTDIR), \
+# List of standard directories. Those are created with a single rule below, and
+# can be safely used as a order-only dependency.
+Directories.POSIX = \
 	$(prefix) $(exec_prefix) $(bindir) $(sbindir) $(libexecdir) \
 	$(datarootdir) $(datadir) $(sysconfdir) $(sharedstatedir) \
 	$(localstatedir) $(runstatedir) $(includedir) $(oldincludedir) \
 	$(docdir) $(infodir) $(libdir) $(localedir) $(mandir) $(man1dir) \
 	$(man2dir) $(man3dir) $(man4dir) $(man5dir) $(man6dir) $(man7dir) \
-	$(man8dir) $(man9dir))):
+	$(man8dir) $(man9dir)
+
+# Create standard directories on demand.
+$(sort $(DESTDIR) $(addprefix $(DESTDIR),$(Directories.POSIX))):
 	install -d $@
