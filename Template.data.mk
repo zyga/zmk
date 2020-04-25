@@ -28,13 +28,14 @@ Data.Directories = $(Directories.POSIX)
 Template.data.variables=install_dir
 define Template.data.spawn
 $1.install_dir ?= $$(error define $1.install_dir - the destination directory, or noinst to skip installation)
+$1.install_mode ?= 0644
 
 # Unless we don't want to install the file, look below.
 ifneq ($$($1.install_dir),noinst)
 
 # To install a file, install it.
 $$(DESTDIR)$$($1.install_dir)/$1: $1 | $$(DESTDIR)$$($1.install_dir)
-	install $$^ $$@
+	install -m $$($1.install_mode) $$^ $$@
 
 # Rule for installing this directory, if one is needed.
 ifeq (,$$(findstring $$($1.install_dir),$$(Data.Directories)))

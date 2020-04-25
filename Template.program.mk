@@ -22,6 +22,7 @@ define Template.program.spawn
 $1.sources ?= $$(error define $1.sources)
 $1.objects ?= $$(patsubst %.c,$1-%.o,$$($1.sources))
 $1.install_dir ?= $$(bindir)
+$1.install_mode ?= 0755
 all:: $1$$(exe)
 clean::
 	rm -f $1$$(exe)
