@@ -1,0 +1,76 @@
+#!/bin/sh
+# Copyright 2019-2020 Zygmunt Krynicki.
+#
+# This file is part of zmk.
+#
+# Zmk is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License.
+#
+# Zmk is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
+
+# Configure script for integration with distribution packaging preferences.
+{
+    # Given key=value or key="value value", print the value
+    rhs() {
+        echo "$*" | cut -d '=' -f 2- | sed -e 's/^"//' -e 's/"$//'
+    }
+
+    while [ "$#" -ge 1 ]; do
+        case "$1" in
+            --help)
+                echo "This configure script is only meant for Linux distribution packaging" >&2
+                exit 1
+                ;;
+            --build=*)          echo "BUILD_ARCH_TRIPLET=$(rhs "$1")" && shift ;;
+            --disable-dependency-tracking)  shift ;;
+            --disable-maintainer-mode)      shift ;;
+            --disable-silent-rules)         shift ;;
+            --host=*)           echo "HOST_ARCH_TRIPLET=$(rhs "$1")" && shift ;;
+            --program-prefix=)              shift ;;
+            --bindir=*)         echo "bindir=$(rhs "$1")" && shift ;;
+            --datadir=*)        echo "datadir=$(rhs "$1")" && shift ;;
+            --exec-prefix=*)    echo "exec_prefix=$(rhs "$1")" && shift ;;
+            --includedir=*)     echo "includedir=$(rhs "$1")" && shift ;;
+            --infodir=*)        echo "infodir=$(rhs "$1")" && shift ;;
+            --libdir=*)         echo "libdir=$(rhs "$1")" && shift ;;
+            --libexecdir=*)     echo "libexecdir=$(rhs "$1")" && shift ;;
+            --mandir=*)         echo "mandir=$(rhs "$1")" && shift ;;
+            --prefix=*)         echo "prefix=$(rhs "$1")" && shift ;;
+            --sbindir=*)        echo "sbindir=$(rhs "$1")" && shift ;;
+            --sharedstatedir=*) echo "sharedstatedir=$(rhs "$1")" && shift ;;
+            --sysconfdir=*)     echo "sysconfdir=$(rhs "$1")" && shift ;;
+            --localstatedir=*)  echo "localstatedir=$(rhs "$1")" && shift ;;
+            CC=*)               CC="$(rhs "$1")" && shift ;;
+            CXX=*)              CXX="$(rhs "$1")" && shift ;;
+            CFLAGS=*)           CFLAGS="$(rhs "$1")" && shift ;;
+            CXXFLAGS=*)         CXXFLAGS="$(rhs "$1")" && shift ;;
+            CPPFLAGS=*)         CPPFLAGS="$(rhs "$1")" && shift ;;
+            LDFLAGS=*)          LDFLAGS="$(rhs "$1")" && shift ;;
+            *)
+                echo "configure: unknown option $1" >&2
+                exit 1
+                ;;
+        esac
+    done
+    echo "srcdir=$(dirname "$0")"
+    echo "VPATH=\$(srcdir)"
+
+    test -n "$CC" && echo "CC=$CC"
+    test -n "$CXX" && echo "CC=$CXX"
+    test -n "$CFLAGS" && echo "CFLAGS=$CFLAGS"
+    test -n "$CXXFLAGS" && echo "CXXFLAGS=$CXXFLAGS"
+    test -n "$CPPFLAGS" && echo "CPPFLAGS=$CPPFLAGS"
+    test -n "$LDFLAGS" && echo "LDFLAGS=$LDFLAGS"
+    echo CONFIGURED=yes
+} > GNUmakefile.configure.mk
+
+if [ ! -e GNUmakefile ]; then
+    ln -s "$(dirname "$0")"/GNUmakefile GNUmakefile
+fi
