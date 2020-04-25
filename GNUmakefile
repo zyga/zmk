@@ -19,8 +19,7 @@ VERSION = 0.1
 
 # Use the local copy of zmk rather than the system-wide one.
 ZMK.Path =
-srcdir ?= .
-include $(srcdir)/ZMK.mk
+include ./z.mk
 
 # Use git to augment version.
 $(eval $(call import,Module.git-version))
@@ -34,8 +33,8 @@ endif
 $(eval $(call spawn,Template.tarball,$(NAME)_$(VERSION).tar.gz))
 
 # Install almost all of the ZMK files to the zmk subdirectory of the include
-# directory, except for ZMK.mk itself, which is installed directly to the
+# directory, except for z.mk itself, which is installed directly to the
 # include directory.
 $(foreach m,$(ZMK.DistFiles),$(eval $m.install_dir=$(includedir)/zmk))
-ZMK.mk.install_dir = $(includedir)
+z.mk.install_dir = $(includedir)
 $(foreach m,$(ZMK.DistFiles),$(eval $(call spawn,Template.data,$m)))

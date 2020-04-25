@@ -20,6 +20,9 @@ VERSION ?= $(error define VERSION)
 # Speed up make by removing suffix rules.
 .SUFFIXES:
 
+# The location of the source code.
+srcdir ?= .
+
 # Version of the zmk library.
 ZMK.Version = 0.1
 # Location of include files used by the makefile system. Normally this is the
@@ -46,7 +49,7 @@ ZMK._modules = \
 				Template.program.test \
 				Template.tarball
 # Files belonging to ZMK that need to be distributed in release tarballs.
-ZMK.DistFiles = $(addprefix $(ZMK.Path),ZMK.mk $(foreach m,$(ZMK._modules),$m.mk) pvs-filter.awk configure)
+ZMK.DistFiles = $(addprefix $(ZMK.Path),z.mk $(foreach m,$(ZMK._modules),$m.mk) pvs-filter.awk configure)
 
 # ZMK Copyright Banner. Do not remove.
 # You are not allowed to remove or alter this while stating compliant with the LGPL license.
