@@ -81,7 +81,7 @@ define import
 ifeq (,$1)
 $$(error incorrect call to import, expected module name)
 endif
-ifeq (,$$(findstring $1,$$(ZMK.Modules)))
+ifeq (,$$(filter $1,$$(ZMK.Modules)))
 $$(if $$(findstring import,$$(DEBUG)),$$(info DEBUG: importing »$1«))
 include $$(ZMK.Path)zmk/$1.mk
 ZMK.Modules += $1
