@@ -28,7 +28,8 @@ ZMK.Version = 0.1
 # Location of include files used by the makefile system. Normally this is the
 # zmk subdirectory of /usr/include, as this is where make is importing things
 # from.
-ZMK.Path ?= zmk/
+ZMK.z.mk := $(lastword $(MAKEFILE_LIST)))
+ZMK.Path ?= $(dir $(ZMK.z.mk))zmk/
 # Modules and templates present in the package
 ZMK._modules = \
 				Module.OS \
