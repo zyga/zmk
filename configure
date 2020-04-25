@@ -59,7 +59,7 @@
                 ;;
         esac
     done
-    if [ -n "$srcdir" ]; then
+    if [ -n "${srcdir:-}" ]; then
         echo "srcdir=$srcdir"
     else
         echo "srcdir=$(dirname "$0")"
