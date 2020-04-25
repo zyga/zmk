@@ -54,6 +54,7 @@ ZMK.DistFiles = z.mk $(addprefix zmk/,$(foreach m,$(ZMK._modules),$m.mk) pvs-fil
 
 # ZMK Copyright Banner. Do not remove.
 # You are not allowed to remove or alter this while stating compliant with the LGPL license.
+MAKECMDGOALS ?=
 ifeq ($(MAKECMDGOALS),)
 $(info z.mk v$(ZMK.Version), Copyright (c) 2020-2020 Zygmunt Krynicki)
 endif
