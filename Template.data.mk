@@ -27,7 +27,7 @@ Data.Directories = $(Directories.POSIX)
 # other parts of ZMK, to install components they produce.
 Template.data.variables=install_dir
 define Template.data.spawn
-$1.install_dir ?= $$(or $$(install_dir),$$(error define $1.install_dir - the destination directory, or noinst to skip installation))
+$1.install_dir ?= $$(error define $1.install_dir - the destination directory, or noinst to skip installation)
 
 # Unless we don't want to install the file, look below.
 ifneq ($$($1.install_dir),noinst)
