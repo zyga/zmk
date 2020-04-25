@@ -14,6 +14,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
+# Include optional generated makefile from the configuration system.
+-include GNUmakefile.configure.mk
+$(if $(findstring configure,$(DEBUG)),$(info DEBUG: prefix=$(prefix)))
+
 # Configuration depends on directory definitions.
 $(eval $(call import,Module.directories))
 $(eval $(call import,Module.toolchain))
@@ -22,10 +26,6 @@ $(eval $(call import,Module.toolchain))
 CONFIGURED ?=
 HOST_ARCH_TRIPLET ?=
 BUILD_ARCH_TRIPLET ?=
-
-# Include optional generated makefile from the configuration system.
--include GNUmakefile.configure.mk
-$(if $(findstring configure,$(DEBUG)),$(info DEBUG: prefix=$(prefix)))
 
 # If we are configured then check for cross compilation by mismatch
 # of host and build triplets. When this happens set CC and CXX.
