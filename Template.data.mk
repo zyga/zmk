@@ -35,7 +35,7 @@ ifneq ($$($1.install_dir),noinst)
 
 # To install a file, install it.
 $$(DESTDIR)$$($1.install_dir)/$1: $1 | $$(DESTDIR)$$($1.install_dir)
-	install -m $$($1.install_mode) $$^ $$@
+	$$(strip install -m $$($1.install_mode) $$^ $$@)
 
 # Rule for installing this directory, if one is needed.
 ifeq (,$$(findstring $$($1.install_dir),$$(Data.Directories)))
