@@ -23,6 +23,11 @@ $1.sources ?= $$(error define $1.sources - the list of source files to compile a
 $1.objects ?= $$(patsubst %.c,$1-%.o,$$($1.sources))
 $1.install_dir ?= $$(bindir)
 $1.install_mode ?= 0755
+
+$1$$(exe).install_dir ?= $$($1.install_dir)
+$1$$(exe).install_mode ?= $$($1.install_mode)
+$$(eval $$(call spawn,Template.data,$1$$(exe)))
+
 all:: $1$$(exe)
 clean::
 	rm -f $1$$(exe)
@@ -34,12 +39,4 @@ $1$$(exe): $$($1.objects)
 	$$(strip $$(LINK.o) -o $$@ $$^ $$(LDLIBS))
 $$($1.objects): $1-%.o: %.c
 	$$(strip $$(COMPILE.c) -o $$@ $$<)
-
-ifneq ($$($1.install_dir),noinst)
-install:: $$(DESTDIR)$$($1.install_dir)/$1$$(exe)
-uninstall::
-	rm -f $$(DESTDIR)$$($1.install_dir)/$1$$(exe)
-$$(DESTDIR)$$($1.install_dir)/$1$$(exe): $1$$(exe) | $$(DESTDIR)$$($1.install_dir)
-	install $$^ $$@
-endif
 endef
