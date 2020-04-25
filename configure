@@ -59,7 +59,11 @@
                 ;;
         esac
     done
-    echo "srcdir=$(dirname "$0")"
+    if [ -n "$srcdir" ]; then
+        echo "srcdir=$srcdir"
+    else
+        echo "srcdir=$(dirname "$0")"
+    fi
     echo "VPATH=\$(srcdir)"
 
     test -n "$CC" && echo "CC=$CC"
