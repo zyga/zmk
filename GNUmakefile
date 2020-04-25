@@ -35,9 +35,8 @@ $(eval $(call spawn,Template.tarball,$(NAME)_$(VERSION).tar.gz))
 # Install almost all of the ZMK files to the zmk subdirectory of the include
 # directory, except for z.mk itself, which is installed directly to the
 # include directory.
-$(foreach m,$(ZMK.DistFiles),$(eval $m.install_dir=$(includedir)/zmk))
-z.mk.install_dir = $(includedir)
-$(foreach m,$(filter-out configure,$(ZMK.DistFiles)),$(eval $(call spawn,Template.data,$m)))
+$(foreach m,$(ZMK.DistFiles),$(eval $m.install_dir=$(includedir)))
+$(foreach m,$(filter-out zmk/configure,$(ZMK.DistFiles)),$(eval $(call spawn,Template.data,$m)))
 # Configure is a script written in shell.
-configure.interp = sh
-$(eval $(call spawn,Template.program.script,configure))
+zmk/configure.interp = sh
+$(eval $(call spawn,Template.program.script,zmk/configure))

@@ -29,7 +29,7 @@ ZMK.Version = 0.1
 # zmk subdirectory of /usr/include, as this is where make is importing things
 # from.
 ZMK.z.mk := $(lastword $(MAKEFILE_LIST)))
-ZMK.Path ?= $(dir $(ZMK.z.mk))zmk/
+ZMK.Path ?= $(dir $(ZMK.z.mk))
 # Modules and templates present in the package
 ZMK._modules = \
 				Module.OS \
@@ -50,7 +50,7 @@ ZMK._modules = \
 				Template.program.test \
 				Template.tarball
 # Files belonging to ZMK that need to be distributed in release tarballs.
-ZMK.DistFiles = $(addprefix $(ZMK.Path),z.mk $(foreach m,$(ZMK._modules),$m.mk) pvs-filter.awk configure)
+ZMK.DistFiles = z.mk $(addprefix zmk/,$(foreach m,$(ZMK._modules),$m.mk) pvs-filter.awk configure)
 
 # ZMK Copyright Banner. Do not remove.
 # You are not allowed to remove or alter this while stating compliant with the LGPL license.
@@ -83,7 +83,7 @@ $$(error incorrect call to import, expected module name)
 endif
 ifeq (,$$(findstring $1,$$(ZMK.Modules)))
 $$(if $$(findstring import,$$(DEBUG)),$$(info DEBUG: importing »$1«))
-include $$(ZMK.Path)$1.mk
+include $$(ZMK.Path)zmk/$1.mk
 ZMK.Modules += $1
 endif
 endef
@@ -103,4 +103,4 @@ endef
 
 .PHONY: print-zmk-configure-path
 print-zmk-configure-path:
-	@echo "$(ZMK.Path)configure"
+	@echo "$(ZMK.Path)zmk/configure"
