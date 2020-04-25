@@ -37,4 +37,5 @@ $(eval $(call spawn,Template.tarball,$(NAME)_$(VERSION).tar.gz))
 # include directory.
 $(foreach m,$(ZMK.DistFiles),$(eval $m.install_dir=$(includedir)/zmk))
 z.mk.install_dir = $(includedir)
+configure.install_mode = 0755
 $(foreach m,$(ZMK.DistFiles),$(eval $(call spawn,Template.data,$m)))
