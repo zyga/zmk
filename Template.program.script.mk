@@ -25,7 +25,7 @@ endif
 
 Template.program.script.variables=interp install_dir
 define Template.program.script.spawn
-$1.interp ?= $$(error define $1.interp - the interpreter name (sh, bash or other))
+$1.interp ?= $$(error define $1.interp - the script interpreter name, sh, bash or other)
 $1.install_dir ?= $$(bindir)
 $$(eval $$(call spawn,Template.data,$1))
 ifneq ($$(findstring $$($1.interp),sh bash),)

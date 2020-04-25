@@ -22,7 +22,7 @@ define Template.library.a.spawn
 ifneq ($$(suffix $1),.a)
 $$(error $1 must end with ".a")
 endif
-$1.sources ?= $$(error define $1.sources)
+$1.sources ?= $$(error define $1.sources - the list of source files to compile as a library)
 $1.objects ?= $$(patsubst %.c,$1-%.o,$$(filter %.c,$$($1.sources)))
 
 all:: $1

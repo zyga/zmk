@@ -19,9 +19,9 @@ $(eval $(call import,Module.toolchain))
 
 Template.library.so.variables=sources objects soname version-script
 define Template.library.so.spawn
-$1.sources ?= $$(error define $1.sources)
+$1.sources ?= $$(error define $1.sources - the list of source files to compile as a library)
 $1.objects ?= $$(patsubst %.c,$1-%.o,$$($1.sources))
-$1.soname ?= $$(error define $1.soname)
+$1.soname ?= $$(error define $1.soname - the name of the .so file, including version)
 $1.version-script ?= $$(warning should define $1.version-script)
 # Watcom doesn't build dynamic libraries.
 ifeq (,$(is_watcom))

@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
-pvs.sources ?= $(error define pvs.sources)
+pvs.sources ?= $(error define pvs.sources - the list of source files to analyze with PVS Studio)
 
 PLOG_CONVERTER_FLAGS ?= 
 _pvs_studio_path := $(shell command -v pvs-studio 2>/dev/null)

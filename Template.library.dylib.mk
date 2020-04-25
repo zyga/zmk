@@ -19,9 +19,9 @@ $(eval $(call import,Module.toolchain))
 
 Template.library.dylib.variables=sources objects soname export-list
 define Template.library.dylib.spawn
-$1.sources ?= $$(error define $1.sources)
+$1.sources ?= $$(error define $1.sources - the list of source files to compile as a library)
 $1.objects ?= $$(patsubst %.c,$1-%.o,$$($1.sources))
-$1.soname ?= $$(error define $1.soname)
+$1.soname ?= $$(error define $1.soname - the name of the .dylib file, including version)
 $1.export-list ?= $$(warning should define $1.export-list)
 all:: $$($1.soname)
 clean::

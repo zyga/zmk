@@ -14,8 +14,8 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
-NAME ?= $(error define NAME)
-VERSION ?= $(error define VERSION)
+NAME ?= $(error define NAME - the name of the project)
+VERSION ?= $(error define VERSION - the static version of the project)
 
 # Speed up make by removing suffix rules.
 .SUFFIXES:
@@ -79,7 +79,7 @@ ZMK.Modules ?=
 
 define import
 ifeq (,$1)
-$$(error import, expected module name)
+$$(error incorrect call to import, expected module name)
 endif
 ifeq (,$$(findstring $1,$$(ZMK.Modules)))
 $$(if $$(findstring import,$$(DEBUG)),$$(info DEBUG: importing »$1«))
@@ -90,10 +90,10 @@ endef
 
 define spawn
 ifeq (,$1)
-$$(error spawn, expected module name)
+$$(error incorrect call to spawn, expected module name)
 endif
 ifeq (,$2)
-$$(error spawn, expected variable name)
+$$(error incorrect call to spawn, expected variable name)
 endif
 $$(eval $$(call import,$1))
 $$(if $$(findstring spawn,$$(DEBUG)),$$(info DEBUG: spawning »$1« as »$2«))

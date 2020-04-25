@@ -31,7 +31,7 @@ Template.tarball.variables=name files
 
 define Template.tarball.spawn
 $1.name ?= $$(patsubst %.tar$$(suffix $1),%,$1)
-$1.files ?= $$(error define $1.files)
+$1.files ?= $$(error define $1.files - the list of files to include in the tarball)
 
 dist:: $1
 $1: $$(sort $$(addprefix $$(srcdir)/,$$($1.files)))

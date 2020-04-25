@@ -22,8 +22,8 @@ clean::
 
 Template.program.test.variables=sources sources_coverage objects install_dir
 define Template.program.test.spawn
-$1.sources ?= $$(error define $1.sources)
-$1.sources_coverage ?= $$(error define $1.sources_coverage)
+$1.sources ?= $$(error define $1.sources - the list of source files to compile as a test program)
+$1.sources_coverage ?= $$(error define $1.sources_coverage - the list of source files to include in coverage analysis)
 $1.objects ?= $$(patsubst %.c,$1-%.o,$$($1.sources))
 $1.install_dir ?= $$(bindir)
 $$(eval $$(call spawn,Template.program,$1))

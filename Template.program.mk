@@ -19,7 +19,7 @@ $(eval $(call import,Module.toolchain))
 
 Template.program.variables=sources objects install_dir
 define Template.program.spawn
-$1.sources ?= $$(error define $1.sources)
+$1.sources ?= $$(error define $1.sources - the list of source files to compile as a program)
 $1.objects ?= $$(patsubst %.c,$1-%.o,$$($1.sources))
 $1.install_dir ?= $$(bindir)
 $1.install_mode ?= 0755

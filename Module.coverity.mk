@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
-coverity.sources ?= $(error define coverity.sources)
+coverity.sources ?= $(error define coverity.sources - the list of source files to analyze with Coverity)
 
 clean::
 	rm -rf cov-int
