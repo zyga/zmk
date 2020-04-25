@@ -54,7 +54,9 @@ ZMK.DistFiles = $(addprefix $(ZMK.Path),z.mk $(foreach m,$(ZMK._modules),$m.mk) 
 
 # ZMK Copyright Banner. Do not remove.
 # You are not allowed to remove or alter this while stating compliant with the LGPL license.
+ifeq ($(MAKECMDGOALS),)
 $(info z.mk v$(ZMK.Version), Copyright (c) 2020-2020 Zygmunt Krynicki)
+endif
 
 # Meta-targets that don't have specific specific commands
 .PHONY: $(sort all clean coverage fmt static-check check install uninstall dist distclean)
