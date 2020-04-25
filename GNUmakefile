@@ -37,5 +37,7 @@ $(eval $(call spawn,Template.tarball,$(NAME)_$(VERSION).tar.gz))
 # include directory.
 $(foreach m,$(ZMK.DistFiles),$(eval $m.install_dir=$(includedir)/zmk))
 z.mk.install_dir = $(includedir)
-configure.install_mode = 0755
-$(foreach m,$(ZMK.DistFiles),$(eval $(call spawn,Template.data,$m)))
+$(foreach m,$(filter-out configure,$(ZMK.DistFiles)),$(eval $(call spawn,Template.data,$m)))
+# Configure is a script written in shell.
+configure.interp = sh
+$(eval $(call spawn,Template.program.script,configure))
