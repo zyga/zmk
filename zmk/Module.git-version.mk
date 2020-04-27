@@ -21,7 +21,7 @@ VERSION_static ?= $(VERSION)
 # If we have the git program and the .git directory then we can just ask git.
 ifneq (,$(and $(shell command -v git 2>/dev/null),$(wildcard $(srcdir)/.git)))
 VERSION_static := $(VERSION)
-VERSION := $(or $(shell GIT_DIR=$(srcdir)/.git git describe --abbrev=10 --tags 2>/dev/null),$(VERSION))
+VERSION := $(or $(shell GIT_DIR=$(srcdir)/.git git describe --abbrev=10 --tags 2>/dev/null | sed -e 's/^v//'),$(VERSION))
 else
 # If we don't have .git directory and the git program, but we have the
 # .version-from-git file, then use that instead.
