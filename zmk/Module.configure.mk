@@ -27,6 +27,10 @@ CONFIGURED ?=
 HOST_ARCH_TRIPLET ?=
 BUILD_ARCH_TRIPLET ?=
 
+# Include optional generated makefile from the configuration system.
+-include GNUmakefile.configure.mk
+$(if $(findstring configure,$(DEBUG)),$(info DEBUG: prefix=$(prefix)))
+
 # If we are configured then check for cross compilation by mismatch
 # of host and build triplets. When this happens set CC and CXX.
 ifneq (,$(CONFIGURED))
