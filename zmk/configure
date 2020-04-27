@@ -16,6 +16,60 @@
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
 # Configure script for integration with distribution packaging preferences.
+
+while [ "$#" -ge 1 ]; do
+    case "$1" in
+        --help)
+            echo "Usage: ./configure [OPTIONS]"
+            echo
+            echo "Available options:"
+            echo "  --build=GNU_TRIPLET     Describe the build machine with the given GNU_TRIPLET"
+            echo "  --host=GNU_TRIPLET      Describe the host machine with the given GNU_TRIPLET"
+            echo " tip: using different build and host triplets enables cross-compilation"
+            echo
+            echo "Build-time directory selection:"
+            echo "  --prefix=PREFIX        Set prefix for all directories to PREFIX"
+            echo "  --exec-prefix=PREFIX   Set prefix for libraries and executables to PREFIX"
+            echo
+            echo "  --bindir=DIR           Install user executables to DIR"
+            echo "  --sbindir=DIR          Install super-user executables to DIR"
+            echo "  --libexecdir=DIR       Install library-internal executables to DIR"
+            echo "  --libdir=DIR           Install runtime and development libraries to DIR"
+            echo "  --includedir=DIR       Install development header files to DIR"
+            echo "  --includedir=DIR       Install development header files to DIR"
+            echo "  --mandir=DIR           Install manual pages to DIR"
+            echo "  --infodir=DIR          Install GNU info pages to DIR"
+            echo "  --sysconfdir=DIR       Install system configuration files to DIR"
+            echo "  --datadir=DIR          Install read-only data files to DIR"
+            echo
+            echo "  --sharedstatedir=DIR   Store state shared across machines in DIR"
+            echo "  --localstatedir=DIR    Store state specific to one machine in DIR"
+            echo
+            echo "Unimplemented and ignored options:"
+            echo "  --disable-dependency-tracking"
+            echo "  --disable-maintainer-mode"
+            echo "  --disable-silent-rules"
+            echo "  --program-prefix=PREFIX"
+            echo
+            echo "Memorised environment variables:"
+            echo "  CC                      Path of the C compiler"
+            echo "  CXX                     Path of the C++ compiler"
+            echo "  CFLAGS                  Options for the C compiler"
+            echo "  CXXFLAGS                Options for the C++ compiler"
+            echo "  CPPFLAGS                Options for the preprocessor"
+            echo "  LDFLAGS                 Options for the linker"
+            exit 0
+            ;;
+        --version)
+            echo "z.mk configure script version 0.1"
+            exit 0
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
 {
     # Given key=value or key="value value", print the value
     rhs() {
@@ -24,10 +78,6 @@
 
     while [ "$#" -ge 1 ]; do
         case "$1" in
-            --help)
-                echo "This configure script is only meant for Linux distribution packaging" >&2
-                exit 1
-                ;;
             --build=*)          echo "BUILD_ARCH_TRIPLET=$(rhs "$1")" && shift ;;
             --disable-dependency-tracking)  shift ;;
             --disable-maintainer-mode)      shift ;;
