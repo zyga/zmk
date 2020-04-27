@@ -16,7 +16,7 @@
 
 pvs.sources ?= $(error define pvs.sources - the list of source files to analyze with PVS Studio)
 
-PLOG_CONVERTER_FLAGS ?= 
+PLOG_CONVERTER_FLAGS ?=
 _pvs_studio_path := $(shell command -v pvs-studio 2>/dev/null)
 
 # If we have pvs-studio then run it during static checks.
