@@ -58,6 +58,9 @@ ifeq ($(is_watcom_exe),yes)
 exe = .exe
 endif
 
+# If cross-compiling, this is non-empty.
+Toolchain.Cross ?=
+
 # Remove object files when cleaning.
 clean::
 	rm -f *.o

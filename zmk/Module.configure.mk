@@ -33,8 +33,9 @@ $(if $(findstring configure,$(DEBUG)),$(info DEBUG: prefix=$(prefix)))
 
 # If we are configured then check for cross compilation by mismatch
 # of host and build triplets. When this happens set CC and CXX.
-ifneq (,$(CONFIGURED))
+ifneq (,$(and $(CONFIGURED),$(HOST_ARCH_TRIPLET),$(BUILD_ARCH_TRIPLET)))
 ifneq ($(BUILD_ARCH_TRIPLET),$(HOST_ARCH_TRIPLET))
+Toolchain.Cross = yes
 ifeq ($(origin CC),default)
 CC = $(HOST_ARCH_TRIPLET)-gcc
 $(if $(findstring configure,$(DEBUG)),$(info DEBUG: cross-compiler selected CC=$(CC)))

@@ -39,7 +39,7 @@ else
 	echo "not executing test program $$<$$(exe) when cross-compiling"
 endif
 
-ifeq ($$(BUILD_ARCH_TRIPLET),$$(HOST_ARCH_TRIPLET))
+ifeq (,$$(Toolchain.Cross))
 # Support coverage analysis when building with clang and supplied with llvm
 # or when using xcrun.
 ifneq (,$$(or $$(xcrun),$$(and $$(findstring clang,$$(CC)),$$(shell command -v llvm-cov 2>/dev/null),$$(shell command -v llvm-profdata 2>/dev/null))))
