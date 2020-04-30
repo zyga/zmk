@@ -36,8 +36,8 @@ $1.files ?= $$(error define $1.files - the list of files to include in the tarba
 dist:: $1
 $1: $$(sort $$(addprefix $$(srcdir)/,$$($1.files)))
 ifneq ($(shell tar --version 2>&1 | grep GNU),)
-	tar -$$(or $$(_tar_compress_flag),a)cf $$@ -C $(srcdir) --xform='s@^@$$($1.name)/@g' $$(patsubst $$(srcdir)/%,%,$$^)
+	tar -$$(or $$(_tar_compress_flag),a)cf $$@ -C $(srcdir) --xform='s@^@$$($1.name)/@g' --xform='s@.version-from-git@.version@' $$(patsubst $$(srcdir)/%,%,$$^)
 else
-	tar $$(strip $$(_bsd_tar_options) -$$(or $$(_tar_compress_flag),a)cf) $$@ -C $(srcdir) -s '@.@$$($1.toplevel)/~@' $$(patsubst $$(srcdir)/%,%,$$^)
+	tar $$(strip $$(_bsd_tar_options) -$$(or $$(_tar_compress_flag),a)cf) $$@ -C $(srcdir) -s '@.@$$($1.toplevel)/~@' -s '@.version-from-git@.version@' $$(patsubst $$(srcdir)/%,%,$$^)
 endif
 endef

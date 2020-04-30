@@ -16,24 +16,23 @@
 
 # Craft a better version if we have Git.
 
-VERSION_static ?= $(VERSION)
-
-# If we have the git program and the .git directory then we can just ask git.
-ifneq (,$(and $(shell command -v git 2>/dev/null),$(wildcard $(srcdir)/.git)))
 VERSION_static := $(VERSION)
-VERSION := $(or $(shell GIT_DIR=$(srcdir)/.git git describe --abbrev=10 --tags 2>/dev/null | sed -e 's/^v//'),$(VERSION))
+$(if $(findstring version,$(DEBUG)),$(info DEBUG: VERSION_static=$(VERSION_static)))
+
+# Note that we never generate this file from any rule in zmk!
+# The source tree contains the .version file then it is authoritative.
+ifneq (,$(wildcard $(srcdir)/.version))
+VERSION_dot_version_file = $(shell cat $(srcdir)/.version 2>/dev/null)
+$(if $(findstring version,$(DEBUG)),$(info DEBUG: VERSION_dot_version_file=$(VERSION_dot_version_file)))
+VERSION = $(or $(VERSION_dot_version_file),$(VERSION_static))
 else
-# If we don't have .git directory and the git program, but we have the
-# .version-from-git file, then use that instead.
-ifneq ($(wildcard $(srcdir)/.version-from-git),)
-VERSION_static := $(VERSION)
-VERSION := $(shell cat $(srcdir)/.version-from-git)
-endif
-endif
-
-# Define additional target that is useful for tarballs.
+ifneq (,$(and $(shell command -v git 2>/dev/null),$(wildcard $(srcdir)/.git)))
+# If we have the git program and the .git directory then we can also ask git.
+VERSION_git = $(shell GIT_DIR=$(srcdir)/.git git describe --abbrev=10 --tags 2>/dev/null | sed -e 's/^v//')
+$(if $(findstring version,$(DEBUG)),$(info DEBUG: VERSION_git=$(VERSION_git)))
+VERSION = $(or $(VERSION_git),$(VERSION_static))
 $(srcdir)/.version-from-git: $(srcdir)/.git
-	GIT_DIR=$< git describe --abbrev=10 --tags > $@
-
-$(if $(findstring git-version,$(DEBUG)),$(info DEBUG: git defines VERSION=$(VERSION)))
-$(if $(findstring git-version,$(DEBUG)),$(info DEBUG: git defines VERSION_static=$(VERSION_static)))
+	echo $(VERSION_git) >$@
+endif
+endif
+$(if $(findstring version,$(DEBUG)),$(info DEBUG: definition of VERSION=$(value VERSION)))
