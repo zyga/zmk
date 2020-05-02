@@ -33,5 +33,3 @@ ifneq ($$(findstring $$($1.interp),sh bash),)
 static-check-shellcheck: $1
 endif
 endef
-
-
