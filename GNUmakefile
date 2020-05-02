@@ -26,11 +26,7 @@ $(eval $(call import,Module.git-version))
 
 # The release tarball.
 $(NAME)_$(VERSION).tar.gz.files += GNUmakefile README.md LICENSE NEWS
-$(NAME)_$(VERSION).tar.gz.files += $(ZMK.DistFiles)
-ifneq ($(VERSION),$(VERSION_static))
-$(NAME)_$(VERSION).tar.gz.files += .version-from-git
-endif
-$(eval $(call spawn,Template.tarball,$(NAME)_$(VERSION).tar.gz))
+$(eval $(call spawn,Template.tarball.src,$(NAME)_$(VERSION).tar.gz))
 
 # Install almost all of the ZMK files to the zmk subdirectory of the include
 # directory, except for z.mk itself, which is installed directly to the
