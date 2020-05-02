@@ -50,7 +50,7 @@ ZMK._modules = \
 				Template.program.test \
 				Template.tarball
 # Files belonging to ZMK that need to be distributed in release tarballs.
-ZMK.DistFiles = z.mk $(addprefix zmk/,$(foreach m,$(ZMK._modules),$m.mk) pvs-filter.awk configure)
+ZMK.DistFiles = z.mk $(addprefix zmk/,$(foreach m,$(ZMK._modules),$m.mk) pvs-filter.awk)
 
 # ZMK Copyright Banner. Do not remove.
 # You are not allowed to remove or alter this while stating compliant with the LGPL license.
@@ -101,7 +101,3 @@ $$(if $$(findstring spawn,$$(DEBUG)),$$(info DEBUG: spawning »$1« as »$2«))
 $$(eval $$(call $1.spawn,$2))
 $$(if $$(findstring spawn,$$(DEBUG)),$$(foreach n,$$($1.variables),$$(info DEBUG:     instance variable »$2«.$$n=$$($2.$$n))))
 endef
-
-.PHONY: print-zmk-configure-path
-print-zmk-configure-path:
-	@echo "$(ZMK.Path)zmk/configure"

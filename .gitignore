@@ -1,3 +1,4 @@
 zmk_*.tar.gz
 zmk_*.tar.gz.asc
 .version-from-git
+configure
