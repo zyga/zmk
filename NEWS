@@ -21,6 +21,10 @@ Changes in 0.2:
  * The new Template.tarball.src module now creates GPG signatures for
    release tarball and handles the .version file.
 
+ * ZMK now generates all required files and stores them into source archives
+   created with Template.tarball.src. Generated data can be removed with the
+   distclean target.
+
 Changes in 0.1:
 
  * Initial release with the build system extracted out of libzt.

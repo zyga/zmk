@@ -53,6 +53,20 @@ ZMK._modules = \
 # Files belonging to ZMK that need to be distributed in release tarballs.
 ZMK.DistFiles = z.mk $(addprefix zmk/,$(foreach m,$(ZMK._modules),$m.mk) pvs-filter.awk)
 
+ifneq ($(NAME),zmk)
+ifneq ($(ZMK.Path),$(srcdir)/)
+$(srcdir)/zmk:
+	install -d $@
+$(srcdir)/zmk/%: $(ZMK.Path)zmk/% | $(srcdir)/zmk
+	install -m 644 $< $@
+$(srcdir)/z.mk: $(ZMK.Path)z.mk
+	install -m 644 $< $@
+endif
+distclean::
+	rm -rf $(srcdir)/zmk
+	rm -f $(srcdir)/z.mk
+endif
+
 # ZMK Copyright Banner. Do not remove.
 # You are not allowed to remove or alter this while staying compliant with the LGPL license.
 MAKECMDGOALS ?=
