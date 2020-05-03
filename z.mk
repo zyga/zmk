@@ -57,7 +57,7 @@ ZMK.DistFiles = z.mk $(addprefix zmk/,$(foreach m,$(ZMK._modules),$m.mk) pvs-fil
 # You are not allowed to remove or alter this while stating compliant with the LGPL license.
 MAKECMDGOALS ?=
 ifeq ($(MAKECMDGOALS),)
-$(info z.mk v$(ZMK.Version), Copyright (c) 2020-2020 Zygmunt Krynicki)
+$(info z.mk v$(ZMK.Version), Copyright (c) 2019-2020 Zygmunt Krynicki)
 endif
 
 # Meta-targets that don't have specific specific commands
