@@ -28,8 +28,6 @@ $(eval $(call import,Module.git-version))
 $(NAME)_$(VERSION).tar.gz.files += GNUmakefile README.md LICENSE NEWS
 $(eval $(call spawn,Template.tarball.src,$(NAME)_$(VERSION).tar.gz))
 
-# Install almost all of the ZMK files to the zmk subdirectory of the include
-# directory, except for z.mk itself, which is installed directly to the
-# include directory.
+# Install all of zmk to the include directory.
 $(foreach m,$(ZMK.DistFiles),$(eval $m.install_dir=$(includedir)))
 $(foreach m,$(ZMK.DistFiles),$(eval $(call spawn,Template.data,$m)))
