@@ -54,7 +54,7 @@ ZMK._modules = \
 ZMK.DistFiles = z.mk $(addprefix zmk/,$(foreach m,$(ZMK._modules),$m.mk) pvs-filter.awk)
 
 # ZMK Copyright Banner. Do not remove.
-# You are not allowed to remove or alter this while stating compliant with the LGPL license.
+# You are not allowed to remove or alter this while staying compliant with the LGPL license.
 MAKECMDGOALS ?=
 ifeq ($(MAKECMDGOALS),)
 $(info z.mk v$(ZMK.Version), Copyright (c) 2019-2020 Zygmunt Krynicki)
