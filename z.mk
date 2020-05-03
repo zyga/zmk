@@ -48,7 +48,8 @@ ZMK._modules = \
 				Template.program \
 				Template.program.script \
 				Template.program.test \
-				Template.tarball
+				Template.tarball \
+				Template.tarball.src
 # Files belonging to ZMK that need to be distributed in release tarballs.
 ZMK.DistFiles = z.mk $(addprefix zmk/,$(foreach m,$(ZMK._modules),$m.mk) pvs-filter.awk)
 
