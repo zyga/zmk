@@ -25,9 +25,10 @@ include z.mk
 # kinds of library templates, with a unique name of "libhello.a" and
 # "libhello.so" or "libhello.dylib", depending on the type of OS used.
 #
-# You can see the import tree by calling make with the environment variable
-# DEBUG set to import or spawn. In general you can provide a comma-separated
-# list of zmk fragments to log verbosely.
+# You can see additional build system details by setting the DEBUG environment
+# variable. It takes a comma-separated list of words corresponding to an
+# action, such as "import" or "spawn", or module names, such as "toolchain" or
+# "OS". Try DEBUG=spawn to learn more about how this example works.
 $(eval $(call import,Module.configure))
 
 # zmk uses a style of declaring what looks like instance variables before
