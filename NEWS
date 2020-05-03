@@ -1,3 +1,26 @@
+Changes in 0.2:
+
+ * The Template.data module now handles nested directories better.
+
+ * The Module.configure module can now synthesize the configure script.
+
+ * The configure script now handles --runtstatedir=DIR option.
+
+ * The configure script no longer considers --build=TRIPLET as cross-compiling,
+   both --build=TRIPLET and --host=TRIPLET must be used and must differ for
+   that to happen.
+
+ * The configure script now supports --help and --version options.
+
+ * The Module.git-version module now strips leading "v" from tags.
+
+ * The Module.git-version module no longer clashes with Debian packaging
+   and now collaborates with Template.tarball.src module to store the version
+   in a .version file.
+
+ * The new Template.tarball.src module now creates GPG signatures for
+   release tarball and handles the .version file.
+
 Changes in 0.1:
 
  * Initial release with the build system extracted out of libzt.
