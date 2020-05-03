@@ -22,7 +22,10 @@ Template.tarball.src.variables=name files
 define Template.tarball.src.spawn
 $1.name ?= $$(patsubst %.tar$$(suffix $1),%,$1)
 $1.files ?= $$(error define $1.files - the list of files to include in the tarball)
-$1.files += $$(ZMK.DistFiles) configure
+$1.files += $$(ZMK.DistFiles)
+ifneq (,$$(filter Module.configure,$$(ZMK.Modules)))
+$1.files += configure
+endif
 ifneq ($$(VERSION),$$(VERSION_static))
 $1.files += .version-from-git
 endif
