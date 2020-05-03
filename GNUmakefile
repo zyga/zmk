@@ -23,6 +23,7 @@ include ./z.mk
 
 # Use git to augment version.
 $(eval $(call import,Module.git-version))
+$(eval $(call import,Module.directories))
 
 # Install all of zmk to the include directory.
 $(foreach m,$(ZMK.DistFiles),$(eval $m.install_dir=$(includedir)))
