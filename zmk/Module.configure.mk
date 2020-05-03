@@ -69,7 +69,8 @@ while [ "$$#" -ge 1 ]; do
             echo "  --datadir=DIR          Install read-only data files to DIR"
             echo
             echo "  --sharedstatedir=DIR   Store state shared across machines in DIR"
-            echo "  --localstatedir=DIR    Store state specific to one machine in DIR"
+            echo "  --localstatedir=DIR    Store persistent state specific to a machine in DIR"
+            echo "  --runstatedir=DIR      Store ephemeral state specific to a machine in DIR"
             echo
             echo "Unimplemented and ignored options:"
             echo "  --disable-dependency-tracking"
@@ -123,6 +124,7 @@ done
             --sharedstatedir=*) echo "sharedstatedir=$$(rhs "$$1")" && shift ;;
             --sysconfdir=*)     echo "sysconfdir=$$(rhs "$$1")" && shift ;;
             --localstatedir=*)  echo "localstatedir=$$(rhs "$$1")" && shift ;;
+            --runstatedir=*)    echo "runstatedir=$$(rhs "$$1")" && shift ;;
             CC=*)               CC="$$(rhs "$$1")" && shift ;;
             CXX=*)              CXX="$$(rhs "$$1")" && shift ;;
             CFLAGS=*)           CFLAGS="$$(rhs "$$1")" && shift ;;
