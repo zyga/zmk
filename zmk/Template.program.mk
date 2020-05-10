@@ -30,7 +30,7 @@ $$(eval $$(call spawn,Template.data,$1$$(exe)))
 
 all:: $1$$(exe)
 clean::
-	rm -f $1$$(exe)
+	rm -f $1$$(exe) $1-*.o
 
 ifneq (,$$(or $$(is_gcc),$$(is_clang)))
 $1$$(exe): LDFLAGS += -fPIE
