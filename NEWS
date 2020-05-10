@@ -1,3 +1,19 @@
+Changes in 0.3 (unreleased):
+
+ * Introduction of manual pages for zmk. This is a longer effort but eventually
+   all modules, templates, variables and rules will be documented.
+
+ * Examples are now part of the distribution archive.
+
+ * The true_false example illustrates how preprocessor options can
+   vary per target, even if the same source file is used in more than one
+   program.
+
+ * The Module.directories module now warns if DESTDIR is defined inside a makefile.
+
+ * The Module.toolchain module no longer removes all object files.
+
+
 Changes in 0.2:
 
  * The Template.data module now handles nested directories better.
