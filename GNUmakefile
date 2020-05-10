@@ -29,6 +29,8 @@ $(eval $(call import,Module.directories))
 $(foreach m,$(ZMK.DistFiles),$(eval $m.install_dir=$(includedir)))
 $(foreach m,$(ZMK.DistFiles),$(eval $(call spawn,Template.data,$m)))
 
+$(eval $(call spawn,Template.manpage,man/zmk.Template.program.5))
+
 # Build the release tarball.
 $(NAME)_$(VERSION).tar.gz.files = GNUmakefile README.md LICENSE NEWS
 $(eval $(call spawn,Template.tarball.src,$(NAME)_$(VERSION).tar.gz))
