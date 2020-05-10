@@ -15,7 +15,17 @@
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
 # Installation location
+
+# Define DESTDIR to an empty value so that make --warn-undefined-variables
+# does not complain about it.
+ifeq ($(origin DESTDIR),undefined)
 DESTDIR ?=
+else
+# Warn if DESTDIR is defined in a makefile. This is probably a mistake.
+ifeq ($(origin DESTDIR),file)
+$(warning DESTDIR should be set only through environment variable, not in a makefile)
+endif
+endif
 
 # Installation prefix.
 prefix ?= /usr/local
