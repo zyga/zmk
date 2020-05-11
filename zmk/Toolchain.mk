@@ -1,0 +1,91 @@
+# Copyright 2019-2020 Zygmunt Krynicki.
+#
+# This file is part of zmk.
+#
+# Zmk is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License.
+#
+# Zmk is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
+
+$(eval $(call ZMK.Import,OS))
+$(eval $(call ZMK.Import,Configure))
+
+# Compiler defaults unless changed by GNUmakefile.configure.mk
+
+ifeq ($(OS.Kernel),SunOS)
+# Solaris doesn't seem to provide any aliases or symlinks for gcc but make wants to call it "cc".
+CC := gcc
+endif
+CPPFLAGS ?=
+CFLAGS ?=
+CXXFLAGS ?=
+OBJCFLAGS ?=
+ARFLAGS = -cr
+TARGET_ARCH ?=
+LDLIBS ?=
+LDFLAGS ?=
+
+# The exe variable expands to .exe when the compiled binary should have such suffix.
+exe ?=
+
+# Is zmk debugging enabled for this module?
+Toolchain.debug ?= $(findstring toolchain,$(DEBUG))
+
+# What is the image format used by the C compiler?
+# If we are not cross compiling then image format is native.
+Toolchain.CC.ImageFormat ?= $(OS.ImageFormat)
+
+# What is the image format used by the C++ compiler?
+Toolchain.CXX.ImageFormat ?= $(OS.ImageFormat)
+
+# Is the C compiler a cross-compiler?
+Toolchain.CC.IsCross ?=
+
+# Is the C++ compiler a cross-compiler?
+Toolchain.CXX.IsCross ?=
+
+# Should compiling produce dependency information for make?
+Toolchain.DependencyTracking ?= $(Configure.DependencyTracking)
+
+# Deduce the kind of the selected compiler. Some build rules or compiler
+# options depend on the compiler used. As an alternative we could look at
+# preprocessor macros but this way seems sufficient for now.
+Toolchain.cc ?= $(shell sh -c "command -v $(CC)")
+Toolchain.cxx ?= $(shell sh -c "command -v $(CXX)")
+
+ifeq ($(Toolchain.cc),/usr/bin/cc)
+Toolchain.cc := $(realpath $(Toolchain.cc))
+else
+Toolchain.cc := $(Toolchain.cc)
+endif
+
+ifeq ($(Toolchain.cxx),/usr/bin/g++)
+Toolchain.cxx := $(realpath $(Toolchain.cxx))
+else
+Toolchain.cxx := $(Toolchain.cxx)
+endif
+
+# Import toolchain-specific knowledge.
+$(eval $(call ZMK.Import,Toolchain.GCC))
+$(eval $(call ZMK.Import,Toolchain.Clang))
+$(eval $(call ZMK.Import,Toolchain.OpenWatcom))
+$(eval $(call ZMK.Import,Toolchain.Tcc))
+
+# Show the conclusive values.
+$(if $(Toolchain.debug),$(info DEBUG: Toolchain.cc=$(Toolchain.cc)))
+$(if $(Toolchain.debug),$(info DEBUG: Toolchain.cxx=$(Toolchain.cxx)))
+$(if $(Toolchain.debug),$(info DEBUG: Toolchain.CC.ImageFormat=$(Toolchain.CC.ImageFormat)))
+$(if $(Toolchain.debug),$(info DEBUG: Toolchain.CC.IsCross=$(Toolchain.CC.IsCross)))
+$(if $(Toolchain.debug),$(info DEBUG: Toolchain.CXX.ImageFormat=$(Toolchain.CXX.ImageFormat)))
+$(if $(Toolchain.debug),$(info DEBUG: Toolchain.CXX.IsCross=$(Toolchain.CXX.IsCross)))
+$(if $(Toolchain.debug),$(info DEBUG: Toolchain.DependencyTracking=$(Toolchain.DependencyTracking)))
+
+$(if $(Toolchain.debug),$(info DEBUG: CC=$(CC)))
+$(if $(Toolchain.debug),$(info DEBUG: CXX=$(CXX)))

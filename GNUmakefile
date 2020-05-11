@@ -22,28 +22,58 @@ ZMK.Path =
 include ./z.mk
 
 # Use git to augment version.
-$(eval $(call import,Module.git-version))
-$(eval $(call import,Module.directories))
+$(eval $(call ZMK.Import,GitVersion))
+$(eval $(call ZMK.Import,Directories))
 
 # Install all of zmk to the include directory.
-$(foreach m,$(ZMK.DistFiles),$(eval $m.install_dir=$(includedir)))
-$(foreach m,$(ZMK.DistFiles),$(eval $(call spawn,Template.data,$m)))
+$(foreach f,$(ZMK.DistFiles),$(eval $f.InstallDir=$(includedir)))
+$(foreach f,$(ZMK.DistFiles),$(eval $(call ZMK.Expand,Installable,$f)))
 
-$(eval $(call spawn,Template.manpage,man/zmk.Template.program.5))
+# Install all of the manual pages
+$(foreach f,$(ZMK.manPages),$(eval $(call ZMK.Expand,ManPage,man/$f)))
 
 # Build the release tarball.
-$(NAME)_$(VERSION).tar.gz.files = GNUmakefile README.md LICENSE NEWS
-$(NAME)_$(VERSION).tar.gz.files += man/zmk.Template.program.5
-$(NAME)_$(VERSION).tar.gz.files += examples/hello-c/hello.c examples/hello-c/Makefile
-$(NAME)_$(VERSION).tar.gz.files += examples/hello-cpp/hello.cpp examples/hello-cpp/Makefile
-$(NAME)_$(VERSION).tar.gz.files += examples/hello-objc/hello.m examples/hello-objc/Makefile
-$(NAME)_$(VERSION).tar.gz.files += examples/libhello/hello.c examples/libhello/hello.h examples/libhello/Makefile
-$(NAME)_$(VERSION).tar.gz.files += examples/true_false/true_false.c examples/true_false/Makefile
-$(eval $(call spawn,Template.tarball.src,$(NAME)_$(VERSION).tar.gz))
+$(NAME)_$(VERSION).tar.gz.Files = GNUmakefile README.md LICENSE NEWS
+$(NAME)_$(VERSION).tar.gz.Files += $(addprefix man/,$(ZMK.manPages))
+$(NAME)_$(VERSION).tar.gz.Files += examples/hello-c/hello.c examples/hello-c/Makefile examples/hello-c/Test.mk
+$(NAME)_$(VERSION).tar.gz.Files += examples/hello-cpp/hello.cpp examples/hello-cpp/Makefile examples/hello-cpp/Test.mk
+$(NAME)_$(VERSION).tar.gz.Files += examples/hello-objc/hello.m examples/hello-objc/Makefile examples/hello-objc/Test.mk examples/hello-objc/README.txt
+$(NAME)_$(VERSION).tar.gz.Files += examples/libhello-c/hello.c examples/libhello-c/hello.h examples/libhello-c/Makefile examples/libhello-c/Test.mk
+$(NAME)_$(VERSION).tar.gz.Files += examples/libhello-cpp/hello.cpp examples/libhello-cpp/hello.h examples/libhello-cpp/Makefile examples/libhello-cpp/Test.mk
+$(NAME)_$(VERSION).tar.gz.Files += examples/libhello-objc/hello.m examples/libhello-objc/hello.h examples/libhello-objc/Makefile examples/libhello-objc/Test.mk
+$(NAME)_$(VERSION).tar.gz.Files += examples/true_false/true_false.c examples/true_false/Makefile examples/true_false/Test.mk examples/true_false/README.txt
+$(NAME)_$(VERSION).tar.gz.Files += tests/Directories/Makefile tests/Directories/Test.mk
+$(NAME)_$(VERSION).tar.gz.Files += tests/Directory/Makefile tests/Directory/Test.mk
+$(NAME)_$(VERSION).tar.gz.Files += tests/OS/Makefile tests/OS/Test.mk
+$(NAME)_$(VERSION).tar.gz.Files += tests/Toolchain/Makefile tests/Toolchain/Test.mk
+$(NAME)_$(VERSION).tar.gz.Files += tests/bin/MATCH
+$(NAME)_$(VERSION).tar.gz.Files += tests/Common.mk
+$(eval $(call ZMK.Expand,Tarball.Src,$(NAME)_$(VERSION).tar.gz))
 
-check:: $(addprefix check,$(subst /,-,$(subst $(srcdir),,$(wildcard $(srcdir)/examples/*))))
-check-examples-%:
-	$(MAKE) -I $(abspath $(srcdir)) --warn-undefined-variables -C $(srcdir)/examples/$* clean
-	$(MAKE) -I $(abspath $(srcdir)) --warn-undefined-variables -C $(srcdir)/examples/$* all
-	rm -rf /tmp/zmk-example-$*
-	$(MAKE) -I $(abspath $(srcdir)) --warn-undefined-variables -C $(srcdir)/examples/$* install DESTDIR=/tmp/zmk-example-$*
+
+#check-examples = $(addprefix check,$(subst /,-,$(subst $(srcdir)/,/,$(wildcard $(srcdir)/examples/*))))
+#check:: $(check-examples)
+#$(check-examples): check-examples-%:
+#	$(MAKE) -I $(abspath $(srcdir)) --warn-undefined-variables -C $(srcdir)/examples/$* clean
+#	$(MAKE) -I $(abspath $(srcdir)) --warn-undefined-variables -C $(srcdir)/examples/$* all
+#	rm -rf /tmp/zmk-example-$*
+#	$(MAKE) -I $(abspath $(srcdir)) --warn-undefined-variables -C $(srcdir)/examples/$* install DESTDIR=/tmp/zmk-example-$*
+
+
+check:: check-unit
+
+# Some hackery is performed to map slashes to dashes, except in "(lib)?hello-".
+tests = $(patsubst -%-,%,$(subst /,-,$(subst $(srcdir)/,/,$(dir $(shell find . -name Test.mk)))))
+.PHONY: check-unit
+check-unit: $(addprefix check-,$(tests))
+.PHONY: $(addprefix check-,$(tests))
+$(addprefix check-,$(tests)): check-%:
+	$(MAKE) \
+		--no-print-directory --warn-undefined-variables \
+		-I $(abspath $(srcdir)) \
+		-C $(srcdir)/$(patsubst examples/libhello/%,examples/libhello-%,$(patsubst examples/hello/%,examples/hello-%,$(subst -,/,$*))) \
+		-f Test.mk
+
+# Disable man page checker as it complains about .TS and .TE
+override static-check-manpages:
+	true

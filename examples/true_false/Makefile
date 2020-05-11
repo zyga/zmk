@@ -1,11 +1,10 @@
-NAME = true_false
+NAME = true_false                                       # Define name of the project
+include z.mk                                            # Include the zmk library
 
-include z.mk
+true.Sources = true_false.c                             # Define the source files to compile into true
+$(eval $(call ZMK.Expand,Program,true))                 # Expand template for programs with the name true
+true$(exe): CPPFLAGS += -DEXIT_CODE=EXIT_SUCCESS        # Pass macro definition when compiling true
 
-true.sources = true_false.c
-$(eval $(call spawn,Template.program,true))
-true$(exe): CPPFLAGS += -DEXIT_CODE=EXIT_SUCCESS
-
-false.sources = true_false.c
-$(eval $(call spawn,Template.program,false))
-false$(exe): CPPFLAGS += -DEXIT_CODE=EXIT_FAILURE
+false.Sources = true_false.c                            # Define the source files to compile into false
+$(eval $(call ZMK.Expand,Program,false))                # Expand template for programs with the name false
+false$(exe): CPPFLAGS += -DEXIT_CODE=EXIT_FAILURE       # Pass macro definition when compiling false

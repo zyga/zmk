@@ -1,0 +1,173 @@
+.Dd May 3, 2020
+.Os zmk @VERSION@
+.Dt zmk.Directories 5 PRM
+.Sh NAME
+.Nm Directories
+.Nd module providing names and rules for common directories
+.Sh SYNOPSIS
+.Bd -literal
+include z.mk
+
+$(eval $(call ZMK.Import,Directories))
+.Ed
+.Sh DESCRIPTION
+The module
+.Nm
+provides names and rules for commonly used directories. Is is used indirectly
+by other targets, to know where to install files of various types, but can be
+also imported and used directly for custom rules.
+.Pp
+All directories are derived from the value of
+.Nm prefix .
+The default value is
+.Em /usr/local ,
+which is suitable for locally-built and installed software packages.
+Linux distribution packages are compiled with prefix of
+.Em /usr ,
+along with dedicated values of
+.Nm sysconfdir
+and other variables. This customization is usually handled by invoking the
+.Em configure
+script with specific command-line options.
+.Sh TARGETS
+This module provides targets that create all the directories mentioned below,
+also taking into account the
+.Nm $(DESTDIR)
+variable.
+.Sh VARIABLES
+This module provides the following variables.
+.Ss DESTDIR
+Temporary staging location used while building software packages. It is
+prepended to all installation targets, to allow them to be redirected to
+another directory, usually without root privileges.
+.Ss prefix
+Prefix of all the other directories.
+.Pp
+The default value is
+.Em /usr/local .
+.Ss exec_prefix
+Prefix of directories where executables are installed.
+.Pp
+The default value is
+.Em $(prefix) .
+.Ss bindir
+Directory with programs available to all users.
+.Pp
+The default value is
+.Em $(exec_prefix)/bin .
+.Ss sbindir
+Directory with programs available to system administrators.
+.Pp
+The default value is
+.Em $(exec_prefix)/sbin .
+.Ss libexecdir
+Directory with programs used not directly invoked by the user.
+.Pp
+The default value is
+.Em $(exec_prefix)/libexec .
+.Pp
+This directory differs between two major distribution lines, RedHat and Debian
+and their respective derivatives. The former uses
+.Em /usr/libexec
+while the latter uses
+.Em /usr/lib .
+.Ss datarootdir
+Directory several classes of data files.
+.Pp
+The default value is
+.Em $(prefix)/share .
+.Ss datadir
+Directory with architecture independent data files.
+.Pp
+The default value is
+.Em $(datarootdir) .
+.Ss sysconfdir
+Directory with system configuration files.
+.Pp
+The default value is
+.Em $(prefix)/etc .
+.Pp
+In distribution packaging this directory is typically overriden to be detached
+from prefix and hold the literal value
+.Em /etc .
+.Ss sharedstatedir
+Directory with system state shared among machines on the network.
+Virtually extinct, do not use it.
+.Pp
+The default value is
+.Em $(prefix)/com .
+.Ss localstatedir
+Directory with persistent system state, private to the current machine.
+.Pp
+The default value is
+.Em $(prefix)/var .
+.Ss runstatedir
+Directory with ephemeral system state, private to the current machine.
+.Pp
+The default value is
+.Em $(prefix)/run .
+.Ss includedir
+Directory with C, C++ and Objective C header files.
+.Pp
+The default value is
+.Em $(prefix)/include .
+.Ss docdir
+Directory with documentation specific to the project.
+.Pp
+The default value is
+.Em $(prefix)/doc/$(NAME) .
+.Ss infodir
+Directory with documentation in the Info format.
+.Pp
+The default value is
+.Em $(prefix)/doc/info .
+.Ss libdir
+Directory with stattic or dynamic libraries.
+.Pp
+The default value is
+.Em $(exec_prefix)/lib .
+.Pp
+This directory differs between Linux distributions. Some distribututions
+differentiate between 32bit and 64bit libraries while others store libraries in
+a directory named after the architecture triplet they are compiled for. It is
+common for one system to use a mixture of directories used at the same time,
+mainly to adhere to file system hierarchy standards.
+.Ss localedir
+Directory with localization catalogs, including message translation tables.
+.Pp
+The default value is
+.Em $(datarootdir)/locale .
+.Ss mandir
+Directory root for manual pages. Actual manual pages are stored
+in sub-directories named after the manual section number.
+.Pp
+The default value is
+.Em $(datarootdir)/man .
+.Ss man1dir .. man9dir
+Directory with manual pages of a specific section.
+.Pp
+The default value is
+.Em $(mandir)/man1
+\&..
+.Em $(mandir)/man9 .
+.Sh EXAMPLES
+The following example illustrates a way to install the program
+.Em foo
+to the directory with programs available to all the users. The
+.Em order-only
+prerequisite ensures that the target directory is created.
+.Bd -literal -offset indent
+include z.mk
+
+$(eval $(call ZMK.Import,Directories))
+
+
+$(DESTDIR)$(bindir)/foo: foo | $(DESTDIR)$(bindir)
+	install $< $@
+.Ed
+.Sh HISTORY
+The
+.Nm
+module first appeared in zmk 0.3
+.Sh AUTHORS
+.An "Zygmunt Krynicki" Aq Mt me@zygoon.pl

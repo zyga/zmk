@@ -31,28 +31,46 @@ ZMK.Version = 0.2
 # from.
 ZMK.z.mk := $(lastword $(MAKEFILE_LIST)))
 ZMK.Path ?= $(dir $(ZMK.z.mk))
+
 # Modules and templates present in the package
-ZMK._modules = \
-				Module.OS \
-				Module.configure \
-				Module.coverity \
-				Module.directories \
-				Module.git-version \
-				Module.pvs \
-				Module.toolchain \
-				Template.data \
-				Template.header \
-				Template.library.a \
-				Template.library.dylib \
-				Template.library.so \
-				Template.manpage \
-				Template.program \
-				Template.program.script \
-				Template.program.test \
-				Template.tarball \
-				Template.tarball.src
-# Files belonging to ZMK that need to be distributed in release tarballs.
-ZMK.DistFiles = z.mk $(addprefix zmk/,$(foreach m,$(ZMK._modules),$m.mk) pvs-filter.awk)
+ZMK.modules = \
+	BuildObjects \
+	Buildable \
+	Configure \
+	Coverity \
+	Directories \
+	Directory \
+	GitVersion \
+	Header \
+	Installable \
+	Library.A \
+	Library.DyLib \
+	Library.So \
+	ManPage \
+	OS \
+	PVS \
+	Program \
+	Program.Script \
+	Program.Test \
+	Symlink \
+	Tarball \
+	Tarball.Src \
+	Toolchain \
+	Toolchain.Clang \
+	Toolchain.GCC \
+	Toolchain.OpenWatcom \
+	Toolchain.Tcc
+
+# Manual pages present in the package.
+ZMK.manPages = \
+	zmk.Directories.5 \
+	zmk.OS.5 \
+	zmk.Toolchain.5 \
+	zmk.Buildable.5 \
+	zmk.Program.5
+
+# Files belonging to ZMK that need to be distributed in third-party release tarballs.
+ZMK.DistFiles = z.mk $(addprefix zmk/,$(foreach m,$(ZMK.modules),$m.mk) pvs-filter.awk)
 
 ifneq ($(NAME),zmk)
 ifneq ($(ZMK.Path),$(srcdir)/)
@@ -85,35 +103,50 @@ check:: static-check
 .DEFAULT_GOAL = all
 
 # Display diagnostic messages when DEBUG has specific items.
-_comma=,
+ZMK.comma=,
 DEBUG ?=
-DEBUG := $(subst $(_comma), ,$(DEBUG))
-
-# List of imported modules.
-ZMK.Modules ?=
+DEBUG := $(subst $(ZMK.comma), ,$(DEBUG))
 
 # Define the module and template system.
+ZMK.ImportedModules ?=
+ZMK.expandStack = 0
+ZMK.nesting.0 = > #
+ZMK.nesting.1 = ... > #
+ZMK.nesting.2 = ... ... > #
+ZMK.nesting.3 = ... ... ... > #
+ZMK.nesting.4 = ... ... ... ... > #
 
-define import
+define ZMK.Import
 ifeq (,$1)
-$$(error incorrect call to import, expected module name)
+$$(error incorrect call to ZMK.Import, expected module name)
 endif
-ifeq (,$$(filter $1,$$(ZMK.Modules)))
+ifeq (,$$(filter $1,$$(ZMK.ImportedModules)))
 $$(if $$(findstring import,$$(DEBUG)),$$(info DEBUG: importing »$1«))
 include $$(ZMK.Path)zmk/$1.mk
-ZMK.Modules += $1
+ZMK.ImportedModules += $1
 endif
 endef
 
-define spawn
+
+ZMK.variablesShown =
+define ZMK.showVariable
+ifeq (,$$(findstring $1,$$(ZMK.variablesShown)))
+$$(info DEBUG: $$(ZMK.nesting.$$(ZMK.expandStack))$1=$$($1))
+ZMK.variablesShown += $1
+endif
+endef
+
+define ZMK.Expand
 ifeq (,$1)
-$$(error incorrect call to spawn, expected module name)
+$$(error incorrect call to ZMK.Expand, expected module name)
 endif
 ifeq (,$2)
-$$(error incorrect call to spawn, expected variable name)
+$$(error incorrect call to ZMK.Expand, expected variable name)
 endif
-$$(eval $$(call import,$1))
-$$(if $$(findstring spawn,$$(DEBUG)),$$(info DEBUG: spawning »$1« as »$2«))
-$$(eval $$(call $1.spawn,$2))
-$$(if $$(findstring spawn,$$(DEBUG)),$$(foreach n,$$($1.variables),$$(info DEBUG:     instance variable »$2«.$$n=$$($2.$$n))))
+$$(eval $$(call ZMK.Import,$1))
+$$(if $$(findstring expand,$$(DEBUG)),$$(info DEBUG: $$(ZMK.nesting.$$(ZMK.expandStack))expanding template $1("$2")))
+ZMK.expandStack := $$(shell expr $$(ZMK.expandStack) + 1)
+$$(eval $$(call $1.Template,$2))
+ZMK.expandStack := $$(shell expr $$(ZMK.expandStack) - 1)
+$$(if $$(findstring expand,$$(DEBUG)),$$(foreach n,$$($1.Variables),$$(eval $$(call ZMK.showVariable,$2.$$n))))
 endef

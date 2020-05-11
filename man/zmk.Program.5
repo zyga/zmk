@@ -1,0 +1,166 @@
+.Dd May 3, 2020
+.Os zmk @VERSION@
+.Dt zmk.Program 5 PRM
+.Sh NAME
+.Nm Program
+.Nd template for compiling C/C++/ObjC programs
+.Sh SYNOPSIS
+.Bd -literal
+include z.mk
+
+NAME.Sources = hello.c
+$(eval $(call ZMK.Expand,Program,NAME))
+.Ed
+.Sh DESCRIPTION
+The template
+.Nm Program
+once
+.Em expanded
+with a
+.Em program name
+to creates rules for compiling, cleaning, installing and removing a single
+program written in C, C++ or Objective C.
+.Pp
+Source files are compiled to object files prefixed with
+.Em NAME- ,
+so that individual source files can be part of many different programs, using
+distinct preprocessor, compiler and linker options.
+.Pp
+If cross-compiling for
+.Em Windows
+or
+.Em DOS ,
+the
+.Em $(exe)
+variable expands to
+.Em .exe
+.Sh TARGETS
+This module provides the following targets.
+.Ss NAME$(exe)
+This target represents the program executable.
+.Pp
+If using
+.Em gcc
+or
+.Em clang
+the resulting binary is compiled as a
+.Em position-independent executable ,
+by setting
+.Em CFLAGS += -fPIE .
+.Ss all
+The
+.Nm all
+target depends on
+.Em NAME$(exe)
+.Ss clean
+The
+.Nm clean
+target removes
+.Em NAME$(exe)
+and
+.Em NAME-*.o
+.Ss install
+The
+.Nm install
+target copies
+.Em NAME$(exe) ,
+with mode
+.Em $(NAME.install_mode) ,
+to
+.Em $(NAME.install_dir) ,
+creating it if necessary.
+.Ss uninstall
+The
+.Nm uninstall
+target removes
+.Em NAME$(exe)
+as installed by the
+.Em install
+target.
+.Sh VARIABLES
+This module provides the following variables.
+.Ss NAME.sources
+List of source files to compile.
+.Pp
+There is no default value. This variable must be set before
+.Em expanding
+the template.
+.Ss NAME.Objects
+List of object files to link.
+.Pp
+The default value is all the elements of
+.Em NAME.Sources
+with the added prefix
+.Em NAME-
+and with the extension replaced by
+.Em .o .
+.Ss NAME.InstallDir
+The directory
+.Em NAME$(exe)
+is installed to.
+.Pp
+The default value is
+.Em $(bindir)
+but
+.Em $(sbindir)
+or
+.Em $(libexecdir)
+are commonly used as well. The special value
+.Em noinst
+disables the rules related to installation and uninstallation.
+.Ss NAME.InstallMode
+The UNIX mode
+.Em NAME$(exe)
+is installed with.
+.Pp
+The default value is
+.Em 0755 .
+.Ss DESTDIR
+Path added to all installation targets.
+This variable is normally set externally, to install a compiled program
+into a staging area during construction of a compiled binary package.
+.Ss CFLAGS, CXXFLAGS, OBJCFLAGS
+Options for the C, C++ and the Objective C compiler, respectively.
+.Ss CPPFLAGS
+Options for the preprocessor.
+.Sh IMPLEMENTATION NOTES
+.Nm
+uses
+.Nm Installable
+to install the compiled program.
+.Sh EXAMPLES
+With the following
+.Em true_false.c
+file:
+.Bd -literal -offset indent-two
+#include <stdlib.h>
+
+int main(void) {
+	return EXIT_CODE;
+}
+.Ed
+.Pp
+The following
+.Em Makefile
+builds the classic programs
+.Em true
+and
+.Em false .
+.Bd -literal -offset indent-two
+include z.mk
+NAME = true_false
+
+true.Sources = true_false.c
+$(eval $(call ZMK.Expand,Program,true))
+true$(exe): CPPFLAGS += -DEXIT_CODE=EXIT_SUCCESS
+
+false.Sources = true_false.c
+$(eval $(call ZMK.Expand,Program,false))
+false$(exe): CPPFLAGS += -DEXIT_CODE=EXIT_FAILURE
+.Ed
+.Sh HISTORY
+The
+.Nm
+template first appeared in zmk 0.1
+.Sh AUTHORS
+.An "Zygmunt Krynicki" Aq Mt me@zygoon.pl

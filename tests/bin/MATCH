@@ -1,0 +1,19 @@
+#!/bin/sh
+printf="$(which printf)"
+input="$(cat)"
+if echo "$input" | grep -q "$@"; then
+	exit 0
+fi
+"$printf" 'MATCH: failed to match: grep'
+for arg in "$@"; do
+	"$printf" ' %q' "$arg"
+done
+	"$printf" '\n'
+if [ "$(echo "$input" | wc -l)" -gt 1 ]; then
+	"$printf" 'MATCH: input starts below:\n\n'
+	"$printf" '%s\n' "$input"
+	"$printf" '\nMATCH: input ends above.\n'
+else
+	"$printf" 'MATCH: for input %q\n' "$input"
+fi
+exit 1

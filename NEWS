@@ -1,5 +1,27 @@
 Changes in 0.3 (unreleased):
 
+ * For future extensibility backwards compatibility is dropped. All symbols are
+   different. By the time this release is finalized a compatibility module may
+   be introduced, if practical.
+
+   - All variables now use CamelCase, not under_score. This includes template
+	 instance variables, so for example "hello.sources" becomes
+	 "hello.Sources".
+   - All public variables are capitalized. This includes variables scoped with
+	 the "ZMK.PublicName". Private variables are named like "ZMK.privateName"
+	 and cannot be relied for backward compatibility across releases. All
+	 public variables should be documented in the manual page corresponding to
+	 the module or template name.
+   - All custom variables are prefixed with module name, or "ZMK.".
+   - Modules are imported with the ZMK.Import function, replacing "import".
+	 Modules no longer have the "Module." prefix as it was somewhat redundant.
+   - Templates are expanded with the ZMK.Expand function, replacing "spawn".
+	 Templates no longer have the "Template." prefix as it was equally
+	 redundant.
+   - All module names are now using CamelCase naming. Some modules were
+	 renamed, for example "git-version" became "GitVersion" and "PVS-Studio"
+	 became just "PVS"
+
  * Introduction of manual pages for zmk. This is a longer effort but eventually
    all modules, templates, variables and rules will be documented.
 
@@ -9,21 +31,34 @@ Changes in 0.3 (unreleased):
    vary per target, even if the same source file is used in more than one
    program.
 
- * The Module.directories module now warns if DESTDIR is defined inside a makefile.
+ * Examples are now much more terse and to the point.
 
- * The Module.toolchain module no longer removes all object files.
+ * The Directories module now warns if DESTDIR is defined inside a makefile.
 
- * The Module.toolchain module now prefixes all non-standard variables with
+ * The Toolchain module no longer removes all object files.
+
+ * The Toolchain module now prefixes all non-standard variables with
    Toolchain, to avoid confusion and clashes with user code.
 
- * The Template.tarball.src module no longer signs the release archive
+ * The Tarball.Src module no longer signs the release archive
    from a git-versioned snapshot.
 
- * The Template.tarball module, when used on Darwin, no longer now forgets to
+ * The Tarball module, when used on Darwin, no longer now forgets to
    add the versioned top-level directory, matching the experience on Linux.
 
- * The Module.git-version module now detects some CI systems and alerts the
-   user of a possiblity of a shallow git clone.
+ * The GitVersion module now detects some CI systems and alerts the
+   user of a possibility of a shallow git clone.
+
+ * Test suite is now part of the distribution archive. All examples are tested,
+   some modules are also separately tested, to ensure coverage.
+
+ * C++ is now supported for all programs and library types.
+
+ * Objective C is now supported for all programs and library types. Certain
+   special features related to gnu-step were dropped. Those are better applied
+   in actual project makefiles where they can be precise and accurate.
+
+ * Numerous smaller bug were found and fixed.
 
 Changes in 0.2:
 
