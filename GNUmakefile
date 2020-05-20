@@ -36,3 +36,10 @@ $(NAME)_$(VERSION).tar.gz.files = GNUmakefile README.md LICENSE NEWS
 $(NAME)_$(VERSION).tar.gz.files += examples/hello/hello.c examples/hello/GNUmakefile
 $(NAME)_$(VERSION).tar.gz.files += examples/true_false/true_false.c examples/true_false/Makefile
 $(eval $(call spawn,Template.tarball.src,$(NAME)_$(VERSION).tar.gz))
+
+check:: $(addprefix check,$(subst /,-,$(subst $(srcdir),,$(wildcard $(srcdir)/examples/*))))
+check-examples-%:
+	$(MAKE) -I $(abspath $(srcdir)) --warn-undefined-variables -C $(srcdir)/examples/$* clean
+	$(MAKE) -I $(abspath $(srcdir)) --warn-undefined-variables -C $(srcdir)/examples/$* all
+	rm -rf /tmp/zmk-example-$*
+	$(MAKE) -I $(abspath $(srcdir)) --warn-undefined-variables -C $(srcdir)/examples/$* install DESTDIR=/tmp/zmk-example-$*
