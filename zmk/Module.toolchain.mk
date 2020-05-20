@@ -20,6 +20,7 @@ $(eval $(call import,Module.OS))
 CPPFLAGS ?=
 CFLAGS ?=
 CXXFLAGS ?=
+OBJCFLAGS ?=
 ARFLAGS = -cr
 TARGET_ARCH ?=
 LDLIBS ?=
