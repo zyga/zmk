@@ -58,7 +58,7 @@ all:: $1$$(exe)
 clean::
 	rm -f $1$$(exe) $1-*.o
 
-ifneq (,$$(or $$(is_gcc),$$(is_clang)))
+ifneq (,$$(or $$(Toolchain.is_gcc),$$(Toolchain.is_clang)))
 $1$$(exe): LDFLAGS += -fPIE
 endif
 $1$$(exe): $$($1.objects)

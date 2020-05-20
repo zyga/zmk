@@ -24,7 +24,7 @@ $1.objects ?= $$(patsubst %.c,$1-%.o,$$($1.sources))
 $1.soname ?= $$(error define $1.soname - the name of the .so file, including version)
 $1.version-script ?= $$(warning define $1.version-script - the name of a ELF symbol map)
 # Watcom doesn't build dynamic libraries.
-ifeq (,$(is_watcom))
+ifeq (,$(Toolchain.is_watcom))
 all:: $$($1.soname)
 clean::
 	rm -f $1 $$($1.soname)
@@ -43,11 +43,11 @@ endif
 # and use the version script to define precise version mapping.
 ifneq (,$$($1.version-script))
 # Tcc does not support version scripts.
-ifeq (,$$(is_tcc))
+ifeq (,$$(Toolchain.is_tcc))
 $$($1.soname): $$($1.version-script)
 $$($1.soname): LDFLAGS += -fvisibility=hidden
 $$($1.soname): LDFLAGS += -Wl,--version-script=$$($1.version-script)
-endif # !is_tcc
+endif # !Toolchain.is_tcc
 endif # version-script
 $$($1.soname): $$($1.objects)
 	$$(strip $$(LINK.o) -o $$@ $$(filter %.o,$$^) $$(LDLIBS))
@@ -59,5 +59,5 @@ $$(DESTDIR)$$(libdir)/$$($1.soname): $$($1.soname) | $$(DESTDIR)$$(libdir)
 	install $$^ $$@
 $$(DESTDIR)$$(libdir)/$1: | $$(DESTDIR)$$(libdir)/$$($1.soname)
 	ln -s $$(notdir $$|) $$@
-endif # !is_watcom
+endif # !Toolchain.is_watcom
 endef
