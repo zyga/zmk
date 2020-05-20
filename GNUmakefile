@@ -33,7 +33,10 @@ $(eval $(call spawn,Template.manpage,man/zmk.Template.program.5))
 
 # Build the release tarball.
 $(NAME)_$(VERSION).tar.gz.files = GNUmakefile README.md LICENSE NEWS
-$(NAME)_$(VERSION).tar.gz.files += examples/hello/hello.c examples/hello/GNUmakefile
+$(NAME)_$(VERSION).tar.gz.files += examples/hello-c/hello.c examples/hello-c/Makefile
+$(NAME)_$(VERSION).tar.gz.files += examples/hello-cpp/hello.cpp examples/hello-cpp/Makefile
+$(NAME)_$(VERSION).tar.gz.files += examples/hello-objc/hello.m examples/hello-objc/Makefile
+$(NAME)_$(VERSION).tar.gz.files += examples/libhello/hello.c examples/libhello/hello.h examples/libhello/Makefile
 $(NAME)_$(VERSION).tar.gz.files += examples/true_false/true_false.c examples/true_false/Makefile
 $(eval $(call spawn,Template.tarball.src,$(NAME)_$(VERSION).tar.gz))
 
