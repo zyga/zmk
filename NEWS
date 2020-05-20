@@ -13,6 +13,8 @@ Changes in 0.3 (unreleased):
 
  * The Module.toolchain module no longer removes all object files.
 
+ * The Module.toolchain module now prefixes all non-standard variables with
+   Toolchain, to avoid confusion and clashes with user code.
 
 Changes in 0.2:
 

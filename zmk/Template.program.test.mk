@@ -28,7 +28,7 @@ $1.objects ?= $$(patsubst %.c,$1-%.o,$$($1.sources))
 $1.install_dir ?= $$(bindir)
 $$(eval $$(call spawn,Template.program,$1))
 
-ifneq (,$$(or $$(is_gcc),$$(is_clang)))
+ifneq (,$$(or $$(Toolchain.is_gcc),$$(Toolchain.is_clang)))
 $1$$(exe): CFLAGS += -g
 endif
 
