@@ -1,0 +1,38 @@
+{
+    "problemMatcher": [
+        {
+            "owner": "make",
+            "pattern": [
+                {
+                    "regexp": "^([^:]+):(\\d+): (warning|error): (.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "severity": 3,
+                    "message": 4
+                }
+            ]
+        },
+        {
+            "owner": "make-error-fn",
+            "pattern": [
+                {
+                    "regexp": "^([^:]+):(\\d+): [*][*][*] (.*). Stop.$",
+                    "file": 1,
+                    "line": 2,
+                    "message": 3
+                }
+            ]
+        },
+        {
+            "owner": "make-rule-err",
+            "pattern": [
+                {
+                    "regexp": "^([^:]+):(\\d+): recipe for target '(.*)' failed$",
+                    "file": 1,
+                    "line": 2,
+                    "message": 3
+                }
+            ]
+        }
+    ]
+}
