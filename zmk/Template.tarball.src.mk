@@ -28,7 +28,8 @@ $1.files += configure
 endif
 ifneq ($$(VERSION),$$(VERSION_static))
 $1.files += .version-from-git
+else
+dist:: $1.asc
 endif
 $$(eval $$(call spawn,Template.tarball,$1))
-dist:: $1.asc
 endef

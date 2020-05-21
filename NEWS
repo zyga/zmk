@@ -16,6 +16,9 @@ Changes in 0.3 (unreleased):
  * The Module.toolchain module now prefixes all non-standard variables with
    Toolchain, to avoid confusion and clashes with user code.
 
+ * The Template.tarball.src module no longer signs the release archive
+   from a git-versioned snapshot.
+
 Changes in 0.2:
 
  * The Template.data module now handles nested directories better.
