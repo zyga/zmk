@@ -29,6 +29,10 @@ else
 ifneq (,$(and $(shell command -v git 2>/dev/null),$(wildcard $(srcdir)/.git)))
 # If we have the git program and the .git directory then we can also ask git.
 VERSION_git = $(shell GIT_DIR=$(srcdir)/.git git describe --abbrev=10 --tags 2>/dev/null | sed -e 's/^v//')
+# Check if we are under CI (Travis/GitHub Actions) then error if partial checkouts are used.
+ifneq ($(origin CI),undefined)
+$(if $(VERSION_git),,$(error zmk cannot compute project version from git, did the CI system use shallow clone?))
+endif
 $(if $(findstring version,$(DEBUG)),$(info DEBUG: VERSION_git=$(VERSION_git)))
 VERSION = $(or $(VERSION_git),$(VERSION_static))
 $(srcdir)/.version-from-git: $(srcdir)/.git

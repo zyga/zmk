@@ -22,6 +22,9 @@ Changes in 0.3 (unreleased):
  * The Template.tarball module, when used on Darwin, no longer now forgets to
    add the versioned top-level directory, matching the experience on Linux.
 
+ * The Module.git-version module now detects some CI systems and alerts the
+   user of a possiblity of a shallow git clone.
+
 Changes in 0.2:
 
  * The Template.data module now handles nested directories better.
