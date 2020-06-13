@@ -21,6 +21,7 @@ ZMK.makeTarget ?=
 # Tests print commands instead of invoking them
 # Tests do not mention directory changes
 # Tests warn about undefined variables
+%.log: MAKEFLAGS=Bn
 %.log: Test.mk Makefile
 	$(strip LANG=C $(MAKE) $(ZMK.makeOverrides) -I $(ZMK.root) \
 		--no-print-directory \
