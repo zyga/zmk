@@ -23,7 +23,7 @@ define Program.Template
 # Compile program objects.
 $$(eval $$(call ZMK.Expand,BuildObjects,$1))
 
-$1.Linker=$$(if $$($1.ObjectsObjC),$$(CC),$$(if $$($1.ObjectsCxx),$$(CXX),$$(CC)))
+$1.Linker ?= $$(if $$($1.ObjectsObjC),$$(CC),$$(if $$($1.ObjectsCxx),$$(CXX),$$(CC)))
 
 # Link program objects.
 ifneq (,$$($1.ObjectsObjC))

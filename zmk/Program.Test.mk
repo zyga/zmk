@@ -22,7 +22,7 @@ $(eval $(call ZMK.Import,OS))
 # It is defined as empty for non-Darwin build environments.
 xcrun ?=
 
-ifeq ($(OS),Darwin)
+ifeq ($(OS.Kernel),Darwin)
 # MacOS uses xcrun helper for some toolchain binaries.
 xcrun := xcrun
 endif
@@ -33,17 +33,17 @@ clean::
 
 Program.Test.Variables=Sources SourcesCoverage InstallDir InstallMode
 define Program.Test.Template
-$1.SourcesCoverage ?= $$(error define $1.sources_coverage - the list of source files to include in coverage analysis)
+$1.SourcesCoverage ?= $$(error define $1.SourcesCoverage - the list of source files to include in coverage analysis)
 $$(eval $$(call ZMK.Expand,Program,$1))
 
 # If we are using gcc or clang, build with debugging symbols.
-ifneq (,$$(or $$(Toolchain.IsGcc),$$(Toolchain.IsClang)))
+ifneq (,$$(or $$(Toolchain.CC.IsGcc),$$(Toolchain.CC.IsClang)))
 $1$$(exe): CFLAGS += -g
 endif
 
 # If we are not cross-compiling, run the test program on "make check"
 check:: $1$$(exe)
-ifneq ($$(Toolchain.IsCross))
+ifneq (,$$(Toolchain.CC.IsCross))
 	echo "not executing test program $$<$$(exe) when cross-compiling"
 else
 	./$$<
@@ -51,10 +51,10 @@ endif
 
 
 # If we are not cross-compiling, and stars align, support coverage anaylsis.
-ifeq (,$$(Toolchain.IsCross))
+ifeq (,$$(Toolchain.CC.IsCross))
 # Support coverage analysis when building with clang and supplied with llvm
 # or when using xcrun.
-ifneq (,$$(or $$(xcrun),$$(and $$(Toolchain.IsClang),$$(shell command -v llvm-cov 2>/dev/null),$$(shell command -v llvm-profdata 2>/dev/null))))
+ifneq (,$$(or $$(xcrun),$$(and $$(Toolchain.CC.IsClang),$$(shell command -v llvm-cov 2>/dev/null),$$(shell command -v llvm-profdata 2>/dev/null))))
 # Build test program with code coverage measurements and show them via "coverage" target.
 $1$$(exe): CFLAGS += -fcoverage-mapping -fprofile-instr-generate
 $1$$(exe): LDFLAGS += -fcoverage-mapping -fprofile-instr-generate

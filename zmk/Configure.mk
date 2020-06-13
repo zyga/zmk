@@ -164,9 +164,10 @@ done
     test -n "$$CXX" && echo "CC=$$CXX"
     test -n "$$CFLAGS" && echo "CFLAGS=$$CFLAGS"
     test -n "$$CXXFLAGS" && echo "CXXFLAGS=$$CXXFLAGS"
+    test -n "$$OBJCFLAGS" && echo "OBJCFLAGS=$$OBJCFLAGS"
     test -n "$$CPPFLAGS" && echo "CPPFLAGS=$$CPPFLAGS"
     test -n "$$LDFLAGS" && echo "LDFLAGS=$$LDFLAGS"
-    echo CONFIGURED=yes
+    echo Configure.Configured=yes
 } > GNUmakefile.configure.mk
 
 if [ ! -e Makefile ] && [ ! -e GNUmakefile ]; then
