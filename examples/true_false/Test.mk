@@ -8,4 +8,3 @@ all: all.log
 	MATCH -qF 'cc -o true true-true_false.o' <$<
 	MATCH -qF 'cc -DEXIT_CODE=EXIT_FAILURE -c -o false-true_false.o true_false.c' <$<
 	MATCH -qF 'cc -o false false-true_false.o' <$<
-	test `wc -l <$<` -eq 4

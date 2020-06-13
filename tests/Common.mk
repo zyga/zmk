@@ -24,7 +24,6 @@ ZMK.makeTarget ?=
 %.log: MAKEFLAGS=Bn
 %.log: Test.mk Makefile
 	$(strip LANG=C $(MAKE) $(ZMK.makeOverrides) -I $(ZMK.root) \
-		--no-print-directory \
 		--warn-undefined-variables \
 		--always-make \
 		--dry-run \
