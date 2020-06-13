@@ -183,4 +183,4 @@ configure:
 
 # Remove the generate makefile when dist-cleaning
 distclean:: clean
-	rm -f GNUmakefile.configure.mk
+	rm -f GNUmakefile.configure.mk configure
