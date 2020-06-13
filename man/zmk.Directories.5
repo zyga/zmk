@@ -116,6 +116,8 @@ Directory with documentation specific to the project.
 .Pp
 The default value is
 .Em $(prefix)/doc/$(NAME) .
+Since the value depends on NAME, it is only defined
+when NAME is also defined.
 .Ss infodir
 Directory with documentation in the Info format.
 .Pp
@@ -160,7 +162,6 @@ prerequisite ensures that the target directory is created.
 include z.mk
 
 $(eval $(call ZMK.Import,Directories))
-
 
 $(DESTDIR)$(bindir)/foo: foo | $(DESTDIR)$(bindir)
 	install $< $@
