@@ -27,4 +27,4 @@ ZMK.makeTarget ?=
 		--warn-undefined-variables \
 		--always-make \
 		--dry-run \
-		$(or $(ZMK.makeTarget),$(firstword $(subst -, ,$*))) >$@ 2>&1)
+		$(or $(ZMK.makeTarget),$(firstword $(subst -, ,$*))) >$@ 2>&1) || true
