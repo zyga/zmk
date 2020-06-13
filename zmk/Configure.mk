@@ -89,6 +89,7 @@ while [ "$$#" -ge 1 ]; do
             echo "  --disable-maintainer-mode"
             echo "  --disable-silent-rules"
             echo "  --program-prefix=PREFIX"
+            echo "  --disable-option-checking"
             echo
             echo "Memorised environment variables:"
             echo "  CC                      Path of the C compiler"
@@ -122,6 +123,7 @@ done
             --disable-dependency-tracking)  echo Configure.DependencyTracking=" && shift ;;
             --disable-maintainer-mode)      shift ;;
             --disable-silent-rules)         shift ;;
+            --disable-option-checking)      shift ;;
             --host=*)           echo "Configure.HostArchTriplet=$$(rhs "$$1")" && shift ;;
             --program-prefix=)              shift ;;
             --bindir=*)         echo "bindir=$$(rhs "$$1")" && shift ;;

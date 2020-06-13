@@ -1,10 +1,10 @@
 include ../Common.mk
-export DEBUG = directory
 
-.PHONY: check
+t:: install
 
-check:: check-install-rule
-.PHONY: check-install-rule
-check-install-rule:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) install DESTDIR=/tmp | MATCH -qF 'install -d /tmp/foo'
+# Test logs will contain debugging messages
+%.log: ZMK.makeOverrides += DEBUG=directory
+%.log: ZMK.makeOverrides += DESTDIR=/tmp
+
+install: install.log
+	MATCH -qF 'install -d /tmp/foo' <$<

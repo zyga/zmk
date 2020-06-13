@@ -1,42 +1,24 @@
 # This file is a part of zmk test system.
 include ../../tests/Common.mk
 
-.PHONY: check
+t:: all install uninstall clean check
 
-
-check:: check-build
-check-build:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) all | MATCH -qF ''
-
-
-check:: check-clean
-check-clean:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) clean | MATCH -qF ''
-
-
-check:: check-install
-check-install:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/local/bin'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -m 0755 hello.sh /usr/local/bin/hello.sh'
-
-
-check:: check-uninstall
-check-uninstall:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) uninstall | MATCH -qF 'rm -f /usr/local/bin/hello.sh'
-
-
-check:: check-check-with-shellcheck
-check-check-with-shellcheck: TEST_OPTS += ZMK.shellcheck=shellcheck
-check-check-with-shellcheck:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) check | MATCH -qF 'shellcheck hello.sh'
-
-check:: check-check-no-shellcheck
-check-check-no-shellcheck: TEST_OPTS += ZMK.shellcheck=
-check-check-no-shellcheck:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) check | MATCH -qF 'echo "ZMK: install shellcheck to analyze hello.sh"' 
+all: all.log
+	MATCH -qF "make[1]: Nothing to be done for 'all'." <$<
+install: install.log
+	MATCH -qF 'install -d /usr/local/bin' <$<
+	MATCH -qF 'install -m 0755 hello.sh /usr/local/bin/hello.sh' <$<
+uninstall: uninstall.log
+	MATCH -qF 'rm -f /usr/local/bin/hello.sh' <$<
+	test `wc -l <$<` -eq 1
+clean: clean.log
+	MATCH -qF "make[1]: Nothing to be done for 'clean'." <$<
+check: check-with-shellcheck check-without-shellcheck
+check-with-shellcheck.log: ZMK.makeOverrides = ZMK.shellcheck=shellcheck
+check-with-shellcheck: check-with-shellcheck.log
+	MATCH -qF 'shellcheck hello.sh' <$<
+	test `wc -l <$<` -eq 1
+check-without-shellcheck.log: ZMK.makeOverrides = ZMK.shellcheck=
+check-without-shellcheck: check-without-shellcheck.log
+	MATCH -qF 'echo "ZMK: install shellcheck to analyze hello.sh"' <$<
+	test `wc -l <$<` -eq 1

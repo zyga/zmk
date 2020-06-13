@@ -1,152 +1,122 @@
 include ../Common.mk
-export DEBUG = toolchain
 
-# Isolate from host
-check-%: TEST_OPTS += Toolchain.cc=/usr/bin/host-linux-gnu-gcc
-check-%: TEST_OPTS += Toolchain.cc.dumpmachine=host-linux-gnu
-check-%: TEST_OPTS += Toolchain.gcc.dumpmachine=build-linux-gnu
-check-%: TEST_OPTS += Toolchain.cxx=/usr/bin/host-linux-gnu-g++
-check-%: TEST_OPTS += Toolchain.cxx.dumpmachine=host-linux-gnu
-check-%: TEST_OPTS += Toolchain.g++.dumpmachine=build-linux-gnu
+t:: debug-defaults debug-dependency-tracking \
+	debug-mingw-cc-detection debug-mingw-cxx-detection \
+	debug-watcom-dos-cc-detection debug-watcom-dos-cxx-detection \
+	debug-watcom-win16-cc-detection debug-watcom-win16-cxx-detection \
+	debug-watcom-win32-cc-detection debug-watcom-win32-cxx-detection \
+	debug-gcc-configured-cross debug-g++-configured-cross \
 
-.PHONY: check
+# Test logs will contain debugging messages
+%.log: ZMK.makeOverrides += DEBUG=toolchain
 
-check:: check-defaults
-.PHONY: check-defaults
-check-defaults:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: CC=cc'
-	$(MAKE) $(TEST_OPTS) | MATCH -q 'DEBUG: CXX=[cg][+][+]'
+# Isolate from any tools installed on the host.
+# This is useful to verify with forkstat(1).
+%.log: ZMK.makeOverrides += Toolchain.cc=/usr/bin/host-linux-gnu-gcc
+%.log: ZMK.makeOverrides += Toolchain.cc.dumpmachine=host-linux-gnu
+%.log: ZMK.makeOverrides += Toolchain.gcc.dumpmachine=build-linux-gnu
+%.log: ZMK.makeOverrides += Toolchain.cxx=/usr/bin/host-linux-gnu-g++
+%.log: ZMK.makeOverrides += Toolchain.cxx.dumpmachine=host-linux-gnu
+%.log: ZMK.makeOverrides += Toolchain.g++.dumpmachine=build-linux-gnu
 
-check:: check-dependency-tracking
-.PHONY: check-dependency-tracking
-check-dependency-tracking:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) | MATCH -q 'DEBUG: Toolchain.DependencyTracking=$$'
-	$(MAKE) $(TEST_OPTS) Configure.DependencyTracking=yes | MATCH -q 'DEBUG: Toolchain.DependencyTracking=yes$$'
+debug-defaults: debug-defaults.log
+	MATCH -qF 'DEBUG: CC=cc' <$<
+	MATCH -q 'DEBUG: CXX=[cg][+][+]' <$<
 
-check:: check-mingw-cc-detection
-.PHONY: check-mingw-cc-detection
-check-mingw-cc-detection: TEST_OPTS += CC=fake-fake-mingw32-gcc
-check-mingw-cc-detection: TEST_OPTS += Toolchain.cc.dumpmachine=fake-fake-mingw32
-check-mingw-cc-detection:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: .exe suffix enabled because fake-fake-mingw32-gcc -dumpmachine mentions mingw'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: cross-compiling because gcc -dumpmachine and fake-fake-mingw32-gcc -dumpmachine differ'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: Toolchain.CC.ImageFormat=PE'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: Toolchain.CC.IsCross=yes'
+debug-dependency-tracking.log: ZMK.makeOverrides += Configure.DependencyTracking=yes
+debug-dependency-tracking: debug-dependency-tracking.log
+	MATCH -qF 'DEBUG: Toolchain.DependencyTracking=yes' <$<
 
-check:: check-mingw-cxx-detection
-.PHONY: check-mingw-cxx-detection
-check-mingw-cxx-detection: TEST_OPTS += CXX=fake-fake-mingw32-g++
-check-mingw-cxx-detection: TEST_OPTS += Toolchain.cxx.dumpmachine=fake-fake-mingw32
-check-mingw-cxx-detection:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: .exe suffix enabled because fake-fake-mingw32-g++ -dumpmachine mentions mingw'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: cross-compiling because g++ -dumpmachine and fake-fake-mingw32-g++ -dumpmachine differ'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: Toolchain.CXX.ImageFormat=PE'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: Toolchain.CXX.IsCross=yes'
+debug-mingw-cc-detection.log: ZMK.makeOverrides += CC=fake-fake-mingw32-gcc
+debug-mingw-cc-detection.log: ZMK.makeOverrides += Toolchain.cc.dumpmachine=fake-fake-mingw32
+debug-mingw-cc-detection: debug-mingw-cc-detection.log
+	MATCH -qF 'DEBUG: .exe suffix enabled because fake-fake-mingw32-gcc -dumpmachine mentions mingw' <$<
+	MATCH -qF 'DEBUG: cross-compiling because gcc -dumpmachine and fake-fake-mingw32-gcc -dumpmachine differ' <$<
+	MATCH -qF 'DEBUG: Toolchain.CC.ImageFormat=PE' <$<
+	MATCH -qF 'DEBUG: Toolchain.CC.IsCross=yes' <$<
 
-check:: check-watcom-dos-cc-detection
-.PHONY: check-watcom-dos-cc-detection
-check-watcom-dos-cc-detection: TEST_OPTS += CC=open-watcom.owcc-dos
-check-watcom-dos-cc-detection: TEST_OPTS += Toolchain.cc=/snap/open-watcom.owcc-dos
-check-watcom-dos-cc-detection:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: .exe suffix enabled because open-watcom.owcc-dos name'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: cross-compiling because open-watcom targets DOS'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: Toolchain.CC.ImageFormat=MZ'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: Toolchain.CC.IsCross=yes'
+debug-mingw-cxx-detection.log: ZMK.makeOverrides += CXX=fake-fake-mingw32-g++
+debug-mingw-cxx-detection.log: ZMK.makeOverrides += Toolchain.cxx.dumpmachine=fake-fake-mingw32
+debug-mingw-cxx-detection: debug-mingw-cxx-detection.log
+	MATCH -qF 'DEBUG: .exe suffix enabled because fake-fake-mingw32-g++ -dumpmachine mentions mingw' <$<
+	MATCH -qF 'DEBUG: cross-compiling because g++ -dumpmachine and fake-fake-mingw32-g++ -dumpmachine differ' <$<
+	MATCH -qF 'DEBUG: Toolchain.CXX.ImageFormat=PE' <$<
+	MATCH -qF 'DEBUG: Toolchain.CXX.IsCross=yes' <$<
 
-check:: check-watcom-dos-cxx-detection
-.PHONY: check-watcom-dos-cxx-detection
-check-watcom-dos-cxx-detection: TEST_OPTS += CXX=open-watcom.owcc-dos
-check-watcom-dos-cxx-detection: TEST_OPTS += Toolchain.cxx=/snap/open-watcom.owcc-dos
-check-watcom-dos-cxx-detection:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: .exe suffix enabled because open-watcom.owcc-dos name'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: cross-compiling because open-watcom targets DOS'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: Toolchain.CXX.ImageFormat=MZ'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: Toolchain.CXX.IsCross=yes'
+debug-watcom-dos-cc-detection.log: ZMK.makeOverrides += CC=open-watcom.owcc-dos
+debug-watcom-dos-cc-detection.log: ZMK.makeOverrides += Toolchain.cc=/snap/open-watcom.owcc-dos
+debug-watcom-dos-cc-detection: debug-watcom-dos-cc-detection.log
+	MATCH -qF 'DEBUG: .exe suffix enabled because open-watcom.owcc-dos name' <$<
+	MATCH -qF 'DEBUG: cross-compiling because open-watcom targets DOS' <$<
+	MATCH -qF 'DEBUG: Toolchain.CC.ImageFormat=MZ' <$<
+	MATCH -qF 'DEBUG: Toolchain.CC.IsCross=yes' <$<
 
-check:: check-watcom-win16-cc-detection
-.PHONY: check-watcom-win16-cc-detection
-check-watcom-win16-cc-detection: TEST_OPTS += CC=open-watcom.owcc-win16
-check-watcom-win16-cc-detection: TEST_OPTS += Toolchain.cc=/snap/open-watcom.owcc-win16
-check-watcom-win16-cc-detection:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: .exe suffix enabled because open-watcom.owcc-win16 name'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: cross-compiling because open-watcom targets DOS'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: Toolchain.CC.ImageFormat=MZ'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: Toolchain.CC.IsCross=yes'
+debug-watcom-dos-cxx-detection.log: ZMK.makeOverrides += CXX=open-watcom.owcc-dos
+debug-watcom-dos-cxx-detection.log: ZMK.makeOverrides += Toolchain.cxx=/snap/open-watcom.owcc-dos
+debug-watcom-dos-cxx-detection: debug-watcom-dos-cxx-detection.log
+	MATCH -qF 'DEBUG: .exe suffix enabled because open-watcom.owcc-dos name' <$<
+	MATCH -qF 'DEBUG: cross-compiling because open-watcom targets DOS' <$<
+	MATCH -qF 'DEBUG: Toolchain.CXX.ImageFormat=MZ' <$<
+	MATCH -qF 'DEBUG: Toolchain.CXX.IsCross=yes' <$<
 
-check:: check-watcom-win16-cxx-detection
-.PHONY: check-watcom-win16-cxx-detection
-check-watcom-win16-cxx-detection: TEST_OPTS += CXX=open-watcom.owcc-win16
-check-watcom-win16-cxx-detection: TEST_OPTS += Toolchain.cxx=/snap/open-watcom.owcc-win16
-check-watcom-win16-cxx-detection:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: .exe suffix enabled because open-watcom.owcc-win16 name'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: cross-compiling because open-watcom targets DOS'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: Toolchain.CXX.ImageFormat=MZ'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: Toolchain.CXX.IsCross=yes'
+debug-watcom-win16-cc-detection.log: ZMK.makeOverrides += CC=open-watcom.owcc-win16
+debug-watcom-win16-cc-detection.log: ZMK.makeOverrides += Toolchain.cc=/snap/open-watcom.owcc-win16
+debug-watcom-win16-cc-detection: debug-watcom-win16-cc-detection.log
+	MATCH -qF 'DEBUG: .exe suffix enabled because open-watcom.owcc-win16 name' <$<
+	MATCH -qF 'DEBUG: cross-compiling because open-watcom targets DOS' <$<
+	MATCH -qF 'DEBUG: Toolchain.CC.ImageFormat=MZ' <$<
+	MATCH -qF 'DEBUG: Toolchain.CC.IsCross=yes' <$<
 
-check:: check-watcom-win32-cc-detection
-.PHONY: check-watcom-win32-cc-detection
-check-watcom-win32-cc-detection: TEST_OPTS += CC=open-watcom.owcc-win32
-check-watcom-win32-cc-detection: TEST_OPTS += Toolchain.cc=/snap/open-watcom.owcc-win32
-check-watcom-win32-cc-detection:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: .exe suffix enabled because open-watcom.owcc-win32 name'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: cross-compiling because open-watcom targets Windows'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: Toolchain.CC.ImageFormat=PE'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: Toolchain.CC.IsCross=yes'
+debug-watcom-win16-cxx-detection.log: ZMK.makeOverrides += CXX=open-watcom.owcc-win16
+debug-watcom-win16-cxx-detection.log: ZMK.makeOverrides += Toolchain.cxx=/snap/open-watcom.owcc-win16
+debug-watcom-win16-cxx-detection: debug-watcom-win16-cxx-detection.log
+	MATCH -qF 'DEBUG: .exe suffix enabled because open-watcom.owcc-win16 name' <$<
+	MATCH -qF 'DEBUG: cross-compiling because open-watcom targets DOS' <$<
+	MATCH -qF 'DEBUG: Toolchain.CXX.ImageFormat=MZ' <$<
+	MATCH -qF 'DEBUG: Toolchain.CXX.IsCross=yes' <$<
 
-check:: check-watcom-win32-cxx-detection
-.PHONY: check-watcom-win32-cxx-detection
-check-watcom-win32-cxx-detection: TEST_OPTS += CXX=open-watcom.owcc-win32
-check-watcom-win32-cxx-detection: TEST_OPTS += Toolchain.cxx=/snap/open-watcom.owcc-win32
-check-watcom-win32-cxx-detection:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: .exe suffix enabled because open-watcom.owcc-win32 name'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: cross-compiling because open-watcom targets Windows'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: Toolchain.CXX.ImageFormat=PE'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: Toolchain.CXX.IsCross=yes'
+debug-watcom-win32-cc-detection.log: ZMK.makeOverrides += CC=open-watcom.owcc-win32
+debug-watcom-win32-cc-detection.log: ZMK.makeOverrides += Toolchain.cc=/snap/open-watcom.owcc-win32
+debug-watcom-win32-cc-detection: debug-watcom-win32-cc-detection.log
+	MATCH -qF 'DEBUG: .exe suffix enabled because open-watcom.owcc-win32 name' <$<
+	MATCH -qF 'DEBUG: cross-compiling because open-watcom targets Windows' <$<
+	MATCH -qF 'DEBUG: Toolchain.CC.ImageFormat=PE' <$<
+	MATCH -qF 'DEBUG: Toolchain.CC.IsCross=yes' <$<
 
+debug-watcom-win32-cxx-detection.log: ZMK.makeOverrides += CXX=open-watcom.owcc-win32
+debug-watcom-win32-cxx-detection.log: ZMK.makeOverrides += Toolchain.cxx=/snap/open-watcom.owcc-win32
+debug-watcom-win32-cxx-detection: debug-watcom-win32-cxx-detection.log
+	MATCH -qF 'DEBUG: .exe suffix enabled because open-watcom.owcc-win32 name' <$<
+	MATCH -qF 'DEBUG: cross-compiling because open-watcom targets Windows' <$<
+	MATCH -qF 'DEBUG: Toolchain.CXX.ImageFormat=PE' <$<
+	MATCH -qF 'DEBUG: Toolchain.CXX.IsCross=yes' <$<
 
-check:: check-gcc-configured-cross
-.PHONY: check-gcc-configured-cross
-check-gcc-configured-cross: TEST_OPTS += Configure.Configured=yes
-check-gcc-configured-cross: TEST_OPTS += Configure.HostArchTriplet=host-linux-gnu
-check-gcc-configured-cross: TEST_OPTS += Configure.BuildArchTriplet=build-linux-gnu
-check-gcc-configured-cross: TEST_OPTS += Toolchain.cc=/usr/bin/host-linux-gnu-gcc
-check-gcc-configured-cross: TEST_OPTS += Toolchain.cc.dumpmachine=host-linux-gnu
-check-gcc-configured-cross: TEST_OPTS += Toolchain.gcc.dumpmachine=build-linux-gnu
-check-gcc-configured-cross: TEST_OPTS += Toolchain.cxx=/usr/bin/host-linux-gnu-g++
-check-gcc-configured-cross: TEST_OPTS += Toolchain.cxx.dumpmachine=host-linux-gnu
-check-gcc-configured-cross: TEST_OPTS += Toolchain.g++.dumpmachine=build-linux-gnu
-check-gcc-configured-cross:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: gcc cross-compiler selected CC=host-linux-gnu-gcc'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: cross-compiling because gcc -dumpmachine and host-linux-gnu-gcc -dumpmachine differ'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: Toolchain.CC.IsCross=yes'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: Toolchain.CC.ImageFormat=ELF'
+debug-gcc-configured-cross.log: ZMK.makeOverrides += Configure.Configured=yes
+debug-gcc-configured-cross.log: ZMK.makeOverrides += Configure.HostArchTriplet=host-linux-gnu
+debug-gcc-configured-cross.log: ZMK.makeOverrides += Configure.BuildArchTriplet=build-linux-gnu
+debug-gcc-configured-cross.log: ZMK.makeOverrides += Toolchain.cc=/usr/bin/host-linux-gnu-gcc
+debug-gcc-configured-cross.log: ZMK.makeOverrides += Toolchain.cc.dumpmachine=host-linux-gnu
+debug-gcc-configured-cross.log: ZMK.makeOverrides += Toolchain.gcc.dumpmachine=build-linux-gnu
+debug-gcc-configured-cross.log: ZMK.makeOverrides += Toolchain.cxx=/usr/bin/host-linux-gnu-g++
+debug-gcc-configured-cross.log: ZMK.makeOverrides += Toolchain.cxx.dumpmachine=host-linux-gnu
+debug-gcc-configured-cross.log: ZMK.makeOverrides += Toolchain.g++.dumpmachine=build-linux-gnu
+debug-gcc-configured-cross: debug-gcc-configured-cross.log
+	MATCH -qF 'DEBUG: gcc cross-compiler selected CC=host-linux-gnu-gcc' <$<
+	MATCH -qF 'DEBUG: cross-compiling because gcc -dumpmachine and host-linux-gnu-gcc -dumpmachine differ' <$<
+	MATCH -qF 'DEBUG: Toolchain.CC.IsCross=yes' <$<
+	MATCH -qF 'DEBUG: Toolchain.CC.ImageFormat=ELF' <$<
 
-
-check:: check-g++-configured-cross
-.PHONY: check-g++-configured-cross
-check-g++-configured-cross: TEST_OPTS += Configure.Configured=yes
-check-g++-configured-cross: TEST_OPTS += Configure.HostArchTriplet=host-linux-gnu
-check-g++-configured-cross: TEST_OPTS += Configure.BuildArchTriplet=build-linux-gnu
-check-g++-configured-cross: TEST_OPTS += Toolchain.cc=/usr/bin/host-linux-gnu-gcc
-check-g++-configured-cross: TEST_OPTS += Toolchain.cc.dumpmachine=host-linux-gnu
-check-g++-configured-cross: TEST_OPTS += Toolchain.cxx=/usr/bin/host-linux-gnu-g++
-check-g++-configured-cross: TEST_OPTS += Toolchain.cxx.dumpmachine=host-linux-gnu
-check-g++-configured-cross: TEST_OPTS += Toolchain.gcc.dumpmachine=build-linux-gnu
-check-g++-configured-cross: TEST_OPTS += Toolchain.g++.dumpmachine=build-linux-gnu
-check-g++-configured-cross:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: g++ cross-compiler selected CXX=host-linux-gnu-g++'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: cross-compiling because g++ -dumpmachine and host-linux-gnu-g++ -dumpmachine differ'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: Toolchain.CXX.IsCross=yes'
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: Toolchain.CXX.ImageFormat=ELF'
+debug-g++-configured-cross.log: ZMK.makeOverrides += Configure.Configured=yes
+debug-g++-configured-cross.log: ZMK.makeOverrides += Configure.HostArchTriplet=host-linux-gnu
+debug-g++-configured-cross.log: ZMK.makeOverrides += Configure.BuildArchTriplet=build-linux-gnu
+debug-g++-configured-cross.log: ZMK.makeOverrides += Toolchain.cc=/usr/bin/host-linux-gnu-gcc
+debug-g++-configured-cross.log: ZMK.makeOverrides += Toolchain.cc.dumpmachine=host-linux-gnu
+debug-g++-configured-cross.log: ZMK.makeOverrides += Toolchain.cxx=/usr/bin/host-linux-gnu-g++
+debug-g++-configured-cross.log: ZMK.makeOverrides += Toolchain.cxx.dumpmachine=host-linux-gnu
+debug-g++-configured-cross.log: ZMK.makeOverrides += Toolchain.gcc.dumpmachine=build-linux-gnu
+debug-g++-configured-cross.log: ZMK.makeOverrides += Toolchain.g++.dumpmachine=build-linux-gnu
+debug-g++-configured-cross: debug-g++-configured-cross.log
+	MATCH -qF 'DEBUG: g++ cross-compiler selected CXX=host-linux-gnu-g++' <$<
+	MATCH -qF 'DEBUG: cross-compiling because g++ -dumpmachine and host-linux-gnu-g++ -dumpmachine differ' <$<
+	MATCH -qF 'DEBUG: Toolchain.CXX.IsCross=yes' <$<
+	MATCH -qF 'DEBUG: Toolchain.CXX.ImageFormat=ELF' <$<

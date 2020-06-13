@@ -1,114 +1,98 @@
 include ../Common.mk
-export DEBUG = directories
 
-.PHONY: check
+t:: install-defaults install-destdir install-prefix install-sysconfdir install-libexecdir
 
-check:: check-destdir
-.PHONY: check-destdir
-check-destdir: TEST_OPTS += DESTDIR=/foo
-check-destdir:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: DESTDIR=/foo'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /foo/usr/local'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /foo/usr/local/bin'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /foo/usr/local/sbin'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /foo/usr/local/libexec'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /foo/usr/local/share'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /foo/usr/local/etc'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /foo/usr/local/com'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /foo/usr/local/var'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /foo/usr/local/var/run'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /foo/usr/local/include'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /foo/usr/local/share/doc/test'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /foo/usr/local/shareinfo'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /foo/usr/local/lib'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /foo/usr/local/share/locale'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /foo/usr/local/share/man'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /foo/usr/local/share/man/man1'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /foo/usr/local/share/man/man2'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /foo/usr/local/share/man/man3'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /foo/usr/local/share/man/man4'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /foo/usr/local/share/man/man5'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /foo/usr/local/share/man/man6'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /foo/usr/local/share/man/man7'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /foo/usr/local/share/man/man8'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /foo/usr/local/share/man/man9'
+# Test logs will contain debugging messages
+%.log: ZMK.makeOverrides += DEBUG=directories
 
-# those are the defaults
-check:: check-defaults
-.PHONY: check-defaults
-check-defaults:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: prefix=/usr/local'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/local'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/local/bin'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/local/sbin'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/local/libexec'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/local/share'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/local/etc'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/local/com'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/local/var'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/local/var/run'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/local/include'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/local/share/doc/test'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/local/shareinfo'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/local/lib'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/local/share/locale'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/local/share/man'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/local/share/man/man1'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/local/share/man/man2'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/local/share/man/man3'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/local/share/man/man4'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/local/share/man/man5'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/local/share/man/man6'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/local/share/man/man7'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/local/share/man/man8'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/local/share/man/man9'
+install-defaults: install-defaults.log
+	MATCH -qF 'DEBUG: prefix=/usr/local' <$<
+	MATCH -qF 'install -d /usr/local' <$<
+	MATCH -qF 'install -d /usr/local/bin' <$<
+	MATCH -qF 'install -d /usr/local/sbin' <$<
+	MATCH -qF 'install -d /usr/local/libexec' <$<
+	MATCH -qF 'install -d /usr/local/share' <$<
+	MATCH -qF 'install -d /usr/local/etc' <$<
+	MATCH -qF 'install -d /usr/local/com' <$<
+	MATCH -qF 'install -d /usr/local/var' <$<
+	MATCH -qF 'install -d /usr/local/var/run' <$<
+	MATCH -qF 'install -d /usr/local/include' <$<
+	MATCH -qF 'install -d /usr/local/share/doc/test' <$<
+	MATCH -qF 'install -d /usr/local/shareinfo' <$<
+	MATCH -qF 'install -d /usr/local/lib' <$<
+	MATCH -qF 'install -d /usr/local/share/locale' <$<
+	MATCH -qF 'install -d /usr/local/share/man' <$<
+	MATCH -qF 'install -d /usr/local/share/man/man1' <$<
+	MATCH -qF 'install -d /usr/local/share/man/man2' <$<
+	MATCH -qF 'install -d /usr/local/share/man/man3' <$<
+	MATCH -qF 'install -d /usr/local/share/man/man4' <$<
+	MATCH -qF 'install -d /usr/local/share/man/man5' <$<
+	MATCH -qF 'install -d /usr/local/share/man/man6' <$<
+	MATCH -qF 'install -d /usr/local/share/man/man7' <$<
+	MATCH -qF 'install -d /usr/local/share/man/man8' <$<
+	MATCH -qF 'install -d /usr/local/share/man/man9' <$<
 
-# prefix is respected
-check:: check-prefix
-.PHONY: check-prefix
-check-prefix: TEST_OPTS += prefix=/usr
-check-prefix:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) | MATCH -qF 'DEBUG: prefix=/usr'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/bin'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/sbin'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/libexec'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/share'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/etc'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/com'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/var'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/var/run'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/include'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/share/doc/test'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/shareinfo'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/lib'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/share/locale'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/share/man'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/share/man/man1'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/share/man/man2'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/share/man/man3'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/share/man/man4'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/share/man/man5'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/share/man/man6'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/share/man/man7'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/share/man/man8'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/share/man/man9'
+install-destdir.log: ZMK.makeOverrides += DESTDIR=/foo
+install-destdir: install-destdir.log
+	MATCH -qF 'DEBUG: prefix=/usr/local' <$<
+	MATCH -qF 'DEBUG: DESTDIR=/foo' <$<
+	MATCH -qF 'install -d /foo/usr/local' <$<
+	MATCH -qF 'install -d /foo/usr/local/bin' <$<
+	MATCH -qF 'install -d /foo/usr/local/sbin' <$<
+	MATCH -qF 'install -d /foo/usr/local/libexec' <$<
+	MATCH -qF 'install -d /foo/usr/local/share' <$<
+	MATCH -qF 'install -d /foo/usr/local/etc' <$<
+	MATCH -qF 'install -d /foo/usr/local/com' <$<
+	MATCH -qF 'install -d /foo/usr/local/var' <$<
+	MATCH -qF 'install -d /foo/usr/local/var/run' <$<
+	MATCH -qF 'install -d /foo/usr/local/include' <$<
+	MATCH -qF 'install -d /foo/usr/local/share/doc/test' <$<
+	MATCH -qF 'install -d /foo/usr/local/shareinfo' <$<
+	MATCH -qF 'install -d /foo/usr/local/lib' <$<
+	MATCH -qF 'install -d /foo/usr/local/share/locale' <$<
+	MATCH -qF 'install -d /foo/usr/local/share/man' <$<
+	MATCH -qF 'install -d /foo/usr/local/share/man/man1' <$<
+	MATCH -qF 'install -d /foo/usr/local/share/man/man2' <$<
+	MATCH -qF 'install -d /foo/usr/local/share/man/man3' <$<
+	MATCH -qF 'install -d /foo/usr/local/share/man/man4' <$<
+	MATCH -qF 'install -d /foo/usr/local/share/man/man5' <$<
+	MATCH -qF 'install -d /foo/usr/local/share/man/man6' <$<
+	MATCH -qF 'install -d /foo/usr/local/share/man/man7' <$<
+	MATCH -qF 'install -d /foo/usr/local/share/man/man8' <$<
+	MATCH -qF 'install -d /foo/usr/local/share/man/man9' <$<
 
-# sysconfdir can be customized
-check:: check-sysconfdir
-.PHONY: check-sysconfdir
-check-sysconfdir: TEST_OPTS += prefix=/usr sysconfdir=/etc
-check-sysconfdir:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF "install -d /etc"
+install-prefix.log: ZMK.makeOverrides += prefix=/usr
+install-prefix: install-prefix.log
+	MATCH -qF 'DEBUG: prefix=/usr' <$<
+	MATCH -qF 'install -d /usr' <$<
+	MATCH -qF 'install -d /usr/bin' <$<
+	MATCH -qF 'install -d /usr/sbin' <$<
+	MATCH -qF 'install -d /usr/libexec' <$<
+	MATCH -qF 'install -d /usr/share' <$<
+	MATCH -qF 'install -d /usr/etc' <$<
+	MATCH -qF 'install -d /usr/com' <$<
+	MATCH -qF 'install -d /usr/var' <$<
+	MATCH -qF 'install -d /usr/var/run' <$<
+	MATCH -qF 'install -d /usr/include' <$<
+	MATCH -qF 'install -d /usr/share/doc/test' <$<
+	MATCH -qF 'install -d /usr/shareinfo' <$<
+	MATCH -qF 'install -d /usr/lib' <$<
+	MATCH -qF 'install -d /usr/share/locale' <$<
+	MATCH -qF 'install -d /usr/share/man' <$<
+	MATCH -qF 'install -d /usr/share/man/man1' <$<
+	MATCH -qF 'install -d /usr/share/man/man2' <$<
+	MATCH -qF 'install -d /usr/share/man/man3' <$<
+	MATCH -qF 'install -d /usr/share/man/man4' <$<
+	MATCH -qF 'install -d /usr/share/man/man5' <$<
+	MATCH -qF 'install -d /usr/share/man/man6' <$<
+	MATCH -qF 'install -d /usr/share/man/man7' <$<
+	MATCH -qF 'install -d /usr/share/man/man8' <$<
+	MATCH -qF 'install -d /usr/share/man/man9' <$<
 
-# libexecdir can be customized
-check:: check-libexecdir
-.PHONY: check-libexecdir
-check-libexecdir: TEST_OPTS += prefix=/usr libexecdir=/usr/lib/NAME
-check-libexecdir:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF "install -d /usr/lib/NAME"
+install-sysconfdir.log: ZMK.makeOverrides += sysconfdir=/etc
+install-sysconfdir: install-sysconfdir.log
+	MATCH -qF "install -d /etc" <$<
+
+install-libexecdir.log: ZMK.makeOverrides += prefix=/usr libexecdir=/usr/lib/NAME
+install-libexecdir: install-libexecdir.log
+	MATCH -qF "install -d /usr/lib/NAME" <$<

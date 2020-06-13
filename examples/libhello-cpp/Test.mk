@@ -1,101 +1,98 @@
 # This file is a part of zmk test system.
 include ../../tests/Common.mk
 
-.PHONY: check
+t:: all install uninstall clean
 
-# MacOS uses c++, GNU uses g++ by default
-check-build-%: TEST_OPTS += CXX=c++
+# MacOS uses c++, GNU uses g++ by default.
+%.log: ZMK.makeOverrides += CXX=c++
 
-check:: check-install-h
-check-install-h:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/local/include'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -m 0644 hello.h /usr/local/include/hello.h'
+# Pick one for test consistency.
+# Test has three variants, for Linux, MacOS and the rest.
+%-other.log: ZMK.makeOverrides += Toolchain.CXX.ImageFormat=Irrelevant
+%-linux.log: ZMK.makeOverrides += Toolchain.CXX.ImageFormat=ELF
+%-macos.log: ZMK.makeOverrides += Toolchain.CXX.ImageFormat=Mach-O
 
-check:: check-uninstall-h
-check-uninstall-h:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) uninstall | MATCH -qF 'rm -f /usr/local/include/hello.h'
+all: all-other all-linux all-macos
+install: install-other install-linux install-macos
+uninstall: uninstall-other uninstall-linux uninstall-macos
+clean: clean-other clean-linux clean-macos
 
+all-other: all-other.log
+	MATCH -qF 'c++ -c -o libhello.a-hello.o hello.cpp' <$<
+	MATCH -qF 'ar -cr libhello.a libhello.a-hello.o' <$<
+	test `wc -l <$<` -eq 2
+install-other: install-other.log
+	MATCH -qF 'install -d /usr/local/include' <$<
+	MATCH -qF 'install -m 0644 hello.h /usr/local/include/hello.h' <$<
+	MATCH -qF 'install -d /usr/local/lib' <$<
+	MATCH -qF 'install -m 0644 libhello.a /usr/local/lib/libhello.a' <$<
+	test `wc -l <$<` -eq `expr 4 + 2`
+uninstall-other: uninstall-other.log
+	MATCH -qF 'rm -f /usr/local/include/hello.h' <$<
+	MATCH -qF 'rm -f /usr/local/lib/libhello.a' <$<
+	test `wc -l <$<` -eq 2
+clean-other: clean-other.log
+	MATCH -qF 'rm -f libhello.a' <$<
+	MATCH -qF 'rm -f libhello.a-hello.o' <$<
+	test `wc -l <$<` -eq 2
 
-check-%-a: TEST_OPTS += Toolchain.CXX.ImageFormat=Irrelevant
-check-%-so: TEST_OPTS += Toolchain.CXX.ImageFormat=ELF
-check-%-dylib: TEST_OPTS += Toolchain.CXX.ImageFormat=Mach-O
+all-linux: all-linux.log
+	MATCH -qF 'c++ -c -o libhello.a-hello.o hello.cpp' <$<
+	MATCH -qF 'ar -cr libhello.a libhello.a-hello.o' <$<
+	MATCH -qF 'c++ -fpic -c -o libhello.so.1-hello.o hello.cpp' <$<
+	MATCH -qF 'c++ -fpic -shared -Wl,-soname=libhello.so.1 -o libhello.so.1 libhello.so.1-hello.o' <$<
+	MATCH -qF 'ln -s libhello.so.1 libhello.so' <$<
+	test `wc -l <$<` -eq 5
+install-linux: install-linux.log
+	MATCH -qF 'install -d /usr/local/include' <$<
+	MATCH -qF 'install -m 0644 hello.h /usr/local/include/hello.h' <$<
+	MATCH -qF 'install -d /usr/local/lib' <$<
+	MATCH -qF 'install -m 0644 libhello.a /usr/local/lib/libhello.a' <$<
+	MATCH -qF 'install -m 0644 libhello.so.1 /usr/local/lib/libhello.so.1' <$<
+	MATCH -qF 'ln -s libhello.so.1 /usr/local/lib/libhello.so' <$<
+	# 5 for the regular build -1 for local symlink *not* built here, 6 for install
+	test `wc -l <$<` -eq `expr 5 - 1 + 6`
+uninstall-linux: uninstall-linux.log
+	MATCH -qF 'rm -f /usr/local/include/hello.h' <$<
+	MATCH -qF 'rm -f /usr/local/lib/libhello.a' <$<
+	MATCH -qF 'rm -f /usr/local/lib/libhello.so.1' <$<
+	MATCH -qF 'rm -f /usr/local/lib/libhello.so' <$<
+	test `wc -l <$<` -eq 4
+clean-linux: clean-linux.log
+	MATCH -qF 'rm -f libhello.a' <$<
+	MATCH -qF 'rm -f libhello.a-hello.o' <$<
+	MATCH -qF 'rm -f libhello.so.1-hello.o' <$<
+	MATCH -qF 'rm -f libhello.so.1' <$<
+	MATCH -qF 'rm -f libhello.so' <$<
+	test `wc -l <$<` -eq 5
 
-
-check:: check-build-a
-check-build-a:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) all | MATCH -qF 'c++ -c -o libhello.a-hello.o hello.cpp'
-	$(MAKE) $(TEST_OPTS) all | MATCH -qF 'ar -cr libhello.a libhello.a-hello.o'
-
-check:: check-clean-a
-check-clean-a:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) clean | MATCH -qF 'rm -f libhello.a'
-	$(MAKE) $(TEST_OPTS) clean | MATCH -qF 'rm -f libhello.a-hello.o'
-
-check:: check-install-a
-check-install-a:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -d /usr/local/lib'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -m 0644 libhello.a /usr/local/lib/libhello.a'
-
-check:: check-uninstall-a
-check-uninstall-a:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) uninstall | MATCH -qF 'rm -f /usr/local/lib/libhello.a'
-
-
-check:: check-build-so
-check-build-so:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) all | MATCH -qF 'c++ -fpic -c -o libhello.so.1-hello.o hello.cpp'
-	$(MAKE) $(TEST_OPTS) all | MATCH -qF 'c++ -fpic -shared -Wl,-soname=libhello.so.1 -o libhello.so.1 libhello.so.1-hello.o'
-	$(MAKE) $(TEST_OPTS) all | MATCH -qF 'ln -s libhello.so.1 libhello.so'
-
-check:: check-clean-so
-check-clean-so:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) clean | MATCH -qF 'rm -f libhello.so.1-hello.o'
-	$(MAKE) $(TEST_OPTS) clean | MATCH -qF 'rm -f libhello.so.1'
-	$(MAKE) $(TEST_OPTS) clean | MATCH -qF 'rm -f libhello.so'
-
-check:: check-install-so
-check-install-so:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -m 0644 libhello.so.1 /usr/local/lib/libhello.so.1'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'ln -s libhello.so.1 /usr/local/lib/libhello.so'
-
-check:: check-uninstall-so
-check-uninstall-so:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) uninstall | MATCH -qF 'rm -f /usr/local/lib/libhello.so.1'
-	$(MAKE) $(TEST_OPTS) uninstall | MATCH -qF 'rm -f /usr/local/lib/libhello.so'
-
-
-check:: check-build-dylib
-check-build-dylib:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) all | MATCH -qF 'c++ -fpic -c -o libhello.1.dylib-hello.o hello.cpp'
-	$(MAKE) $(TEST_OPTS) all | MATCH -qF 'c++ -fpic -dynamiclib -compatibility_version 1.0 -current_version 1.0 -o libhello.1.dylib libhello.1.dylib-hello.o'
-	$(MAKE) $(TEST_OPTS) all | MATCH -qF 'ln -s libhello.1.dylib libhello.dylib'
-
-check:: check-clean-dylib
-check-clean-dylib:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) clean | MATCH -qF 'rm -f libhello.1.dylib-hello.o'
-	$(MAKE) $(TEST_OPTS) clean | MATCH -qF 'rm -f libhello.1.dylib'
-	$(MAKE) $(TEST_OPTS) clean | MATCH -qF 'rm -f libhello.dylib'
-
-check:: check-install-dylib
-check-install-dylib:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'install -m 0644 libhello.1.dylib /usr/local/lib/libhello.1.dylib'
-	$(MAKE) $(TEST_OPTS) install | MATCH -qF 'ln -s libhello.1.dylib /usr/local/lib/libhello.dylib'
-
-check:: check-uninstall-dylib
-check-uninstall-dylib:
-	$(TEST_HEADER)
-	$(MAKE) $(TEST_OPTS) uninstall | MATCH -qF 'rm -f /usr/local/lib/libhello.1.dylib'
-	$(MAKE) $(TEST_OPTS) uninstall | MATCH -qF 'rm -f /usr/local/lib/libhello.dylib'
+all-macos: all-macos.log
+	MATCH -qF 'c++ -c -o libhello.a-hello.o hello.cpp' <$<
+	MATCH -qF 'ar -cr libhello.a libhello.a-hello.o' <$<
+	MATCH -qF 'c++ -fpic -c -o libhello.1.dylib-hello.o hello.cpp' <$<
+	MATCH -qF 'c++ -fpic -dynamiclib -compatibility_version 1.0 -current_version 1.0 -o libhello.1.dylib libhello.1.dylib-hello.o' <$<
+	MATCH -qF 'ln -s libhello.1.dylib libhello.dylib' <$<
+	test `wc -l <$<` -eq 5
+install-macos: install-macos.log
+	MATCH -qF 'install -d /usr/local/include' <$<
+	MATCH -qF 'install -m 0644 hello.h /usr/local/include/hello.h' <$<
+	MATCH -qF 'install -d /usr/local/lib' <$<
+	MATCH -qF 'install -m 0644 libhello.a /usr/local/lib/libhello.a' <$<
+	MATCH -qF 'install -d /usr/local/lib' <$<
+	MATCH -qF 'install -m 0644 libhello.1.dylib /usr/local/lib/libhello.1.dylib' <$<
+	MATCH -qF 'ln -s libhello.1.dylib /usr/local/lib/libhello.dylib' <$<
+	# 5 for the regular build -1 for local symlink *not* built here, 6 for install
+	test `wc -l <$<` -eq `expr 5 - 1 + 6`
+uninstall-macos: uninstall-macos.log
+	MATCH -qF 'rm -f /usr/local/include/hello.h' <$<
+	MATCH -qF 'rm -f /usr/local/lib/libhello.a' <$<
+	MATCH -qF 'rm -f /usr/local/lib/libhello.1.dylib' <$<
+	MATCH -qF 'rm -f /usr/local/lib/libhello.dylib' <$<
+	test `wc -l <$<` -eq 4
+clean-macos: clean-macos.log
+	MATCH -qF 'rm -f libhello.a' <$<
+	MATCH -qF 'rm -f libhello.a-hello.o' <$<
+	MATCH -qF 'rm -f libhello.1.dylib-hello.o' <$<
+	MATCH -qF 'rm -f libhello.1.dylib' <$<
+	MATCH -qF 'rm -f libhello.dylib' <$<
+	test `wc -l <$<` -eq 5

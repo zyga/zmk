@@ -34,8 +34,8 @@ ZMK.Path ?= $(dir $(ZMK.z.mk))
 
 # Modules and templates present in the package
 ZMK.modules = \
-	BuildObjects \
 	Buildable \
+	BuildObjects \
 	Configure \
 	Coverity \
 	Directories \
@@ -48,10 +48,10 @@ ZMK.modules = \
 	Library.So \
 	ManPage \
 	OS \
-	PVS \
 	Program \
-	Program.Script \
 	Program.Test \
+	PVS \
+	Script \
 	Symlink \
 	Tarball \
 	Tarball.Src \

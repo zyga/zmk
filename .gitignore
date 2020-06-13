@@ -10,3 +10,6 @@ configure
 
 # Editor swap files
 *.swp
+
+# Test log files
+*.log
