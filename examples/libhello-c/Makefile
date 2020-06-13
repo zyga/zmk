@@ -1,4 +1,3 @@
-NAME = hello                                            # Define name of the project
 include z.mk                                            # Include the zmk library
 
 $(eval $(call ZMK.Expand,Header,hello.h))               # Expand template for header files with the name hello.h

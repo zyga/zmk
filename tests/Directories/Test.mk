@@ -1,6 +1,7 @@
 include ../Common.mk
 
-t:: install-defaults install-destdir install-prefix install-sysconfdir install-libexecdir
+t:: install-defaults install-name-defined install-destdir install-prefix \
+	install-sysconfdir install-libexecdir
 
 # Test logs will contain debugging messages
 %.log: ZMK.makeOverrides += DEBUG=directories
@@ -17,7 +18,6 @@ install-defaults: install-defaults.log
 	MATCH -qF 'install -d /usr/local/var' <$<
 	MATCH -qF 'install -d /usr/local/var/run' <$<
 	MATCH -qF 'install -d /usr/local/include' <$<
-	MATCH -qF 'install -d /usr/local/share/doc/test' <$<
 	MATCH -qF 'install -d /usr/local/shareinfo' <$<
 	MATCH -qF 'install -d /usr/local/lib' <$<
 	MATCH -qF 'install -d /usr/local/share/locale' <$<
@@ -31,6 +31,10 @@ install-defaults: install-defaults.log
 	MATCH -qF 'install -d /usr/local/share/man/man7' <$<
 	MATCH -qF 'install -d /usr/local/share/man/man8' <$<
 	MATCH -qF 'install -d /usr/local/share/man/man9' <$<
+
+install-name-defined.log: ZMK.makeOverrides += NAME=test
+install-name-defined: install-name-defined.log
+	MATCH -qF 'install -d /usr/local/share/doc/test' <$<
 
 install-destdir.log: ZMK.makeOverrides += DESTDIR=/foo
 install-destdir: install-destdir.log
@@ -46,7 +50,6 @@ install-destdir: install-destdir.log
 	MATCH -qF 'install -d /foo/usr/local/var' <$<
 	MATCH -qF 'install -d /foo/usr/local/var/run' <$<
 	MATCH -qF 'install -d /foo/usr/local/include' <$<
-	MATCH -qF 'install -d /foo/usr/local/share/doc/test' <$<
 	MATCH -qF 'install -d /foo/usr/local/shareinfo' <$<
 	MATCH -qF 'install -d /foo/usr/local/lib' <$<
 	MATCH -qF 'install -d /foo/usr/local/share/locale' <$<
@@ -74,7 +77,6 @@ install-prefix: install-prefix.log
 	MATCH -qF 'install -d /usr/var' <$<
 	MATCH -qF 'install -d /usr/var/run' <$<
 	MATCH -qF 'install -d /usr/include' <$<
-	MATCH -qF 'install -d /usr/share/doc/test' <$<
 	MATCH -qF 'install -d /usr/shareinfo' <$<
 	MATCH -qF 'install -d /usr/lib' <$<
 	MATCH -qF 'install -d /usr/share/locale' <$<

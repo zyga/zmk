@@ -47,7 +47,6 @@ sharedstatedir ?= $(prefix)/com
 localstatedir ?= $(prefix)/var
 runstatedir ?= $(localstatedir)/run
 includedir ?= $(prefix)/include
-docdir ?= $(datarootdir)/doc/$(NAME)
 infodir ?= $(datarootdir)info
 libdir ?= $(exec_prefix)/lib
 localedir ?= $(datarootdir)/locale
@@ -71,6 +70,13 @@ Directories.POSIX = \
 	$(docdir) $(infodir) $(libdir) $(localedir) $(mandir) $(man1dir) \
 	$(man2dir) $(man3dir) $(man4dir) $(man5dir) $(man6dir) $(man7dir) \
 	$(man8dir) $(man9dir)
+
+# If NAME is defined, also define docdir.
+ifneq ($(value NAME),$$(error define NAME - the name of the project))
+docdir ?= $(datarootdir)/doc/$(NAME)
+Directories.POSIX += $(docdir)
+endif
+
 $(if $(Directories.debug),$(info DEBUG: Directories.POSIX=$(Directories.POSIX)))
 
 # List of directories that need to be created and have corresponding rules.

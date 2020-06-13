@@ -72,7 +72,7 @@ ZMK.manPages = \
 # Files belonging to ZMK that need to be distributed in third-party release tarballs.
 ZMK.DistFiles = z.mk $(addprefix zmk/,$(foreach m,$(ZMK.modules),$m.mk) pvs-filter.awk)
 
-ifneq ($(NAME),zmk)
+ifneq ($(value NAME),zmk)
 ifneq ($(ZMK.Path),$(srcdir)/)
 $(srcdir)/zmk:
 	install -d $@

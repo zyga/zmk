@@ -1,4 +1,3 @@
-NAME = hello                                            # Define name of the project
 include z.mk                                            # Include the zmk library
 
 hello.Sources = hello.m                                 # Define the source files to compile into hello

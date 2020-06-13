@@ -1,4 +1,3 @@
-NAME = true_false                                       # Define name of the project
 include z.mk                                            # Include the zmk library
 
 true.Sources = true_false.c                             # Define the source files to compile into true
