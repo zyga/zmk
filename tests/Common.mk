@@ -22,7 +22,7 @@ ZMK.makeTarget ?=
 # Tests do not mention directory changes
 # Tests warn about undefined variables
 %.log: MAKEFLAGS=Bn
-%.log: Test.mk Makefile
+%.log: Test.mk Makefile $(ZMK.root)/tests/Common.mk $(ZMK.root)/z.mk $(wildcard $(ZMK.root)/zmk/*.mk)
 	$(strip LANG=C $(MAKE) $(ZMK.makeOverrides) -I $(ZMK.root) \
 		--warn-undefined-variables \
 		--always-make \
