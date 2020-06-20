@@ -72,6 +72,7 @@ ZMK.manPages = \
 # Files belonging to ZMK that need to be distributed in third-party release tarballs.
 ZMK.DistFiles = z.mk $(addprefix zmk/,$(foreach m,$(ZMK.modules),$m.mk) pvs-filter.awk)
 
+# Unless we are building zmk itself, define rules for bundling essential parts of the build system.
 ifneq ($(value NAME),zmk)
 ifneq ($(ZMK.Path),$(srcdir)/)
 $(srcdir)/zmk:
@@ -96,7 +97,7 @@ endif
 # Meta-targets that don't have specific specific commands
 .PHONY: $(sort all clean coverage fmt static-check check install uninstall dist distclean)
 
-# Run static checkers when checking
+# Run static checks when checking
 check:: static-check
 
 # Default goal is to build everything, regardless of declaration order
@@ -126,7 +127,6 @@ include $$(ZMK.Path)zmk/$1.mk
 ZMK.ImportedModules += $1
 endif
 endef
-
 
 ZMK.variablesShown =
 define ZMK.showVariable

@@ -1,12 +1,12 @@
-# Tests are groupped under the "t" target
+# Tests are grouped under the "t" target
 .PHONY: t
 t::
 
-# Find the root of the source tree
-ZMK.root := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/..)
+# Find the path of the zmk installation
+ZMK.Path := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/..)
 
 # Put extra test tools on PATH
-export PATH := $(ZMK.root)/tests/bin:$(PATH)
+export PATH := $(ZMK.Path)/tests/bin:$(PATH)
 
 # Make overrides can be used in order to test specific behavior
 ZMK.makeOverrides ?=
@@ -22,9 +22,12 @@ ZMK.makeTarget ?=
 # Tests do not mention directory changes
 # Tests warn about undefined variables
 %.log: MAKEFLAGS=Bn
-%.log: Test.mk Makefile $(ZMK.root)/tests/Common.mk $(ZMK.root)/z.mk $(wildcard $(ZMK.root)/zmk/*.mk)
-	$(strip LANG=C $(MAKE) $(ZMK.makeOverrides) -I $(ZMK.root) \
+%.log: Test.mk Makefile $(ZMK.Path)/tests/Common.mk $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
+	$(strip LANG=C $(MAKE) $(ZMK.makeOverrides) -I $(ZMK.Path) \
 		--warn-undefined-variables \
 		--always-make \
 		--dry-run \
 		$(or $(ZMK.makeTarget),$(firstword $(subst -, ,$*))) >$@ 2>&1) || true
+
+c::
+	rm -f *.log
