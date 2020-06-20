@@ -1,3 +1,4 @@
+#!/usr/bin/make -f
 include ../Common.mk
 
 t:: debug-linux debug-freebsd debug-openbsd debug-netbsd \

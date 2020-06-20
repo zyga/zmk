@@ -50,7 +50,7 @@ else
 endif
 
 
-# If we are not cross-compiling, and stars align, support coverage anaylsis.
+# If we are not cross-compiling, and stars align, support coverage analysis.
 ifeq (,$$(Toolchain.CC.IsCross))
 # Support coverage analysis when building with clang and supplied with llvm
 # or when using xcrun.
@@ -73,6 +73,6 @@ coverage-todo:: $1.profdata
 .PHONY: coverage-report
 coverage-report:: $1.profdata
 	$$(strip $$(xcrun) llvm-cov report ./$1$$(exe) -instr-profile=$$< $$(addprefix $$(srcdir)/,$$($1.sources_coverage)))
-endif # can use llvv-cov
+endif # can use llvm-cov
 endif # not-cross-compiling
 endef

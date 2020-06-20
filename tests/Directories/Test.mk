@@ -1,3 +1,4 @@
+#!/usr/bin/make -f
 include ../Common.mk
 
 t:: install-defaults install-name-defined install-destdir install-prefix \

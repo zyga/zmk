@@ -1,3 +1,4 @@
+#!/usr/bin/make -f
 include ../Common.mk
 
 t:: install

@@ -1,3 +1,4 @@
+#!/usr/bin/make -f
 include ../Common.mk
 
 t:: debug-defaults debug-dependency-tracking \

@@ -26,7 +26,7 @@ else
 OS.Kernel := $(shell uname -s)
 endif
 
-# Format of the executables used by the OS.
+# Format of the executable programs used by the OS.
 # In general all systems fall into one of the three
 # possible formats: ELF, Mach-O, PE and MZ (though unlikely).
 # Many UNIX systems, apart from Darwin, use elf.

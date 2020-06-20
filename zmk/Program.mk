@@ -28,7 +28,7 @@ $1.Linker ?= $$(if $$($1.ObjectsObjC),$$(CC),$$(if $$($1.ObjectsCxx),$$(CXX),$$(
 # Link program objects.
 ifneq (,$$($1.ObjectsObjC))
 $1$$(exe): LDLIBS += -lobjc
-endif # no objc objects
+endif # no objective C objects
 $1$$(exe): $$($1.Objects)
 	$$(strip $$(if $$($1.ObjectsObjC),$$(LINK.m),$$(if $$($1.ObjectsCxx),$$(LINK.cc),$$(LINK.o))) -o $$@ $$^ $$(LDLIBS))
 
