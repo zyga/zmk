@@ -78,14 +78,33 @@ $(eval $(call ZMK.Import,Toolchain.Clang))
 $(eval $(call ZMK.Import,Toolchain.OpenWatcom))
 $(eval $(call ZMK.Import,Toolchain.Tcc))
 
+# Is either the C or C++ compiler a cross compiler?
+Toolchain.IsCross ?= $(or $(Toolchain.CC.IsCross),$(Toolchain.CXX.IsCross))
+
+# Is the image format between C and C++ uniform?
+ifeq ($(Toolchain.CC.ImageFormat),$(Toolchain.CXX.ImageFormat))
+Toolchain.ImageFormat = $(Toolchain.CC.ImageFormat)
+else
+Toolchain.ImageFormat = Mixed
+endif
+
+# If dependency tracking is enabled, pass extra options to the compiler, to
+# generate dependency data at the same time as compiling object files.
+ifneq (,$(and $(Toolchain.DependencyTracking),$(or $(Toolchain.IsGcc),$(Toolchain.IsClang))))
+CPPFLAGS += -MMD
+$(if $(Toolchain.debug),$(info DEBUG: compiling object files will generate make dependency information))
+endif
+
 # Show the conclusive values.
 $(if $(Toolchain.debug),$(info DEBUG: Toolchain.cc=$(Toolchain.cc)))
 $(if $(Toolchain.debug),$(info DEBUG: Toolchain.cxx=$(Toolchain.cxx)))
+$(if $(Toolchain.debug),$(info DEBUG: Toolchain.ImageFormat=$(Toolchain.ImageFormat)))
+$(if $(Toolchain.debug),$(info DEBUG: Toolchain.IsCross=$(Toolchain.IsCross)))
+$(if $(Toolchain.debug),$(info DEBUG: Toolchain.DependencyTracking=$(Toolchain.DependencyTracking)))
 $(if $(Toolchain.debug),$(info DEBUG: Toolchain.CC.ImageFormat=$(Toolchain.CC.ImageFormat)))
 $(if $(Toolchain.debug),$(info DEBUG: Toolchain.CC.IsCross=$(Toolchain.CC.IsCross)))
 $(if $(Toolchain.debug),$(info DEBUG: Toolchain.CXX.ImageFormat=$(Toolchain.CXX.ImageFormat)))
 $(if $(Toolchain.debug),$(info DEBUG: Toolchain.CXX.IsCross=$(Toolchain.CXX.IsCross)))
-$(if $(Toolchain.debug),$(info DEBUG: Toolchain.DependencyTracking=$(Toolchain.DependencyTracking)))
 
 $(if $(Toolchain.debug),$(info DEBUG: CC=$(CC)))
 $(if $(Toolchain.debug),$(info DEBUG: CXX=$(CXX)))

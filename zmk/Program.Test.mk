@@ -37,13 +37,13 @@ $1.SourcesCoverage ?= $$(error define $1.SourcesCoverage - the list of source fi
 $$(eval $$(call ZMK.Expand,Program,$1))
 
 # If we are using gcc or clang, build with debugging symbols.
-ifneq (,$$(or $$(Toolchain.CC.IsGcc),$$(Toolchain.CC.IsClang)))
+ifneq (,$$(or $$(Toolchain.IsGcc),$$(Toolchain.IsClang)))
 $1$$(exe): CFLAGS += -g
 endif
 
 # If we are not cross-compiling, run the test program on "make check"
 check:: $1$$(exe)
-ifneq (,$$(Toolchain.CC.IsCross))
+ifneq (,$$(Toolchain.IsCross))
 	echo "not executing test program $$<$$(exe) when cross-compiling"
 else
 	./$$<
@@ -51,10 +51,10 @@ endif
 
 
 # If we are not cross-compiling, and stars align, support coverage analysis.
-ifeq (,$$(Toolchain.CC.IsCross))
+ifeq (,$$(Toolchain.IsCross))
 # Support coverage analysis when building with clang and supplied with llvm
 # or when using xcrun.
-ifneq (,$$(or $$(xcrun),$$(and $$(Toolchain.CC.IsClang),$$(shell command -v llvm-cov 2>/dev/null),$$(shell command -v llvm-profdata 2>/dev/null))))
+ifneq (,$$(or $$(xcrun),$$(and $$(Toolchain.IsClang),$$(shell command -v llvm-cov 2>/dev/null),$$(shell command -v llvm-profdata 2>/dev/null))))
 # Build test program with code coverage measurements and show them via "coverage" target.
 $1$$(exe): CFLAGS += -fcoverage-mapping -fprofile-instr-generate
 $1$$(exe): LDFLAGS += -fcoverage-mapping -fprofile-instr-generate

@@ -35,6 +35,8 @@ debug-mingw-cc-detection: debug-mingw-cc-detection.log
 	MATCH -qFx 'DEBUG: cross-compiling because gcc -dumpmachine and fake-fake-mingw32-gcc -dumpmachine differ' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CC.ImageFormat=PE' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CC.IsCross=yes' <$<
+	MATCH -qFx 'DEBUG: Toolchain.ImageFormat=Mixed' <$<
+	MATCH -qFx 'DEBUG: Toolchain.IsCross=yes' <$<
 
 debug-mingw-cxx-detection.log: ZMK.makeOverrides += CXX=fake-fake-mingw32-g++
 debug-mingw-cxx-detection.log: ZMK.makeOverrides += Toolchain.cxx.dumpmachine=fake-fake-mingw32
@@ -43,6 +45,8 @@ debug-mingw-cxx-detection: debug-mingw-cxx-detection.log
 	MATCH -qFx 'DEBUG: cross-compiling because g++ -dumpmachine and fake-fake-mingw32-g++ -dumpmachine differ' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CXX.ImageFormat=PE' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CXX.IsCross=yes' <$<
+	MATCH -qFx 'DEBUG: Toolchain.ImageFormat=Mixed' <$<
+	MATCH -qFx 'DEBUG: Toolchain.IsCross=yes' <$<
 
 debug-watcom-dos-cc-detection.log: ZMK.makeOverrides += CC=open-watcom.owcc-dos
 debug-watcom-dos-cc-detection.log: ZMK.makeOverrides += Toolchain.cc=/snap/open-watcom.owcc-dos
@@ -51,6 +55,8 @@ debug-watcom-dos-cc-detection: debug-watcom-dos-cc-detection.log
 	MATCH -qFx 'DEBUG: cross-compiling because open-watcom targets DOS' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CC.ImageFormat=MZ' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CC.IsCross=yes' <$<
+	MATCH -qFx 'DEBUG: Toolchain.ImageFormat=Mixed' <$<
+	MATCH -qFx 'DEBUG: Toolchain.IsCross=yes' <$<
 
 debug-watcom-dos-cxx-detection.log: ZMK.makeOverrides += CXX=open-watcom.owcc-dos
 debug-watcom-dos-cxx-detection.log: ZMK.makeOverrides += Toolchain.cxx=/snap/open-watcom.owcc-dos
@@ -59,6 +65,8 @@ debug-watcom-dos-cxx-detection: debug-watcom-dos-cxx-detection.log
 	MATCH -qFx 'DEBUG: cross-compiling because open-watcom targets DOS' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CXX.ImageFormat=MZ' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CXX.IsCross=yes' <$<
+	MATCH -qFx 'DEBUG: Toolchain.ImageFormat=Mixed' <$<
+	MATCH -qFx 'DEBUG: Toolchain.IsCross=yes' <$<
 
 debug-watcom-win16-cc-detection.log: ZMK.makeOverrides += CC=open-watcom.owcc-win16
 debug-watcom-win16-cc-detection.log: ZMK.makeOverrides += Toolchain.cc=/snap/open-watcom.owcc-win16
@@ -67,6 +75,8 @@ debug-watcom-win16-cc-detection: debug-watcom-win16-cc-detection.log
 	MATCH -qFx 'DEBUG: cross-compiling because open-watcom targets DOS' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CC.ImageFormat=MZ' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CC.IsCross=yes' <$<
+	MATCH -qFx 'DEBUG: Toolchain.ImageFormat=Mixed' <$<
+	MATCH -qFx 'DEBUG: Toolchain.IsCross=yes' <$<
 
 debug-watcom-win16-cxx-detection.log: ZMK.makeOverrides += CXX=open-watcom.owcc-win16
 debug-watcom-win16-cxx-detection.log: ZMK.makeOverrides += Toolchain.cxx=/snap/open-watcom.owcc-win16
@@ -75,6 +85,8 @@ debug-watcom-win16-cxx-detection: debug-watcom-win16-cxx-detection.log
 	MATCH -qFx 'DEBUG: cross-compiling because open-watcom targets DOS' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CXX.ImageFormat=MZ' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CXX.IsCross=yes' <$<
+	MATCH -qFx 'DEBUG: Toolchain.ImageFormat=Mixed' <$<
+	MATCH -qFx 'DEBUG: Toolchain.IsCross=yes' <$<
 
 debug-watcom-win32-cc-detection.log: ZMK.makeOverrides += CC=open-watcom.owcc-win32
 debug-watcom-win32-cc-detection.log: ZMK.makeOverrides += Toolchain.cc=/snap/open-watcom.owcc-win32
@@ -83,6 +95,8 @@ debug-watcom-win32-cc-detection: debug-watcom-win32-cc-detection.log
 	MATCH -qFx 'DEBUG: cross-compiling because open-watcom targets Windows' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CC.ImageFormat=PE' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CC.IsCross=yes' <$<
+	MATCH -qFx 'DEBUG: Toolchain.ImageFormat=Mixed' <$<
+	MATCH -qFx 'DEBUG: Toolchain.IsCross=yes' <$<
 
 debug-watcom-win32-cxx-detection.log: ZMK.makeOverrides += CXX=open-watcom.owcc-win32
 debug-watcom-win32-cxx-detection.log: ZMK.makeOverrides += Toolchain.cxx=/snap/open-watcom.owcc-win32
@@ -91,6 +105,8 @@ debug-watcom-win32-cxx-detection: debug-watcom-win32-cxx-detection.log
 	MATCH -qFx 'DEBUG: cross-compiling because open-watcom targets Windows' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CXX.ImageFormat=PE' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CXX.IsCross=yes' <$<
+	MATCH -qFx 'DEBUG: Toolchain.ImageFormat=Mixed' <$<
+	MATCH -qFx 'DEBUG: Toolchain.IsCross=yes' <$<
 
 debug-gcc-configured-cross.log: ZMK.makeOverrides += Configure.Configured=yes
 debug-gcc-configured-cross.log: ZMK.makeOverrides += Configure.HostArchTriplet=host-linux-gnu
@@ -104,8 +120,10 @@ debug-gcc-configured-cross.log: ZMK.makeOverrides += Toolchain.g++.dumpmachine=b
 debug-gcc-configured-cross: debug-gcc-configured-cross.log
 	MATCH -qFx 'DEBUG: gcc cross-compiler selected CC=host-linux-gnu-gcc' <$<
 	MATCH -qFx 'DEBUG: cross-compiling because gcc -dumpmachine and host-linux-gnu-gcc -dumpmachine differ' <$<
-	MATCH -qFx 'DEBUG: Toolchain.CC.IsCross=yes' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CC.ImageFormat=ELF' <$<
+	MATCH -qFx 'DEBUG: Toolchain.CC.IsCross=yes' <$<
+	MATCH -qFx 'DEBUG: Toolchain.ImageFormat=ELF' <$<
+	MATCH -qFx 'DEBUG: Toolchain.IsCross=yes' <$<
 
 debug-g++-configured-cross.log: ZMK.makeOverrides += Configure.Configured=yes
 debug-g++-configured-cross.log: ZMK.makeOverrides += Configure.HostArchTriplet=host-linux-gnu
@@ -119,5 +137,7 @@ debug-g++-configured-cross.log: ZMK.makeOverrides += Toolchain.g++.dumpmachine=b
 debug-g++-configured-cross: debug-g++-configured-cross.log
 	MATCH -qFx 'DEBUG: g++ cross-compiler selected CXX=host-linux-gnu-g++' <$<
 	MATCH -qFx 'DEBUG: cross-compiling because g++ -dumpmachine and host-linux-gnu-g++ -dumpmachine differ' <$<
-	MATCH -qFx 'DEBUG: Toolchain.CXX.IsCross=yes' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CXX.ImageFormat=ELF' <$<
+	MATCH -qFx 'DEBUG: Toolchain.CXX.IsCross=yes' <$<
+	MATCH -qFx 'DEBUG: Toolchain.ImageFormat=ELF' <$<
+	MATCH -qFx 'DEBUG: Toolchain.IsCross=yes' <$<

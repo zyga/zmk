@@ -1,6 +1,7 @@
 # Are we using GCC?
 Toolchain.CC.IsGcc=$(if $(findstring gcc,$(Toolchain.cc)),yes)
 Toolchain.CXX.IsGcc=$(if $(findstring g++,$(Toolchain.cxx)),yes)
+Toolchain.IsGcc=$(and $(Toolchain.CC.IsGcc),$(Toolchain.CXX.IsGcc))
 
 # Logic specific to gcc
 ifneq (,$(Toolchain.CC.IsGcc))
@@ -79,15 +80,6 @@ $(if $(Toolchain.debug),$(info DEBUG: cross-compiling because g++ -dumpmachine a
 endif # !cross
 endif # !cxx=gcc
 
-
-# If dependency tracking is enabled, pass extra options to the compiler, to
-# generate dependency data at the same time as compiling object files.
-ifneq (,$(Toolchain.DependencyTracking))
-CPPFLAGS += -MMD
-$(if $(Toolchain.debug),$(info DEBUG: compiling object files will generate make dependency information))
--include *.d
-endif
-
-
 $(if $(Toolchain.debug),$(info DEBUG: Toolchain.CC.IsGcc=$(Toolchain.CC.IsGcc)))
 $(if $(Toolchain.debug),$(info DEBUG: Toolchain.CXX.IsGcc=$(Toolchain.CXX.IsGcc)))
+$(if $(Toolchain.debug),$(info DEBUG: Toolchain.IsGcc=$(Toolchain.IsGcc)))
