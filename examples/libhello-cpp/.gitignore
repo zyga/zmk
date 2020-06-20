@@ -4,6 +4,9 @@
 *.o
 *.so.*
 
+# Dependency data
+*.d
+
 # The configure script
 configure
 

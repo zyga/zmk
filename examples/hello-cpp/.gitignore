@@ -3,6 +3,9 @@
 hello
 hello.exe
 
+# Dependency data
+*.d
+
 # The configure script
 configure
 
