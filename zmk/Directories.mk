@@ -67,7 +67,7 @@ Directories.POSIX = \
 	$(prefix) $(exec_prefix) $(bindir) $(sbindir) $(libexecdir) \
 	$(datarootdir) $(datadir) $(sysconfdir) $(sharedstatedir) \
 	$(localstatedir) $(runstatedir) $(includedir) \
-	$(docdir) $(infodir) $(libdir) $(localedir) $(mandir) $(man1dir) \
+	$(infodir) $(libdir) $(localedir) $(mandir) $(man1dir) \
 	$(man2dir) $(man3dir) $(man4dir) $(man5dir) $(man6dir) $(man7dir) \
 	$(man8dir) $(man9dir)
 
