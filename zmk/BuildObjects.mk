@@ -35,4 +35,12 @@ $$($1.ObjectsObjC): $1-%.o: %.m
 
 clean::
 	rm -f $$($1.Objects)
+ifneq (,$$(Toolchain.DependencyTracking))
+	rm -f $$($1.Objects:.o=.d)
+endif
+
+ifneq (,$$(Toolchain.DependencyTracking))
+-include $$($1.Objects:.o=.d)
+endif
+
 endef
