@@ -30,7 +30,7 @@ $(foreach f,$(ZMK.DistFiles),$(eval $f.InstallDir=$(includedir)))
 $(foreach f,$(ZMK.DistFiles),$(eval $(call ZMK.Expand,InstallUninstall,$f)))
 
 # Install all of the manual pages, generating them from .in files first.
-all:: $(foreach m,$(ZMK.manPages),man/$m)
+all:: $(foreach f,$(ZMK.manPages),man/$f)
 clean::
 	rm -f $(addprefix man/,$(ZMK.manPages))
 ifneq ($(srcdir),.)
