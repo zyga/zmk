@@ -47,7 +47,7 @@ $1: $$($1.Objects)
 
 # Install library binary.
 $1.InstallDir ?= $$(libdir)
-$$(eval $$(call ZMK.Expand,Installable,$1))
+$$(eval $$(call ZMK.Expand,InstallUninstall,$1))
 
 # Install symlink (alias) to the versioned library.
 $1.alias ?= $$(basename $$(basename $1)).dylib

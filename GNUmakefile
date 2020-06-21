@@ -27,7 +27,7 @@ $(eval $(call ZMK.Import,Directories))
 
 # Install all of zmk to the include directory.
 $(foreach f,$(ZMK.DistFiles),$(eval $f.InstallDir=$(includedir)))
-$(foreach f,$(ZMK.DistFiles),$(eval $(call ZMK.Expand,Installable,$f)))
+$(foreach f,$(ZMK.DistFiles),$(eval $(call ZMK.Expand,InstallUninstall,$f)))
 
 # Install all of the manual pages
 $(foreach f,$(ZMK.manPages),$(eval $(call ZMK.Expand,ManPage,man/$f)))

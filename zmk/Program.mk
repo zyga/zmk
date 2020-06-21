@@ -39,7 +39,7 @@ $1.InstallName ?= $$(if $$(Configure.ProgramTransformName),$$(shell echo '$$(Con
 $1$$(exe).InstallDir ?= $$($1.InstallDir)
 $1$$(exe).InstallMode ?= $$($1.InstallMode)
 $1$$(exe).InstallName ?=  $$($1.InstallName)
-$$(eval $$(call ZMK.Expand,Installable,$1$$(exe)))
+$$(eval $$(call ZMK.Expand,InstallUninstall,$1$$(exe)))
 
 # React to "all" and "clean".
 $$(eval $$(call ZMK.Expand,Buildable,$1$$(exe)))

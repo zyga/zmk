@@ -32,7 +32,7 @@ $1: $$($1.Objects)
 
 # Install library archive.
 $1.InstallDir ?= $$(libdir)
-$$(eval $$(call ZMK.Expand,Installable,$1))
+$$(eval $$(call ZMK.Expand,InstallUninstall,$1))
 
 # React to "all" and "clean".
 $$(eval $$(call ZMK.Expand,Buildable,$1))

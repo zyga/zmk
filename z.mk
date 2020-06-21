@@ -42,7 +42,7 @@ ZMK.modules = \
 	Directory \
 	GitVersion \
 	Header \
-	Installable \
+	InstallUninstall \
 	Library.A \
 	Library.DyLib \
 	Library.So \

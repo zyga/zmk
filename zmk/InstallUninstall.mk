@@ -20,8 +20,8 @@ $(eval $(call ZMK.Import,Directories))
 # using the .InstallDir instance variable. The special value of noinst prevents
 # installation. This template is used by other parts of ZMK, to install
 # components they produce.
-Installable.Variables=InstallDir InstallName InstallMode
-define Installable.Template
+InstallUninstall.Variables=InstallDir InstallName InstallMode
+define InstallUninstall.Template
 $1.InstallDir ?= $$(error define $1.InstallDir - the destination directory, or noinst to skip installation)
 $1.InstallMode ?= 0644
 $1.InstallName ?= $$(notdir $1)
