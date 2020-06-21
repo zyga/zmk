@@ -1,0 +1,216 @@
+.Dd May 3, 2020
+.Os zmk @VERSION@
+.Dt zmk.Configure.5 PRM
+.Sh NAME
+.Nm Configure
+.Nd module providing build time configuration system
+.Sh SYNOPSIS
+.Bd -literal
+include z.mk
+
+$(eval $(call ZMK.Import,Configure))
+.Ed
+.Sh DESCRIPTION
+The
+.Nm
+module provides two sides of the build-time configuration system. On one hand
+side it provides the familiar
+.Em configure
+script, which can be used to set up various settings, prepare a directory for
+.Em out-of-tree build ,
+and integrate with project specific configuration settings. On the other hand
+it exposes the collected information as a set of variables, allowing the rest
+of the build system to modify its behavior accordingly.
+.Sh TARGETS
+This module provides the following targets.
+.Ss configure
+This target generates the configuration script. The script is also
+automatically placed inside the source archive, so that the receipent
+does not need to have a local installation of
+.Em zmk
+to build a project from source.
+.Ss GNUmakefile.configure.mk
+This target is named after the configuration file created by the
+.Nm configure
+script. The rules are such, that if the configure script is newer than the
+configuration file, then the script is re-executed to generate a possibly
+updated configuration file.
+.Ss distclean
+This
+.Em phony
+target removes the configuration file
+.Nm GNUmakefile.configure.mk .
+In
+.Em maintainer mode ,
+the cofiguration file is also removed.
+.Sh VARIABLES
+This module provides the following variables.
+.Ss Configure.HostArchTriplet
+This variable is set by the
+.Nm configure
+script when invoked with the
+.Em --host=...
+option. It represents the
+.Em triplet
+describing the system which will eventually execute
+the compiled binaries. This is in contrast to the system that
+is preforming the build.
+.Pp
+Unlike in
+.Em autoconf
+this variable is not set automatically. It is usually provided by
+.Em Linux distribution packaging
+which follows the up-to-date conventions on architecture triplet names.
+The triplet contains three components, separated by dashes, the
+.Em CPU architecture ,
+.Em Kernel name
+and
+.Em Operating System name .
+Popular values include
+.Em x86_64-linux-gnu ,
+.Em aarch64-linux-gnu
+and
+.Em riscv64-linux-gnu .
+Note that there is a lot of variablity in the architecte name and special
+cases related to the ARM architecture.
+.Ss Configure.BuildArchTriplet
+This variable is set by the
+.Nm configure
+script when invoked with the
+.Em --build=...
+option. It represents the
+.Em triplet
+describing the system which is performing the build process. This is in
+contrast to the system that will execute the built binaries.
+.Pp
+When both
+.Nm Configure.HostArchTriplet
+and
+.Nm Configure.BuildArchTriplet
+are set and their values differ and
+when
+.Nm CC
+and
+.Nm CXX
+are not overriden, then zmk automatically selects a
+.Em cross-compiler
+from the
+.Em GNU Compiler Collection
+named
+.Em $(Configure.HostArchTriplet)-gcc
+and
+.Em $(Configure.HostArchTriplet)-g++
+for the C and C++ compilers, respectively.
+.Ss Configure.DependencyTracking
+This variable is controlled by the
+.Nm configure
+script options
+.Em --enable-dependency-tracking
+(defaut) and
+.Em --disable-dependency-tracking .
+When enabled it expands to
+.Em yes
+and causes compatible compilers to generate dependency information when
+compiling source files, that is subsequently used by Make to understand
+relationship between all the source files and object files.
+.Pp
+When performing pristine builds in a scratch environment that does not
+contain any old object files, this setting can be disabled to speed up the
+build a little.
+.Ss Configure.MaintainerMode
+This variable is controlled by the
+.Nm configure
+script options
+.Em --enable-maintainer-mode
+(defaut) and
+.Em --disable-maintainer-mode .
+When enabled it expands to
+.Em yes
+and impacts the
+.Nm configure
+and
+.Nm GNUmakefile.configure.mk
+targets as described earlier.
+.Ss Configure.SilentRules
+This variable is controlled by the
+.Nm configure
+script options
+.Em --enable-silent-rules
+and
+.Em --disable-silent-rules
+(default). When enabled it expands to
+.Em yes
+and silences make rules defined by zmk.
+.Ss Configure.ProgramPrefix
+This variable is set by the
+.Nm configure
+script when invoked with the
+.Em --program-prefix=...
+option.
+.Pp
+The argument is the prefix added to installed name of all the programs built
+with the
+.Nm Program
+and the
+.Nm Script
+templates.
+.Ss Configure.ProgramSuffix
+This variable is set by the
+.Nm configure
+script when invoked with the
+.Em --program-suffix=...
+option.
+.Pp
+The argument is the suffix added to installed name of all the programs built
+with the
+.Nm Program
+and the
+.Nm Script
+templates.
+.Ss Configure.ProgramTransformName
+This variable is set by the
+.Nm configure
+script when invoked with the
+.Em --program-transform-name=...
+option.
+.Pp
+The argument is a sed expression used to transform the installed name of all
+the programs built with the
+.Nm Program
+and the
+.Nm Script
+templates. The transformation affects the entire name, together with any
+prefix or suffix defined byo ther options.
+.Ss Configure.Configured
+This variable expands to
+.Em yes
+when the
+.Nm configure
+script was used to customize the build process. It can be used to offer
+default behaviors that are appropriate to a given project, without
+interacting with customizations performed by distribution packaging.
+.Ss Configure.Options
+This variable expands to the command line arguments passed to the
+.Nm configure
+script. It is used for automatic re-configuration supported by
+.Em maintainer mode .
+It can be also provided to the
+.Em pre-processor
+to embed the information about build-time configuration into the application
+or library binary.
+.Sh EXAMPLES
+The
+.Nm Configure
+module is automatically imported and is implicitly available when templates
+such as
+.Nm Program
+or
+.Nm Script
+are used. It does not require any additional input files. All customization
+is available directly from the project makefile.
+.Sh HISTORY
+The
+.Nm
+module first appeared in zmk 0.3
+.Sh AUTHORS
+.An "Zygmunt Krynicki" Aq Mt me@zygoon.pl

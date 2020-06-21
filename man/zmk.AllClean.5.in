@@ -1,0 +1,53 @@
+.Dd May 3, 2020
+.Os zmk @VERSION@
+.Dt zmk.AllClean 5 PRM
+.Sh NAME
+.Nm AllClean
+.Nd template for files that can built and cleaned
+.Sh SYNOPSIS
+.Bd -literal
+include z.mk
+
+$(eval $(call ZMK.Expand,AllClean,instanceName))
+.Ed
+.Sh DESCRIPTION
+The
+.Nm AllClean
+template once
+.Em expanded
+with a target
+.Em instance name
+makes
+.Nm all
+depend on
+.Nm $(instanceName) ,
+and makes
+.Nm clean
+remove
+.Nm $(instanceName) .
+It can be used to avoid duplicating the same two rules across many
+buildable entities. It is used internally by other templates.
+.Pp
+Actual rules for building
+.Nm $(instanceName)
+need to be provided separately.
+.Sh TARGETS
+This module provides the following targets.
+.Ss all
+This
+.Em phony
+target depends on
+.Nm $(instanceName) .
+.Ss clean
+This
+.Em phony
+target removes
+.Nm $(instanceName) .
+.Sh VARIABLES
+This module does not provide any variables.
+.Sh HISTORY
+The
+.Nm
+template first appeared in zmk 0.3
+.Sh AUTHORS
+.An "Zygmunt Krynicki" Aq Mt me@zygoon.pl

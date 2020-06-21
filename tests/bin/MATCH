@@ -1,0 +1,18 @@
+#!/bin/sh
+input="$(cat)"
+if echo "$input" | grep -q "$@"; then
+	exit 0
+fi
+printf 'MATCH: failed to match: grep'
+for arg in "$@"; do
+	printf " '%s'" "$(echo "$arg" | sed -e "s/'/\\'/g")"
+done
+printf '\n'
+if [ "$(echo "$input" | wc -l)" -gt 1 ]; then
+	printf 'MATCH: input starts below:\n\n'
+	printf '%s\n' "$input"
+	printf '\nMATCH: input ends above.\n'
+else
+	printf "MATCH: for input '%s'\n" "$(echo "$input" | sed -e "s/'/\\'/g")"
+fi
+exit 1

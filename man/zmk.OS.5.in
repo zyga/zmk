@@ -1,0 +1,70 @@
+.Dd May 3, 2020
+.Os zmk @VERSION@
+.Dt zmk.OS 5 PRM
+.Sh NAME
+.Nm OS
+.Nd module providing operating system information
+.Sh SYNOPSIS
+.Bd -literal
+include z.mk
+
+$(eval $(call ZMK.Import,OS))
+.Ed
+.Sh DESCRIPTION
+The module
+.Nm
+provides information about the operating system executing zmk. It can be used
+to provide tailored behavior and account for differences between UNIX flavours.
+.Sh TARGETS
+This module does not provide any targets.
+.Sh VARIABLES
+This module provides the following variables.
+.Ss OS.Kernel
+Identifier of the operating system kernel.
+.Pp
+Known values are listed in the following table.
+.TS
+tab(:) box;
+lb5 l5.
+Value:Description
+=:=:=
+Darwin:The MacOS kernel
+FreeBSD:The FreeBSD kernel
+GNU/kFreeBSD:The FreeBSD kernel with GNU userspace
+GNU:The Hurd kernel
+Linux:All Linux kernel
+NetBSD:The NetBSD kernel
+OpenBSD:The OpenBSD kernel
+SunOS:The Solaris kernel
+Windows_NT:The Windows kernel
+Haiku:The Haiku kernel
+.TE
+.Ss OS.ImageFormat
+Identifier or the application image format used.
+.TS
+tab(:) box;
+lb5 l5.
+Value:Description
+=:=:=
+ELF:Used by most UNIX-like systems, except Darwin
+Mach-O:Used by MacOS
+PE:Used by Windows
+MZ:Used by DOS
+.TE
+.Pp
+Due to
+.Em cross-compiling
+it is more useful to look at
+.Nm Toolchain.ImageFormat
+instead.
+.Sh IMPLEMENTATION NOTES
+Windows is detected by the presence and specific value of the
+.Nm OS
+environment variable. All other kernels are identified by invoking
+.Em uname -s .
+.Sh HISTORY
+The
+.Nm
+module first appeared in zmk 0.1
+.Sh AUTHORS
+.An "Zygmunt Krynicki" Aq Mt me@zygoon.pl

@@ -6,7 +6,10 @@ zmk_*.tar.gz.asc
 .version-from-git
 
 # Generated configure script
-configure
+^configure$
 
 # Editor swap files
 *.swp
+
+# Test log files
+*.log

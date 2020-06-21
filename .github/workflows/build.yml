@@ -10,7 +10,7 @@ jobs:
       matrix:
         system: [ubuntu-latest, macos-latest]
     env:
-      DEBUG: spawn,import,verision
+      DEBUG: expand,import,verision
     runs-on: ${{ matrix.system }}
     steps:
     - uses: actions/checkout@v2
