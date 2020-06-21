@@ -218,7 +218,7 @@ done
     echo
     echo "# Inherited environment variables and overrides."
     test -n "$$CC" && echo "CC=$$CC" || echo "#   CC was not specified."
-    test -n "$$CXX" && echo "CC=$$CXX" || echo "#   CXX was not specified."
+    test -n "$$CXX" && echo "CXX=$$CXX" || echo "#   CXX was not specified."
     test -n "$$CFLAGS" && echo "CFLAGS=$$CFLAGS" || echo "#   CFLAGS was not specified."
     test -n "$$CXXFLAGS" && echo "CXXFLAGS=$$CXXFLAGS" || echo "#   CXXFLAGS was not specified."
     test -n "$$OBJCFLAGS" && echo "OBJCFLAGS=$$OBJCFLAGS" || echo "#   OBJCFLAGS was not specified."
