@@ -69,7 +69,11 @@ endif
 ifeq ($(Toolchain.cxx),/usr/bin/g++)
 Toolchain.cxx := $(realpath $(Toolchain.cxx))
 else
+ifeq ($(Toolchain.cxx),/usr/bin/c++)
+Toolchain.cxx := $(realpath $(Toolchain.cxx))
+else
 Toolchain.cxx := $(Toolchain.cxx)
+endif
 endif
 
 # Import toolchain-specific knowledge.
