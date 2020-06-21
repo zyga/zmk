@@ -83,7 +83,3 @@ $(addprefix check-,$(tests)): check-%:
 		-I $(abspath $(srcdir)) \
 		-C $(srcdir)/$(patsubst examples/libhello/%,examples/libhello-%,$(patsubst examples/hello/%,examples/hello-%,$(subst -,/,$*))) \
 		-f Test.mk
-
-# Disable man page checker as it complains about .TS and .TE
-override static-check-manpages:
-	true
