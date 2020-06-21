@@ -20,21 +20,22 @@ $(eval $(call ZMK.Import,Directories))
 # using the .InstallDir instance variable. The special value of noinst prevents
 # installation. This template is used by other parts of ZMK, to install
 # components they produce.
-Installable.Variables=InstallDir InstallMode
+Installable.Variables=InstallDir InstallName InstallMode
 define Installable.Template
 $1.InstallDir ?= $$(error define $1.InstallDir - the destination directory, or noinst to skip installation)
 $1.InstallMode ?= 0644
+$1.InstallName ?= $$(notdir $1)
 
 # Unless we don't want to install the file, look below.
 ifneq ($$($1.InstallDir),noinst)
-$1.targetDir = $$(patsubst %/,%,$$(dir $$($1.InstallDir)/$1))
+$1.targetDir = $$(patsubst %/,%,$$(dir $$($1.InstallDir)/$$($1.InstallName)))
 
-install:: $$(DESTDIR)$$($1.InstallDir)/$1
+install:: $$(DESTDIR)$$($1.InstallDir)/$$($1.InstallName)
 uninstall::
-	rm -f $$(DESTDIR)$$($1.InstallDir)/$1
+	rm -f $$(DESTDIR)$$($1.InstallDir)/$$($1.InstallName)
 
 $$(eval $$(call ZMK.Expand,Directory,$$($1.targetDir)))
-$$(DESTDIR)$$($1.InstallDir)/$1: $1 | $$(DESTDIR)$$($1.targetDir)
+$$(DESTDIR)$$($1.InstallDir)/$$($1.InstallName): $1 | $$(DESTDIR)$$($1.targetDir)
 	$$(strip install -m $$($1.InstallMode) $$^ $$@)
 else # !noinst
 $1.targetDir = noinst
