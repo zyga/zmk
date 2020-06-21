@@ -29,7 +29,17 @@ $(eval $(call ZMK.Import,Directories))
 $(foreach f,$(ZMK.DistFiles),$(eval $f.InstallDir=$(includedir)))
 $(foreach f,$(ZMK.DistFiles),$(eval $(call ZMK.Expand,InstallUninstall,$f)))
 
-# Install all of the manual pages
+# Install all of the manual pages, generating them from .in files first.
+all:: $(foreach m,$(ZMK.manPages),man/$m)
+clean::
+	rm -f $(addprefix man/,$(ZMK.manPages))
+ifneq ($(srcdir),.)
+	test -d man && rmdir man || :
+endif
+$(CURDIR)/man: # For out-of-tree builds.
+	install -d $@
+man/%: man/%.in | $(CURDIR)/man
+	sed -e 's/@VERSION@/$(VERSION)/g' $< >$@
 $(foreach f,$(ZMK.manPages),$(eval $(call ZMK.Expand,ManPage,man/$f)))
 
 # Build the release tarball.
