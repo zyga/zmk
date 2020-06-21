@@ -28,14 +28,14 @@ $1.InstallName ?= $$(notdir $1)
 
 # Unless we don't want to install the file, look below.
 ifneq ($$($1.InstallDir),noinst)
-$1.targetDir = $$(patsubst %/,%,$$(dir $$($1.InstallDir)/$$($1.InstallName)))
+$1.targetDir = $$(patsubst %/,%,$$(dir $$($1.InstallDir)/$1))
 
-install:: $$(DESTDIR)$$($1.InstallDir)/$$($1.InstallName)
+install:: $$(DESTDIR)$$($1.targetDir)/$$($1.InstallName)
 uninstall::
-	rm -f $$(DESTDIR)$$($1.InstallDir)/$$($1.InstallName)
+	rm -f $$(DESTDIR)$$($1.targetDir)/$$($1.InstallName)
 
 $$(eval $$(call ZMK.Expand,Directory,$$($1.targetDir)))
-$$(DESTDIR)$$($1.InstallDir)/$$($1.InstallName): $1 | $$(DESTDIR)$$($1.targetDir)
+$$(DESTDIR)$$($1.targetDir)/$$($1.InstallName): $1 | $$(DESTDIR)$$($1.targetDir)
 	$$(strip install -m $$($1.InstallMode) $$^ $$@)
 else # !noinst
 $1.targetDir = noinst
