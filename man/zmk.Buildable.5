@@ -8,41 +8,41 @@
 .Bd -literal
 include z.mk
 
-$(eval $(call ZMK.Expand,Buildable,NAME))
+$(eval $(call ZMK.Expand,Buildable,instanceName))
 .Ed
 .Sh DESCRIPTION
-The template
+The
 .Nm Buildable
-once
+template once
 .Em expanded
 with a target
-.Nm NAME
+.Em instance name
 makes
 .Nm all
 depend on
-.Nm NAME ,
+.Nm $(instanceName) ,
 and makes
 .Nm clean
 remove
-.Nm NAME .
+.Nm $(instanceName) .
 It can be used to avoid duplicating the same two rules across many
-buildable entities. It is used internally by zmk in other templates.
+buildable entities. It is used internally by other templates.
 .Pp
 Actual rules for building
-.Nm NAME
-need to be provided manually.
+.Nm $(instanceName)
+need to be provided separately.
 .Sh TARGETS
 This module provides the following targets.
 .Ss all
-The
-.Nm all
+This
+.Em phony
 target depends on
-.Nm NAME .
+.Nm $(instanceName) .
 .Ss clean
-The
-.Nm clean
+This
+.Em phony
 target removes
-.Nm NAME .
+.Nm $(instanceName) .
 .Sh VARIABLES
 This module does not provide any variables.
 .Sh HISTORY

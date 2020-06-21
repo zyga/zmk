@@ -7,9 +7,9 @@
 .Sh SYNOPSIS
 .Bd -literal
 include z.mk
-
-NAME.Sources = hello.c
-$(eval $(call ZMK.Expand,Program,NAME))
+# programName is any valid identifier.
+programName.Sources = hello.c
+$(eval $(call ZMK.Expand,Program,programName))
 .Ed
 .Sh DESCRIPTION
 The template
@@ -22,7 +22,7 @@ to creates rules for compiling, cleaning, installing and removing a single
 program written in C, C++ or Objective C.
 .Pp
 Source files are compiled to object files prefixed with
-.Em NAME- ,
+.Em $(programName)- ,
 so that individual source files can be part of many different programs, using
 distinct preprocessor, compiler and linker options.
 .Pp
@@ -36,67 +36,75 @@ variable expands to
 .Em .exe
 .Sh TARGETS
 This module provides the following targets.
-.Ss NAME$(exe)
+.Ss $(programName)$(exe)
 This target represents the program executable.
-.Pp
-If using
-.Em gcc
-or
-.Em clang
-the resulting binary is compiled as a
-.Em position-independent executable ,
-by setting
-.Em CFLAGS += -fPIE .
 .Ss all
-The
-.Nm all
+This
+.Em phony
 target depends on
-.Em NAME$(exe)
+.Em $(programName)$(exe)
 .Ss clean
-The
-.Nm clean
+This
+.Em phony
 target removes
-.Em NAME$(exe)
+.Em $(programName)$(exe)
+as well as constituent
+.Em object files
 and
-.Em NAME-*.o
+.Em dependency files .
 .Ss install
-The
-.Nm install
+This
+.Em phony
 target copies
-.Em NAME$(exe) ,
+.Em $(programName)$(exe) ,
 with mode
-.Em $(NAME.install_mode) ,
+.Em $(programName.InstallMode) ,
 to
-.Em $(NAME.install_dir) ,
-creating it if necessary.
+.Em $(programName.InstallDir) ,
+with the name
+.Em $(programName.InstallName) ,
+creating the directory if necessary. Note that the
+.Nm Configure
+module variables
+.Nm Configure.ProgramPrefix ,
+.Nm Configure.ProgramSuffix
+and
+.Nm Configure.ProgramTransformName
+automatically impact the installed names of all the
+programs.
 .Ss uninstall
-The
-.Nm uninstall
+This
+.Em phony
 target removes
-.Em NAME$(exe)
+.Em $(programName)$(exe)
 as installed by the
 .Em install
 target.
 .Sh VARIABLES
 This module provides the following variables.
-.Ss NAME.sources
+.Ss $(programName).Sources
 List of source files to compile.
 .Pp
 There is no default value. This variable must be set before
 .Em expanding
 the template.
-.Ss NAME.Objects
+.Ss $(programName).Objects
 List of object files to link.
 .Pp
 The default value is all the elements of
-.Em NAME.Sources
+.Em $(programName).Sources
 with the added prefix
-.Em NAME-
+.Em $(programName)-
 and with the extension replaced by
 .Em .o .
-.Ss NAME.InstallDir
+.Ss $(programName).Linker
+Linker required to link object files together.
+.Pp
+The default value depends on the type of source files used, ensuring that C++
+sources are linked with the C++ linker.
+.Ss $(programName).InstallDir
 The directory
-.Em NAME$(exe)
+.Em $(programName)$(exe)
 is installed to.
 .Pp
 The default value is
@@ -108,15 +116,21 @@ or
 are commonly used as well. The special value
 .Em noinst
 disables the rules related to installation and uninstallation.
-.Ss NAME.InstallMode
+.Ss $(programName).InstallName
+The name of the program after installation.
+.Pp
+The default value is
+.Em $(programName)
+.Ss $(programName).InstallMode
 The UNIX mode
-.Em NAME$(exe)
+.Em $(programName)$(exe)
 is installed with.
 .Pp
 The default value is
 .Em 0755 .
 .Ss DESTDIR
 Path added to all installation targets.
+.Pp
 This variable is normally set externally, to install a compiled program
 into a staging area during construction of a compiled binary package.
 .Ss CFLAGS, CXXFLAGS, OBJCFLAGS
@@ -127,7 +141,12 @@ Options for the preprocessor.
 .Nm
 uses
 .Nm Installable
-to install the compiled program.
+to handle installation and removal.
+The
+.Nm exe
+variable is automatically set to
+.Em .exe
+where appropriate.
 .Sh EXAMPLES
 With the following
 .Em true_false.c
@@ -148,7 +167,6 @@ and
 .Em false .
 .Bd -literal -offset indent-two
 include z.mk
-NAME = true_false
 
 true.Sources = true_false.c
 $(eval $(call ZMK.Expand,Program,true))

@@ -99,16 +99,4 @@ CPPFLAGS += -MMD
 $(if $(Toolchain.debug),$(info DEBUG: compiling object files will generate make dependency information))
 endif
 
-# Show the conclusive values.
-$(if $(Toolchain.debug),$(info DEBUG: Toolchain.cc=$(Toolchain.cc)))
-$(if $(Toolchain.debug),$(info DEBUG: Toolchain.cxx=$(Toolchain.cxx)))
-$(if $(Toolchain.debug),$(info DEBUG: Toolchain.ImageFormat=$(Toolchain.ImageFormat)))
-$(if $(Toolchain.debug),$(info DEBUG: Toolchain.IsCross=$(Toolchain.IsCross)))
-$(if $(Toolchain.debug),$(info DEBUG: Toolchain.DependencyTracking=$(Toolchain.DependencyTracking)))
-$(if $(Toolchain.debug),$(info DEBUG: Toolchain.CC.ImageFormat=$(Toolchain.CC.ImageFormat)))
-$(if $(Toolchain.debug),$(info DEBUG: Toolchain.CC.IsCross=$(Toolchain.CC.IsCross)))
-$(if $(Toolchain.debug),$(info DEBUG: Toolchain.CXX.ImageFormat=$(Toolchain.CXX.ImageFormat)))
-$(if $(Toolchain.debug),$(info DEBUG: Toolchain.CXX.IsCross=$(Toolchain.CXX.IsCross)))
-
-$(if $(Toolchain.debug),$(info DEBUG: CC=$(CC)))
-$(if $(Toolchain.debug),$(info DEBUG: CXX=$(CXX)))
+$(if $(Toolchain.debug),$(foreach v,CC CXX CPP CFLAGS CXXFLAGS CPPFLAGS OBJCFLAGS ARFLAGS TARGET_ARCH LDLIBS LDFLAGS $(filter Toolchain.%,$(.VARIABLES)),$(info DEBUG: $v=$($v))))

@@ -1,0 +1,111 @@
+.Dd May 3, 2020
+.Os zmk @VERSION@
+.Dt zmk.Script 5 PRM
+.Sh NAME
+.Nm Script
+.Nd template for describing interpreted scripts
+.Sh SYNOPSIS
+.Bd -literal
+include z.mk
+# scriptName is the name of the script file
+$(eval $(call ZMK.Expand,Program,scriptName))
+.Ed
+.Sh DESCRIPTION
+The template
+.Nm Script
+once
+.Em expanded
+with a
+.Em script name
+to creates rules for installing and removing a single script written in an
+interpreted programming language.
+.Pp
+If the script is a
+.Em shell script
+then it can be automatically checked with
+.Nm shellcheck ,
+if avaialble.
+.Sh TARGETS
+This module provides the following targets.
+.Ss install
+This
+.Em phony
+target copies
+.Em $(scriptName)
+to
+.Em $(scriptName.InstallDir) ,
+with the name
+.Em $(scriptName.InstallName)
+and mode
+.Em $(scriptName.InstallMode) .
+The target directory is automatically created if required.
+.Pp
+The variables
+.Nm Configure.ProgramPrefix ,
+.Nm Configure.ProgramSuffix
+and
+.Nm Configure.ProgramTransformName
+automatically impact the installed names of all the scripts.
+.Ss uninstall
+This
+.Em phony
+target removes
+.Em $(scriptName)
+as installed by the
+.Em install
+target.
+.Ss static-check-shellcheck
+This
+.Em phony
+target uses
+.Nm shellcheck
+to perform static analysis of compatible scripts.
+.Ss static-check
+This
+.Em phony
+target depends on the target
+.Nm static-check-shellcheck .
+.Sh VARIABLES
+This module provides the following variables.
+.Ss $(scriptName).Interpreter
+Name of the script interpeter.
+.Pp
+The default value is inferred from the extension of the file name.
+.Ss $(scriptName).InstallDir
+The directory
+.Em $(scriptName)
+is installed to.
+.Pp
+The default value is
+.Em $(bindir) .
+The special value
+.Em noinst
+disables the rules related to installation and uninstallation.
+.Ss $(scriptName).InstallName
+The name of the script after installation.
+.Pp
+The default value is
+.Em $(scriptName)
+.Ss $(scriptName).InstallMode
+The UNIX mode
+.Em $(scriptName)
+is installed with.
+.Pp
+The default value is
+.Em 0755 .
+.Ss DESTDIR
+Path added to all installation targets.
+.Pp
+This variable is normally set externally, to install a compiled program
+into a staging area during construction of a compiled binary package.
+.Sh IMPLEMENTATION NOTES
+.Nm
+uses
+.Nm Installable
+to handle installation and removal.
+.Sh HISTORY
+The
+.Nm
+template first appeared in zmk 0.1
+.Sh AUTHORS
+.An "Zygmunt Krynicki" Aq Mt me@zygoon.pl

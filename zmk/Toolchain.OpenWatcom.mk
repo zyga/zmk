@@ -1,6 +1,7 @@
 # Are we using the open watcom compiler?
 Toolchain.CC.IsWatcom=$(if $(findstring watcom,$(Toolchain.cc)),yes)
 Toolchain.CXX.IsWatcom=$(if $(findstring watcom,$(Toolchain.cxx)),yes)
+Toolchain.IsWatcom=$(and $(Toolchain.CC.IsWatcom),$(Toolchain.CXX.IsWatcom))
 
 # Logic specific to open-watcom
 ifneq (,$(Toolchain.CC.IsWatcom))
@@ -45,6 +46,3 @@ $(if $(Toolchain.debug),$(info DEBUG: .exe suffix enabled because $(CXX) name))
 $(if $(Toolchain.debug),$(info DEBUG: cross-compiling because open-watcom targets Windows))
 endif # !cxx win32
 endif # !cxx watcom
-
-$(if $(Toolchain.debug),$(info DEBUG: Toolchain.CC.IsWatcom=$(Toolchain.CC.IsWatcom)))
-$(if $(Toolchain.debug),$(info DEBUG: Toolchain.CXX.IsWatcom=$(Toolchain.CXX.IsWatcom)))
