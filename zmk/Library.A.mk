@@ -35,5 +35,5 @@ $1.InstallDir ?= $$(libdir)
 $$(eval $$(call ZMK.Expand,InstallUninstall,$1))
 
 # React to "all" and "clean".
-$$(eval $$(call ZMK.Expand,Buildable,$1))
+$$(eval $$(call ZMK.Expand,AllClean,$1))
 endef

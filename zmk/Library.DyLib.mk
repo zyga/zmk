@@ -56,6 +56,6 @@ $$($1.alias).SymlinkTarget = $1
 $$(eval $$(call ZMK.Expand,Symlink,$$($1.alias)))
 
 # React to "all" and "clean".
-$$(eval $$(call ZMK.Expand,Buildable,$1))
-$$(eval $$(call ZMK.Expand,Buildable,$$($1.alias)))
+$$(eval $$(call ZMK.Expand,AllClean,$1))
+$$(eval $$(call ZMK.Expand,AllClean,$$($1.alias)))
 endef

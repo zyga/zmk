@@ -42,5 +42,5 @@ $1$$(exe).InstallName ?=  $$($1.InstallName)
 $$(eval $$(call ZMK.Expand,InstallUninstall,$1$$(exe)))
 
 # React to "all" and "clean".
-$$(eval $$(call ZMK.Expand,Buildable,$1$$(exe)))
+$$(eval $$(call ZMK.Expand,AllClean,$1$$(exe)))
 endef

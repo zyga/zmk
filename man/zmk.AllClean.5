@@ -1,18 +1,18 @@
 .Dd May 3, 2020
 .Os zmk @VERSION@
-.Dt zmk.Buildable 5 PRM
+.Dt zmk.AllClean 5 PRM
 .Sh NAME
-.Nm Buildable
+.Nm AllClean
 .Nd template for files that can built and cleaned
 .Sh SYNOPSIS
 .Bd -literal
 include z.mk
 
-$(eval $(call ZMK.Expand,Buildable,instanceName))
+$(eval $(call ZMK.Expand,AllClean,instanceName))
 .Ed
 .Sh DESCRIPTION
 The
-.Nm Buildable
+.Nm AllClean
 template once
 .Em expanded
 with a target

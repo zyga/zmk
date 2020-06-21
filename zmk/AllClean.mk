@@ -14,8 +14,8 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
-Buildable.Variables=
-define Buildable.Template
+AllClean.Variables=
+define AllClean.Template
 all:: $1
 clean::
 	rm -f $1

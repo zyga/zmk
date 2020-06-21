@@ -34,7 +34,7 @@ ZMK.Path ?= $(dir $(ZMK.z.mk))
 
 # Modules and templates present in the package
 ZMK.modules = \
-	Buildable \
+	AllClean \
 	BuildObjects \
 	Configure \
 	Coverity \
@@ -66,7 +66,7 @@ ZMK.manPages = \
 	zmk.Directories.5 \
 	zmk.OS.5 \
 	zmk.Toolchain.5 \
-	zmk.Buildable.5 \
+	zmk.AllClean.5 \
 	zmk.Program.5
 
 # Files belonging to ZMK that need to be distributed in third-party release tarballs.
