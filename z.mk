@@ -58,7 +58,7 @@ ZMK.modules = \
 	Toolchain \
 	Toolchain.Clang \
 	Toolchain.GCC \
-	Toolchain.OpenWatcom \
+	Toolchain.Watcom \
 	Toolchain.Tcc
 
 # Manual pages present in the package.
