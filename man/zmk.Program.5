@@ -56,22 +56,21 @@ and
 This
 .Em phony
 target copies
-.Em $(programName)$(exe) ,
-with mode
-.Em $(programName.InstallMode) ,
+.Em $(programName)
 to
 .Em $(programName.InstallDir) ,
 with the name
-.Em $(programName.InstallName) ,
-creating the directory if necessary. Note that the
-.Nm Configure
-module variables
+.Em $(programName.InstallName)
+and mode
+.Em $(programName.InstallMode) .
+The target directory is automatically created if required.
+.Pp
+The variables
 .Nm Configure.ProgramPrefix ,
 .Nm Configure.ProgramSuffix
 and
 .Nm Configure.ProgramTransformName
-automatically impact the installed names of all the
-programs.
+automatically impact the installed names of all the programs.
 .Ss uninstall
 This
 .Em phony
