@@ -29,5 +29,7 @@ ZMK.makeTarget ?=
 		--dry-run \
 		$(or $(ZMK.makeTarget),$(firstword $(subst -, ,$*))) >$@ 2>&1) || true
 
+configure: $(ZMK.Path)/tests/Common.mk
+
 c::
 	rm -f *.log

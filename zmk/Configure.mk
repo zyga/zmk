@@ -286,7 +286,7 @@ endef
 # In maintainer mode the configure script is automatically updated.
 ifeq ($(Configure.MaintainerMode),yes)
 configure: export ZMK_CONFIGURE_SCRIPT = $(Configure.script)
-configure: $(ZMK.Path)/tests/Common.mk $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
+configure: $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
 	@echo "$${ZMK_CONFIGURE_SCRIPT}" >$@
 	chmod +x $@
 
