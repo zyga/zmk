@@ -35,7 +35,7 @@ ZMK.Path ?= $(dir $(ZMK.z.mk))
 # Modules and templates present in the package
 ZMK.modules = \
 	AllClean \
-	BuildObjects \
+	ObjectGroup \
 	Configure \
 	Coverity \
 	Directories \

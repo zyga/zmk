@@ -24,7 +24,7 @@ $$(error library name $1 must end with ".a")
 endif
 
 # Compile library objects.
-$$(eval $$(call ZMK.Expand,BuildObjects,$1))
+$$(eval $$(call ZMK.Expand,ObjectGroup,$1))
 
 # Create library archive.
 $1: $$($1.Objects)

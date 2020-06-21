@@ -24,7 +24,7 @@ define Library.So.Template
 $1: CFLAGS += -fpic
 $1: CXXFLAGS += -fpic
 $1: OBJCFLAGS += -fpic
-$$(eval $$(call ZMK.Expand,BuildObjects,$1))
+$$(eval $$(call ZMK.Expand,ObjectGroup,$1))
 
 # Watcom doesn't build dynamic libraries.
 ifneq (,$$(Toolchain.$$(if $$($1.ObjectsObjC),CC,$$(if $$($1.ObjectsCxx),CXX,CC)).IsWatcom))

@@ -21,7 +21,7 @@ $(eval $(call ZMK.Import,OS))
 Program.Variables=Sources InstallDir InstallMode Linker
 define Program.Template
 # Compile program objects.
-$$(eval $$(call ZMK.Expand,BuildObjects,$1))
+$$(eval $$(call ZMK.Expand,ObjectGroup,$1))
 
 $1.Linker ?= $$(if $$($1.ObjectsObjC),$$(CC),$$(if $$($1.ObjectsCxx),$$(CXX),$$(CC)))
 

@@ -23,7 +23,7 @@ define Library.DyLib.Template
 $1: CFLAGS += -fpic
 $1: CXXFLAGS += -fpic
 $1: OBJCFLAGS += -fpic
-$$(eval $$(call ZMK.Expand,BuildObjects,$1))
+$$(eval $$(call ZMK.Expand,ObjectGroup,$1))
 
 # We are building a dynamic library.
 $1: LDFLAGS += -dynamiclib

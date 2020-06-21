@@ -17,8 +17,8 @@
 $(eval $(call ZMK.Import,Toolchain))
 $(eval $(call ZMK.Import,OS))
 
-BuildObjects.Variables=Sources Objects ObjectsC ObjectsCxx ObjectsObjC
-define BuildObjects.Template
+ObjectGroup.Variables=Sources Objects ObjectsC ObjectsCxx ObjectsObjC
+define ObjectGroup.Template
 $1.Sources ?= $$(error define $1.Sources - the list of source files to compile)
 $1.ObjectsC ?= $$(addsuffix .o,$$(addprefix $1-,$$(basename $$(filter %.c,$$($1.Sources)))))
 $1.ObjectsCxx ?= $$(addsuffix .o,$$(addprefix $1-,$$(basename $$(filter %.cpp,$$($1.Sources)))))
