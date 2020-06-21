@@ -79,7 +79,7 @@ endif
 # Import toolchain-specific knowledge.
 $(eval $(call ZMK.Import,Toolchain.GCC))
 $(eval $(call ZMK.Import,Toolchain.Clang))
-$(eval $(call ZMK.Import,Toolchain.OpenWatcom))
+$(eval $(call ZMK.Import,Toolchain.Watcom))
 $(eval $(call ZMK.Import,Toolchain.Tcc))
 
 # Is either the C or C++ compiler a cross compiler?
@@ -99,4 +99,4 @@ CPPFLAGS += -MMD
 $(if $(Toolchain.debug),$(info DEBUG: compiling object files will generate make dependency information))
 endif
 
-$(if $(Toolchain.debug),$(foreach v,CC CXX CPP CFLAGS CXXFLAGS CPPFLAGS OBJCFLAGS ARFLAGS TARGET_ARCH LDLIBS LDFLAGS $(filter Toolchain.%,$(.VARIABLES)),$(info DEBUG: $v=$($v))))
+$(if $(Toolchain.debug),$(foreach v,CC CXX CPP CFLAGS CXXFLAGS CPPFLAGS OBJCFLAGS ARFLAGS TARGET_ARCH LDLIBS LDFLAGS $(sort $(filter Toolchain.%,$(.VARIABLES))),$(info DEBUG: $v=$($v))))

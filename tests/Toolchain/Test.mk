@@ -52,7 +52,7 @@ debug-watcom-dos-cc-detection.log: ZMK.makeOverrides += CC=open-watcom.owcc-dos
 debug-watcom-dos-cc-detection.log: ZMK.makeOverrides += Toolchain.cc=/snap/open-watcom.owcc-dos
 debug-watcom-dos-cc-detection: debug-watcom-dos-cc-detection.log
 	MATCH -qFx 'DEBUG: .exe suffix enabled because open-watcom.owcc-dos name' <$<
-	MATCH -qFx 'DEBUG: cross-compiling because open-watcom targets DOS' <$<
+	MATCH -qFx 'DEBUG: cross-compiling because Watcom targets DOS' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CC.ImageFormat=MZ' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CC.IsCross=yes' <$<
 	MATCH -qFx 'DEBUG: Toolchain.ImageFormat=Mixed' <$<
@@ -62,7 +62,7 @@ debug-watcom-dos-cxx-detection.log: ZMK.makeOverrides += CXX=open-watcom.owcc-do
 debug-watcom-dos-cxx-detection.log: ZMK.makeOverrides += Toolchain.cxx=/snap/open-watcom.owcc-dos
 debug-watcom-dos-cxx-detection: debug-watcom-dos-cxx-detection.log
 	MATCH -qFx 'DEBUG: .exe suffix enabled because open-watcom.owcc-dos name' <$<
-	MATCH -qFx 'DEBUG: cross-compiling because open-watcom targets DOS' <$<
+	MATCH -qFx 'DEBUG: cross-compiling because Watcom targets DOS' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CXX.ImageFormat=MZ' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CXX.IsCross=yes' <$<
 	MATCH -qFx 'DEBUG: Toolchain.ImageFormat=Mixed' <$<
@@ -72,7 +72,7 @@ debug-watcom-win16-cc-detection.log: ZMK.makeOverrides += CC=open-watcom.owcc-wi
 debug-watcom-win16-cc-detection.log: ZMK.makeOverrides += Toolchain.cc=/snap/open-watcom.owcc-win16
 debug-watcom-win16-cc-detection: debug-watcom-win16-cc-detection.log
 	MATCH -qFx 'DEBUG: .exe suffix enabled because open-watcom.owcc-win16 name' <$<
-	MATCH -qFx 'DEBUG: cross-compiling because open-watcom targets DOS' <$<
+	MATCH -qFx 'DEBUG: cross-compiling because Watcom targets DOS' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CC.ImageFormat=MZ' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CC.IsCross=yes' <$<
 	MATCH -qFx 'DEBUG: Toolchain.ImageFormat=Mixed' <$<
@@ -82,7 +82,7 @@ debug-watcom-win16-cxx-detection.log: ZMK.makeOverrides += CXX=open-watcom.owcc-
 debug-watcom-win16-cxx-detection.log: ZMK.makeOverrides += Toolchain.cxx=/snap/open-watcom.owcc-win16
 debug-watcom-win16-cxx-detection: debug-watcom-win16-cxx-detection.log
 	MATCH -qFx 'DEBUG: .exe suffix enabled because open-watcom.owcc-win16 name' <$<
-	MATCH -qFx 'DEBUG: cross-compiling because open-watcom targets DOS' <$<
+	MATCH -qFx 'DEBUG: cross-compiling because Watcom targets DOS' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CXX.ImageFormat=MZ' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CXX.IsCross=yes' <$<
 	MATCH -qFx 'DEBUG: Toolchain.ImageFormat=Mixed' <$<
@@ -92,7 +92,7 @@ debug-watcom-win32-cc-detection.log: ZMK.makeOverrides += CC=open-watcom.owcc-wi
 debug-watcom-win32-cc-detection.log: ZMK.makeOverrides += Toolchain.cc=/snap/open-watcom.owcc-win32
 debug-watcom-win32-cc-detection: debug-watcom-win32-cc-detection.log
 	MATCH -qFx 'DEBUG: .exe suffix enabled because open-watcom.owcc-win32 name' <$<
-	MATCH -qFx 'DEBUG: cross-compiling because open-watcom targets Windows' <$<
+	MATCH -qFx 'DEBUG: cross-compiling because Watcom targets Windows' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CC.ImageFormat=PE' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CC.IsCross=yes' <$<
 	MATCH -qFx 'DEBUG: Toolchain.ImageFormat=Mixed' <$<
@@ -102,7 +102,7 @@ debug-watcom-win32-cxx-detection.log: ZMK.makeOverrides += CXX=open-watcom.owcc-
 debug-watcom-win32-cxx-detection.log: ZMK.makeOverrides += Toolchain.cxx=/snap/open-watcom.owcc-win32
 debug-watcom-win32-cxx-detection: debug-watcom-win32-cxx-detection.log
 	MATCH -qFx 'DEBUG: .exe suffix enabled because open-watcom.owcc-win32 name' <$<
-	MATCH -qFx 'DEBUG: cross-compiling because open-watcom targets Windows' <$<
+	MATCH -qFx 'DEBUG: cross-compiling because Watcom targets Windows' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CXX.ImageFormat=PE' <$<
 	MATCH -qFx 'DEBUG: Toolchain.CXX.IsCross=yes' <$<
 	MATCH -qFx 'DEBUG: Toolchain.ImageFormat=Mixed' <$<
