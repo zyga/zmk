@@ -86,7 +86,7 @@ debug-configure: debug-configure.log
 configured-defaults: configured.defaults.mk
 	# Minimal defaults are set
 	MATCH -qFx 'srcdir=.' <$<
-	MATCH -qFx 'VPATH=$$(srcdir)' <$<$
+	MATCH -qFx 'VPATH=$$(srcdir)' <$<
 	MATCH -qFx 'Configure.Configured=yes' <$<
 	MATCH -qFx 'Configure.Options=' <$<
 	# Other options are not explicitly set.
