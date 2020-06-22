@@ -1,6 +1,6 @@
 # Are we using GCC?
 Toolchain.CC.IsGcc=$(if $(findstring gcc,$(Toolchain.cc)),yes)
-Toolchain.CXX.IsGcc=$(if $(findstring g++,$(Toolchain.cxx)),yes)
+Toolchain.CXX.IsGcc=$(if $(and $(if $(findstring clang++,$(Toolchain.cxx)),,not-clang++),$(findstring g++,$(Toolchain.cxx))),yes)
 Toolchain.IsGcc=$(and $(Toolchain.CC.IsGcc),$(Toolchain.CXX.IsGcc))
 
 # Logic specific to gcc
