@@ -60,21 +60,10 @@ Toolchain.DependencyTracking ?= $(Configure.DependencyTracking)
 Toolchain.cc ?= $(shell sh -c "command -v $(CC)")
 Toolchain.cxx ?= $(shell sh -c "command -v $(CXX)")
 
-ifeq ($(Toolchain.cc),/usr/bin/cc)
-Toolchain.cc := $(realpath $(Toolchain.cc))
-else
-Toolchain.cc := $(Toolchain.cc)
-endif
-
-ifeq ($(Toolchain.cxx),/usr/bin/g++)
-Toolchain.cxx := $(realpath $(Toolchain.cxx))
-else
-ifeq ($(Toolchain.cxx),/usr/bin/c++)
-Toolchain.cxx := $(realpath $(Toolchain.cxx))
-else
-Toolchain.cxx := $(Toolchain.cxx)
-endif
-endif
+# When CC or CXX point to platform default compiler alias, resolve
+# them to the real value, which is better to identify the toolchain.
+Toolchain.cc := $(if $(findstring $(Toolchain.cc),/usr/bin/cc),$(realpath $(Toolchain.cc)),$(Toolchain.cc))
+Toolchain.cxx := $(if $(findstring $(Toolchain.cxx),/usr/bin/c++ /usr/bin/g++),$(realpath $(Toolchain.cxx)),$(Toolchain.cxx))
 
 # Import toolchain-specific knowledge.
 $(eval $(call ZMK.Import,Toolchain.GCC))
