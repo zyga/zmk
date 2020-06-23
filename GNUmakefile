@@ -45,17 +45,25 @@ $(foreach f,$(ZMK.manPages),$(eval $(call ZMK.Expand,ManPage,man/$f)))
 # Build the release tarball.
 $(NAME)_$(VERSION).tar.gz.Files = GNUmakefile README.md LICENSE NEWS
 $(NAME)_$(VERSION).tar.gz.Files += $(addprefix man/,$(ZMK.manPages))
-$(NAME)_$(VERSION).tar.gz.Files += examples/hello-c/hello.c examples/hello-c/Makefile examples/hello-c/Test.mk
-$(NAME)_$(VERSION).tar.gz.Files += examples/hello-cpp/hello.cpp examples/hello-cpp/Makefile examples/hello-cpp/Test.mk
-$(NAME)_$(VERSION).tar.gz.Files += examples/hello-objc/hello.m examples/hello-objc/Makefile examples/hello-objc/Test.mk examples/hello-objc/README.txt
-$(NAME)_$(VERSION).tar.gz.Files += examples/libhello-c/hello.c examples/libhello-c/hello.h examples/libhello-c/Makefile examples/libhello-c/Test.mk
-$(NAME)_$(VERSION).tar.gz.Files += examples/libhello-cpp/hello.cpp examples/libhello-cpp/hello.h examples/libhello-cpp/Makefile examples/libhello-cpp/Test.mk
-$(NAME)_$(VERSION).tar.gz.Files += examples/libhello-objc/hello.m examples/libhello-objc/hello.h examples/libhello-objc/Makefile examples/libhello-objc/Test.mk
-$(NAME)_$(VERSION).tar.gz.Files += examples/true_false/true_false.c examples/true_false/Makefile examples/true_false/Test.mk examples/true_false/README.txt
-$(NAME)_$(VERSION).tar.gz.Files += tests/Directories/Makefile tests/Directories/Test.mk
-$(NAME)_$(VERSION).tar.gz.Files += tests/Directory/Makefile tests/Directory/Test.mk
-$(NAME)_$(VERSION).tar.gz.Files += tests/OS/Makefile tests/OS/Test.mk
-$(NAME)_$(VERSION).tar.gz.Files += tests/Toolchain/Makefile tests/Toolchain/Test.mk
+$(NAME)_$(VERSION).tar.gz.Files += $(addprefix examples/hello-c/,Makefile Test.mk hello.c)
+$(NAME)_$(VERSION).tar.gz.Files += $(addprefix examples/hello-cpp/,Makefile Test.mk hello.cpp)
+$(NAME)_$(VERSION).tar.gz.Files += $(addprefix examples/hello-objc/,Makefile Test.mk hello.m README.txt)
+$(NAME)_$(VERSION).tar.gz.Files += $(addprefix examples/libhello-c/,Makefile Test.mk hello.c hello.h)
+$(NAME)_$(VERSION).tar.gz.Files += $(addprefix examples/libhello-cpp/,Makefile Test.mk hello.cpp hello.h)
+$(NAME)_$(VERSION).tar.gz.Files += $(addprefix examples/libhello-objc/,Makefile Test.mk hello.m hello.h)
+$(NAME)_$(VERSION).tar.gz.Files += $(addprefix examples/true_false/,Makefile Test.mk true_false.c README.txt)
+$(NAME)_$(VERSION).tar.gz.Files += $(addprefix examples/script/,Makefile Test.mk hello.sh)
+$(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Configure/,Makefile Test.mk)
+$(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Directories/,Makefile Test.mk)
+$(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Directory/,Makefile Test.mk)
+$(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Header/,Makefile Test.mk foo.h)
+$(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Library.A/,Makefile Test.mk foo.c)
+$(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Library.DyLib/,Makefile Test.mk foo.c)
+$(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Library.So/,Makefile Test.mk foo.c)
+$(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/OS/,Makefile Test.mk)
+$(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Program/,Makefile Test.mk foo.c bar.cpp froz.m)
+$(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Symlink/,Makefile Test.mk)
+$(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Toolchain/,Makefile Test.mk)
 $(NAME)_$(VERSION).tar.gz.Files += tests/bin/GREP
 $(eval $(call ZMK.Expand,Tarball.Src,$(NAME)_$(VERSION).tar.gz))
 

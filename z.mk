@@ -64,11 +64,13 @@ ZMK.modules = \
 
 # Manual pages present in the package.
 ZMK.manPages = \
+	zmk.AllClean.5 \
+	zmk.Configure.5 \
 	zmk.Directories.5 \
 	zmk.OS.5 \
-	zmk.Toolchain.5 \
-	zmk.AllClean.5 \
-	zmk.Program.5
+	zmk.Program.5 \
+	zmk.Script.5 \
+	zmk.Toolchain.5
 
 # Files belonging to ZMK that need to be distributed in third-party release tarballs.
 ZMK.DistFiles = z.mk $(addprefix zmk/,$(foreach m,$(ZMK.modules),$m.mk) pvs-filter.awk)
