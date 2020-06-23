@@ -43,6 +43,7 @@
         "includedir",
         "infodir",
         "kfreebsd",
+        "krynicki",
         "lastword",
         "ldflags",
         "ldlibs",
@@ -92,6 +93,7 @@
         "uname",
         "vpath",
         "watcom",
-        "xcrun"
+        "xcrun",
+        "zygmunt"
     ]
 }
