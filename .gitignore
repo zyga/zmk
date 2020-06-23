@@ -13,3 +13,6 @@ zmk_*.tar.gz.asc
 
 # Test log files
 *.log
+
+# Generated manual pages
+man/*.5
