@@ -66,10 +66,10 @@ Toolchain.cc := $(if $(findstring $(Toolchain.cc),/usr/bin/cc),$(realpath $(Tool
 Toolchain.cxx := $(if $(findstring $(Toolchain.cxx),/usr/bin/c++ /usr/bin/g++),$(realpath $(Toolchain.cxx)),$(Toolchain.cxx))
 
 # Import toolchain-specific knowledge.
-$(eval $(call ZMK.Import,Toolchain.GCC))
-$(eval $(call ZMK.Import,Toolchain.Clang))
-$(eval $(call ZMK.Import,Toolchain.Watcom))
-$(eval $(call ZMK.Import,Toolchain.Tcc))
+$(eval $(call ZMK.Import,toolchain.GCC))
+$(eval $(call ZMK.Import,toolchain.Clang))
+$(eval $(call ZMK.Import,toolchain.Watcom))
+$(eval $(call ZMK.Import,toolchain.Tcc))
 
 # Is either the C or C++ compiler a cross compiler?
 Toolchain.IsCross ?= $(or $(Toolchain.CC.IsCross),$(Toolchain.CXX.IsCross))

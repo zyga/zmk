@@ -56,10 +56,10 @@ ZMK.modules = \
 	Tarball \
 	Tarball.Src \
 	Toolchain \
-	Toolchain.Clang \
-	Toolchain.GCC \
-	Toolchain.Tcc \
-	Toolchain.Watcom \
+	toolchain.Clang \
+	toolchain.GCC \
+	toolchain.Tcc \
+	toolchain.Watcom \
 	internalTest
 
 # Manual pages present in the package.
