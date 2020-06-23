@@ -124,8 +124,8 @@ $$(error incorrect call to ZMK.Import, expected module name)
 endif
 ifeq (,$$(filter $1,$$(ZMK.ImportedModules)))
 $$(if $$(findstring import,$$(DEBUG)),$$(info DEBUG: importing »$1«))
-include $$(ZMK.Path)zmk/$1.mk
 ZMK.ImportedModules += $1
+include $$(ZMK.Path)zmk/$1.mk
 endif
 endef
 

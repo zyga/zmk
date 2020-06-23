@@ -16,12 +16,9 @@
 
 $(eval $(call ZMK.Import,Directories))
 
-$(DESTDIR)$(includedir)/%.h: %.h | $(DESTDIR)$(includedir)
-	install -m 0644 $^ $@
-
 Header.Variables=
 define Header.Template
-install:: $$(DESTDIR)$$(includedir)/$1
-uninstall::
-	rm -f $$(DESTDIR)$$(includedir)/$1
+$1.InstallDir = $(includedir)
+$1.InstallMode = 0644
+$$(eval $$(call ZMK.Expand,InstallUninstall,$1))
 endef

@@ -49,13 +49,13 @@ $1: $$($1.Objects)
 $1.InstallDir ?= $$(libdir)
 $$(eval $$(call ZMK.Expand,InstallUninstall,$1))
 
-# Install symlink (alias) to the versioned library.
+# React to "all" and "clean".
+$$(eval $$(call ZMK.Expand,AllClean,$1))
+
+# Create symlink (alias) to the versioned library.
 $1.alias ?= $$(basename $$(basename $1)).dylib
 $$($1.alias).InstallDir ?= $$($1.InstallDir)
 $$($1.alias).SymlinkTarget = $1
 $$(eval $$(call ZMK.Expand,Symlink,$$($1.alias)))
 
-# React to "all" and "clean".
-$$(eval $$(call ZMK.Expand,AllClean,$1))
-$$(eval $$(call ZMK.Expand,AllClean,$$($1.alias)))
 endef

@@ -26,11 +26,8 @@ $(eval $(call ZMK.Import,Directories))
 ManPage.Variables=Section
 define ManPage.Template
 $1.Section ?= $$(patsubst .%,%,$$(suffix $1))
-
-install:: $$(DESTDIR)$$(man$$($1.Section)dir)/$$(notdir $1)
-uninstall::
-	rm -f $$(DESTDIR)$$(man$$($1.Section)dir)/$$(notdir $1)
-$$(DESTDIR)$$(man$$($1.Section)dir)/$$(notdir $1): $1 | $$(DESTDIR)$$(man$$($1.Section)dir)
-	install $$^ $$@
+$1.InstallDir = $$(if $$(man$$($1.Section)dir),,$$(error unknown section $$($1.Section)))
+$1.InstallMode = 0644
+$$(eval $$(call ZMK.Expand,InstallUninstall,$1))
 static-check-manpages: $1
 endef

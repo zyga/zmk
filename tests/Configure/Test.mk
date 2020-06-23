@@ -81,7 +81,7 @@ debug-defaults: debug-defaults.log
 debug-configure.log: ZMK.makeTarget=configure
 debug-configure: debug-configure.log
 	# The configure script can be remade.
-	GREP -qF 'echo "$${ZMK_CONFIGURE_SCRIPT}" >configure' <$<
+	GREP -qFx 'echo "$${ZMK_CONFIGURE_SCRIPT}" >configure' <$<
 
 configured-defaults: configured.defaults.mk
 	# Minimal defaults are set

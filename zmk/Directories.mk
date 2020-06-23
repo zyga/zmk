@@ -17,20 +17,6 @@
 # Is zmk debugging enabled for this module?
 Directories.debug ?= $(findstring directories,$(DEBUG))
 
-# Installation location
-
-# Define DESTDIR to an empty value so that make --warn-undefined-variables
-# does not complain about it.
-ifeq ($(origin DESTDIR),undefined)
-DESTDIR ?=
-else
-# Warn if DESTDIR is defined in a makefile. This is probably a mistake.
-ifeq ($(origin DESTDIR),file)
-$(warning DESTDIR should be set only through environment variable, not in a makefile)
-endif
-endif
-$(if $(Directories.debug),$(info DEBUG: DESTDIR=$(DESTDIR)))
-
 # Installation prefix.
 prefix ?= /usr/local
 $(if $(Directories.debug),$(info DEBUG: prefix=$(prefix)))
@@ -79,11 +65,5 @@ endif
 
 $(if $(Directories.debug),$(info DEBUG: Directories.POSIX=$(Directories.POSIX)))
 
-# List of directories that need to be created and have corresponding rules.
-# All of the POSIX directories are created with a single rule from the
-# Directories module and do not need to be repeated here.
-Directories.Known = $(Directories.POSIX)
-
-# Create standard directories on demand.
-$(sort $(DESTDIR) $(addprefix $(DESTDIR),$(Directories.POSIX))):
-	install -d $@
+# Provide implicit rules for all the well-known directories.
+$(foreach d,$(Directories.POSIX),$(eval $(call ZMK.Expand,Directory,$d)))
