@@ -20,8 +20,14 @@ Directory.Variables=
 define Directory.Template
 ifneq ($1,./)
 ifeq (,$$(findstring $1,$$(Directories.Known)))
+$1.parentDir = $$(patsubst %/,%,$$(dir $1))
+ifneq (,$$($1.parentDir))
+ifeq (,$$(findstring $$($1.parentDir),$$(Directories.Known)))
+$$(eval $$(call ZMK.Expand,Directory,$$($1.parentDir)))
+endif # !parent known
+endif # !parent empty
 Directories.Known += $1
-$$(DESTDIR)$1:
+$$(DESTDIR)$1: | $$(DESTDIR)$$($1.parentDir)
 	install -d $$@
 endif # !known
 endif # !./
