@@ -3,6 +3,7 @@
 *.dylib
 *.o
 *.so.*
+*.so
 
 # Dependency data
 *.d
