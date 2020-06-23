@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 # This file is a part of zmk test system.
-include ../../tests/Common.mk
+include zmk/internalTest.mk
 
 t:: all
 

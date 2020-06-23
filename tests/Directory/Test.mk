@@ -1,5 +1,5 @@
 #!/usr/bin/make -f
-include ../Common.mk
+include zmk/internalTest.mk
 
 t:: install
 

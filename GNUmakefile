@@ -57,7 +57,6 @@ $(NAME)_$(VERSION).tar.gz.Files += tests/Directory/Makefile tests/Directory/Test
 $(NAME)_$(VERSION).tar.gz.Files += tests/OS/Makefile tests/OS/Test.mk
 $(NAME)_$(VERSION).tar.gz.Files += tests/Toolchain/Makefile tests/Toolchain/Test.mk
 $(NAME)_$(VERSION).tar.gz.Files += tests/bin/MATCH
-$(NAME)_$(VERSION).tar.gz.Files += tests/Common.mk
 $(eval $(call ZMK.Expand,Tarball.Src,$(NAME)_$(VERSION).tar.gz))
 
 

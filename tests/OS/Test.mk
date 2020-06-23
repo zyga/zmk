@@ -1,5 +1,5 @@
 #!/usr/bin/make -f
-include ../Common.mk
+include zmk/internalTest.mk
 
 t:: debug-linux debug-freebsd debug-openbsd debug-netbsd \
 	debug-hurd debug-gnu-kfreebsd debug-solaris \

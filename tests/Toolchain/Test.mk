@@ -1,5 +1,5 @@
 #!/usr/bin/make -f
-include ../Common.mk
+include zmk/internalTest.mk
 
 t:: debug-defaults debug-dependency-tracking \
 	debug-mingw-cc-detection debug-mingw-cxx-detection \

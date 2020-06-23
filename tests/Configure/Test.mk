@@ -1,5 +1,5 @@
 #!/usr/bin/make -f
-include ../Common.mk
+include zmk/internalTest.mk
 
 t:: \
 	configure-shellcheck \
@@ -37,7 +37,7 @@ t:: \
 %.log: ZMK.makeOverrides += DEBUG=configure
 
 # The configure script is generated.
-configure: Makefile $(ZMK.Path)/tests/Common.mk $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
+configure: Makefile $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
 	$(MAKE) -I $(ZMK.Path) $@
 c::
 	rm -f configure

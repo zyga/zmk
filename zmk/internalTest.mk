@@ -1,3 +1,6 @@
+# NOTE: This file is not a part of the public ZMK API.
+# It is used by zmk self-test suite and it is provided here for convenience.
+
 # Tests are grouped under the "t" target
 .PHONY: t
 t::
@@ -22,14 +25,14 @@ ZMK.makeTarget ?=
 # Tests do not mention directory changes
 # Tests warn about undefined variables
 %.log: MAKEFLAGS=Bn
-%.log: Test.mk Makefile $(ZMK.Path)/tests/Common.mk $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
+%.log: Test.mk Makefile $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
 	$(strip LANG=C $(MAKE) $(ZMK.makeOverrides) -I $(ZMK.Path) \
 		--warn-undefined-variables \
 		--always-make \
 		--dry-run \
 		$(or $(ZMK.makeTarget),$(firstword $(subst -, ,$*))) >$@ 2>&1) || true
 
-configure: $(ZMK.Path)/tests/Common.mk
+configure: $(ZMK.Path)/zmk/internalTest.mk
 
 c::
 	rm -f *.log

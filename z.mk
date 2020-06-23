@@ -35,7 +35,6 @@ ZMK.Path ?= $(dir $(ZMK.z.mk))
 # Modules and templates present in the package
 ZMK.modules = \
 	AllClean \
-	ObjectGroup \
 	Configure \
 	Coverity \
 	Directories \
@@ -48,9 +47,10 @@ ZMK.modules = \
 	Library.So \
 	ManPage \
 	OS \
+	ObjectGroup \
+	PVS \
 	Program \
 	Program.Test \
-	PVS \
 	Script \
 	Symlink \
 	Tarball \
@@ -58,8 +58,9 @@ ZMK.modules = \
 	Toolchain \
 	Toolchain.Clang \
 	Toolchain.GCC \
+	Toolchain.Tcc \
 	Toolchain.Watcom \
-	Toolchain.Tcc
+	internalTest
 
 # Manual pages present in the package.
 ZMK.manPages = \
