@@ -8,4 +8,4 @@ t:: install
 %.log: ZMK.makeOverrides += DESTDIR=/tmp
 
 install: install.log
-	MATCH -qF 'install -d /tmp/foo' <$<
+	GREP -qF 'install -d /tmp/foo' <$<
