@@ -63,6 +63,7 @@ $(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Library.So/,Makefile Test.m
 $(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/OS/,Makefile Test.mk)
 $(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Program/,Makefile Test.mk foo.c bar.cpp froz.m)
 $(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Symlink/,Makefile Test.mk)
+$(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Tarball.Src/,Makefile Test.mk foo.txt)
 $(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Toolchain/,Makefile Test.mk)
 $(NAME)_$(VERSION).tar.gz.Files += tests/bin/GREP
 $(eval $(call ZMK.Expand,Tarball.Src,$(NAME)_$(VERSION).tar.gz))
