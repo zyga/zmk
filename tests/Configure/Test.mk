@@ -52,7 +52,7 @@ c::
 	rm -f configured.*.mk
 
 configure-shellcheck: configure
-	shellcheck $<
+	if [ "`command -v shellcheck`" != "" ]; then shellcheck $<; fi
 
 configure-enable-option-checking: export ZMK_CONFIGURE_MAKEFILE=configured.enable-option-checking.mk
 configure-enable-option-checking: configure
