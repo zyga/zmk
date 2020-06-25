@@ -45,6 +45,7 @@ else
 $1.cleaned=$1
 endif
 ifneq ($$($1.cleaned),.)
+ifneq ($$($1.cleaned),/)
 ifeq (,$$(filter $$($1.cleaned),$$(Directory.known)))
 $1.parentDir = $$(patsubst %/,%,$$(dir $$($1.cleaned)))
 ifneq (,$$($1.parentDir))
@@ -63,5 +64,6 @@ $$($1.cleaned): | $$($1.parentDir)
 	install -d $$@
 endif # !absolute
 endif # !known
-endif # !./
+endif # !.
+endif # !/
 endef
