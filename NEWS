@@ -1,4 +1,13 @@
-Changes in 0.3 (unreleased):
+Changes in 0.3.1:
+
+ * The GitVersion module now follows public/private variable naming scheme.
+   The only public attribute is GitVersion.Active, which expands to yes if
+   the module has altered VERSION as compared to what was set in the makefile.
+
+ * The Tarball.Src module no longer attempts to sign releases in CI systems.
+   and no longer issues warnings if the GitVersion module is not used.
+
+Changes in 0.3:
 
  * For future extensibility backwards compatibility is dropped. All symbols are
    different. By the time this release is finalized a compatibility module may

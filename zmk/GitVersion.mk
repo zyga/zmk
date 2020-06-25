@@ -16,28 +16,49 @@
 
 # Craft a better version if we have Git.
 
-VERSION_static := $(strip $(VERSION))
-VERSION=$(VERSION_static)
-$(if $(findstring version,$(DEBUG)),$(info DEBUG: VERSION_static=$(VERSION_static)))
+GitVersion.debug ?= $(findstring version,$(DEBUG))
+GitVersion.versionFilePresent = $(if $(wildcard $(srcdir)/.version),yes)
+GitVersion.gitAvailable ?= $(if $(shell command -v git 2>/dev/null),yes)
+GitVersion.gitMetaDataPresent ?= $(if $(wildcard $(srcdir)/.git),yes)
+GitVersion.versionFromMakefile := $(strip $(VERSION))
+GitVersion.versionFromFile =
+GitVersion.versionFromGit =
+GitVersion.Active =
 
+ifeq (yes,$(GitVersion.versionFilePresent))
 # Note that we never generate this file from any rule in zmk!
-# The source tree contains the .version file then it is authoritative.
-ifneq (,$(wildcard $(srcdir)/.version))
-VERSION_dot_version_file = $(shell cat $(srcdir)/.version 2>/dev/null)
-$(if $(findstring version,$(DEBUG)),$(info DEBUG: VERSION_dot_version_file=$(VERSION_dot_version_file)))
-VERSION=$(or $(VERSION_dot_version_file),$(VERSION_static))
+# If the source tree contains the .version file then it is authoritative.
+GitVersion.versionFromFile:=$(shell cat $(srcdir)/.version 2>/dev/null)
 else
-ifneq (,$(and $(shell command -v git 2>/dev/null),$(wildcard $(srcdir)/.git)))
+ifeq (yes,$(and $(GitVersion.gitAvailable),$(GitVersion.gitMetaDataPresent)))
 # If we have the git program and the .git directory then we can also ask git.
-VERSION_git=$(shell GIT_DIR=$(srcdir)/.git git describe --abbrev=10 --tags 2>/dev/null | sed -e 's/^v//')
-# Check if we are under CI (Travis/GitHub Actions) then error if partial checkouts are used.
-ifneq ($(origin CI),undefined)
-$(if $(VERSION_git),,$(error zmk cannot compute project version from git, did the CI system use shallow clone?))
-endif
-$(if $(findstring version,$(DEBUG)),$(info DEBUG: VERSION_git=$(VERSION_git)))
-VERSION=$(or $(VERSION_git),$(VERSION_static))
+GitVersion.versionFromGit=$(shell GIT_DIR=$(srcdir)/.git git describe --abbrev=10 --tags 2>/dev/null | sed -e 's/^v//')
+ifneq (,$(value CI))
+# If we are in CI and git version was empty then perhaps this is a shallow clone?
+ifeq (,$(GitVersion.versionFromGit))
+$(error zmk cannot compute project version from git, did the CI system use a shallow clone?))
+endif # ! git version
+endif # ! CI
+endif # version from git
+endif # !version from version file
+
+# If we have a version from git, offer a rule that writes it to the source
+# tree. This file is picked up by the Tarball.Src module and internally renamed
+# to .version inside the archive. When we see the .version file we do not look
+# for git information anymore, as it may no longer be the "same" git history.
+ifneq (,$(GitVersion.versionFromGit))
 $(srcdir)/.version-from-git: $(srcdir)/.git
-	echo $(VERSION_git) >$@
+	echo $(GitVersion.versionFromGit) >$@
 endif
+
+# Set the new effective VERSION.
+VERSION=$(or $(GitVersion.versionFromFile),$(GitVersion.versionFromGit),$(GitVersion.versionFromMakefile))
+
+# If the effective version is different from the version in the makefile then
+# set the active flag. This information is used by the Tarball.Src module.
+ifneq ($(VERSION),$(GitVersion.versionFromMakefile))
+GitVersion.Active = yes
 endif
-$(if $(findstring version,$(DEBUG)),$(info DEBUG: definition of VERSION=$(value VERSION)))
+
+$(if $(GitVersion.debug),$(foreach v,versionFilePresent gitAvailable gitMetaDataPresent versionFromMakefile versionFromFile versionFromGit Active,$(info DEBUG: GitVersion.$v=$(GitVersion.$v))))
+$(if $(GitVersion.debug),$(info DEBUG: effective VERSION=$(VERSION)))
