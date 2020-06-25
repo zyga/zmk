@@ -1,3 +1,9 @@
+Changes in 0.3.3:
+
+ * Tests no longer hang on case-insensitive filesystems.
+
+ * The Directory module no longer issues warnings on MacOS
+
 Changes in 0.3.2:
 
  * The ManPage module no longer installs files to the /man directory.
