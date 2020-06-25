@@ -60,6 +60,7 @@ $(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Header/,Makefile Test.mk fo
 $(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Library.A/,Makefile Test.mk foo.c)
 $(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Library.DyLib/,Makefile Test.mk foo.c)
 $(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Library.So/,Makefile Test.mk foo.c)
+$(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/ManPage/,Makefile Test.mk foo.1 foo.2 foo.3 foo.4 foo.5 foo.6 foo.7 foo.8 foo.9)
 $(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/OS/,Makefile Test.mk)
 $(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Program/,Makefile Test.mk foo.c bar.cpp froz.m)
 $(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Symlink/,Makefile Test.mk)

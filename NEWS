@@ -1,3 +1,7 @@
+Changes in 0.3.2:
+
+ * The ManPage module no longer installs files to the /man directory.
+
 Changes in 0.3.1:
 
  * The GitVersion module now follows public/private variable naming scheme.
