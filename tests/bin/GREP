@@ -1,6 +1,9 @@
 #!/bin/sh
+test -f /bin/grep && grep=/bin/grep
+test -f /usr/bin/grep && grep=/usr/bin/grep
+
 input="$(cat)"
-if echo "$input" | grep -q "$@"; then
+if echo "$input" | "$grep" -q "$@"; then
 	exit 0
 fi
 printf 'GREP: failed to match: grep'
