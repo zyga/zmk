@@ -46,7 +46,7 @@ $(foreach f,$(ZMK.manPages),$(eval $(call ZMK.Expand,ManPage,man/$f)))
 
 # Build the release tarball.
 $(NAME)_$(VERSION).tar.gz.Files = GNUmakefile README.md LICENSE NEWS
-$(NAME)_$(VERSION).tar.gz.Files += $(addprefix man/,$(ZMK.manPages))
+$(NAME)_$(VERSION).tar.gz.Files += $(addsuffix .in,$(addprefix man/,$(ZMK.manPages)))
 $(NAME)_$(VERSION).tar.gz.Files += $(addprefix examples/hello-c/,Makefile Test.mk hello.c)
 $(NAME)_$(VERSION).tar.gz.Files += $(addprefix examples/hello-cpp/,Makefile Test.mk hello.cpp)
 $(NAME)_$(VERSION).tar.gz.Files += $(addprefix examples/hello-objc/,Makefile Test.mk hello.m README.txt)

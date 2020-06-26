@@ -1,3 +1,8 @@
+Changes in 0.3.7:
+
+* The release archive no longer contains the pre-compiled manual pages. Instead
+ the .in files are shipped, to be compiled locally.
+
 Changes in 0.3.6:
 
 * InstallUninstall no longer reuses the relative directory in the source tree
