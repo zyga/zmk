@@ -24,7 +24,7 @@ VERSION ?= $(error define VERSION - the static version of the project)
 srcdir ?= .
 
 # Version of the zmk library.
-ZMK.Version = 0.3.5
+ZMK.Version = 0.3.6
 
 # Location of include files used by the makefile system. Normally this is the
 # zmk subdirectory of /usr/include, as this is where make is importing things

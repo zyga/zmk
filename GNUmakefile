@@ -15,7 +15,7 @@
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
 NAME = zmk
-VERSION = 0.3.5  # This needs to match ZMK.Version
+VERSION = 0.3.6  # This needs to match ZMK.Version
 
 # Use the local copy of zmk rather than the system-wide one.
 ZMK.Path = .
