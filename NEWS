@@ -1,3 +1,8 @@
+Changes in 0.3.4:
+
+ * GitVersion no longer interferes with downstream packaging of releases
+   by bundling the .version file for snapshots and tagged releases alike.
+
 Changes in 0.3.3:
 
  * Tests no longer hang on case-insensitive filesystems.

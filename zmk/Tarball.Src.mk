@@ -31,8 +31,10 @@ ifneq (,$$(filter Configure,$$(ZMK.ImportedModules)))
 $1.Files += configure
 endif
 
-# If the GitVersion module is imported and has contributed version information then include it.
-ifneq (,$$(and $$(filter GitVersion,$$(ZMK.ImportedModules)),$$(GitVersion.Active)))
+# If the GitVersion module is imported then put the .version-from-git file
+# inside the source archive. This way the GitVersion module will not attempt to
+# refer to git after the archive is extracted for installation later.
+ifneq (,$$(filter GitVersion,$$(ZMK.ImportedModules)))
 $1.Files += .version-from-git
 endif
 
