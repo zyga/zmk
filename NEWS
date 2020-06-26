@@ -1,3 +1,7 @@
+Changes in 0.3.8:
+
+* The release archive now contains the full collection of test files.
+
 Changes in 0.3.7:
 
 * The release archive no longer contains the pre-compiled manual pages. Instead
