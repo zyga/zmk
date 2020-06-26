@@ -29,8 +29,8 @@ ZMK.Version = 0.3.4
 # Location of include files used by the makefile system. Normally this is the
 # zmk subdirectory of /usr/include, as this is where make is importing things
 # from.
-ZMK.z.mk := $(lastword $(MAKEFILE_LIST)))
-ZMK.Path ?= $(dir $(ZMK.z.mk))
+ZMK.z.mk := $(lastword $(MAKEFILE_LIST))
+ZMK.Path ?= $(or $(patsubst %/,%,$(dir $(ZMK.z.mk))),.)
 
 # Modules and templates present in the package
 ZMK.modules = \
@@ -75,19 +75,19 @@ ZMK.manPages = \
 # Files belonging to ZMK that need to be distributed in third-party release tarballs.
 ZMK.DistFiles = z.mk $(addprefix zmk/,$(foreach m,$(ZMK.modules),$m.mk) pvs-filter.awk)
 
-# Unless we are building zmk itself, define rules for bundling essential parts of the build system.
-ifneq ($(value NAME),zmk)
-ifneq ($(ZMK.Path),$(srcdir)/)
+# If zmk is provided externally add rules to copy it to the source tree and
+# make the distclean target remove it from the tree.
+ifneq ($(ZMK.Path),$(srcdir))
 $(srcdir)/zmk:
 	install -d $@
-$(srcdir)/zmk/%: $(ZMK.Path)zmk/% | $(srcdir)/zmk
+$(srcdir)/zmk/%: $(ZMK.Path)/zmk/% | $(srcdir)/zmk
 	install -m 644 $< $@
-$(srcdir)/z.mk: $(ZMK.Path)z.mk
+$(srcdir)/z.mk: $(ZMK.Path)/z.mk
 	install -m 644 $< $@
-endif
 distclean::
 	rm -rf $(srcdir)/zmk
 	rm -f $(srcdir)/z.mk
+	rm -f configure
 endif
 
 # ZMK Copyright Banner. Do not remove.
@@ -127,7 +127,7 @@ endif
 ifeq (,$$(filter $1,$$(ZMK.ImportedModules)))
 $$(if $$(findstring import,$$(DEBUG)),$$(info DEBUG: importing »$1«))
 ZMK.ImportedModules += $1
-include $$(ZMK.Path)zmk/$1.mk
+include $$(ZMK.Path)/zmk/$1.mk
 endif
 endef
 

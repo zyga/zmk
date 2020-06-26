@@ -18,7 +18,7 @@ NAME = zmk
 VERSION = 0.3.4  # This needs to match ZMK.Version
 
 # Use the local copy of zmk rather than the system-wide one.
-ZMK.Path =
+ZMK.Path = .
 include ./z.mk
 
 # Use git to augment version.

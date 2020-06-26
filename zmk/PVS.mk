@@ -29,7 +29,7 @@ static-check-pvs: $(addsuffix .PVS-Studio.log,$(PVS.Sources))
 		--settings $(srcdir)/.pvs-studio.cfg \
 		$(PLOG_CONVERTER_FLAGS) \
 		--srcRoot $(srcdir) \
-		--renderTypes errorfile $^ | srcdir=$(srcdir) abssrcdir=$(abspath $(srcdir)) awk -f $(ZMK.Path)zmk/pvs-filter.awk)
+		--renderTypes errorfile $^ | srcdir=$(srcdir) abssrcdir=$(abspath $(srcdir)) awk -f $(ZMK.Path)/zmk/pvs-filter.awk)
 
 pvs-report: $(addsuffix .PVS-Studio.log,$(PVS.Sources))
 	$(strip plog-converter \

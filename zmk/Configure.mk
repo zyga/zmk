@@ -295,12 +295,8 @@ ifeq ($(Configure.Configured),yes)
 GNUmakefile.configure.mk: configure
 	@echo "re-configuring, $< script is newer than $@"
 	./$< $(Configure.Options)
-endif
-
-# In maintainer mode the configure script is can be removed.
-distclean::
-	rm -f configure
-endif
+endif # !configured
+endif # !maintainer mode
 
 distclean::
 	rm -f GNUmakefile.configure.mk
