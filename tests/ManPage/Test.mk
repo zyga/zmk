@@ -33,6 +33,18 @@ install: install.log
 	GREP -qFx 'install -m 0644 foo.8 /usr/local/share/man/man8/foo.8' <$<
 	GREP -qFx 'install -d /usr/local/share/man/man9' <$<
 	GREP -qFx 'install -m 0644 foo.9 /usr/local/share/man/man9/foo.9' <$<
+	# Manual pages that are provided by path locally are not retaining that path
+	# in the installed location. If desired this can be customised by setting
+	# InstallDir on the appropriate objects.
+	GREP -qFx 'install -m 0644 man/bar.1 /usr/local/share/man/man1/bar.1' <$<
+	GREP -qFx 'install -m 0644 man/bar.2 /usr/local/share/man/man2/bar.2' <$<
+	GREP -qFx 'install -m 0644 man/bar.3 /usr/local/share/man/man3/bar.3' <$<
+	GREP -qFx 'install -m 0644 man/bar.4 /usr/local/share/man/man4/bar.4' <$<
+	GREP -qFx 'install -m 0644 man/bar.5 /usr/local/share/man/man5/bar.5' <$<
+	GREP -qFx 'install -m 0644 man/bar.6 /usr/local/share/man/man6/bar.6' <$<
+	GREP -qFx 'install -m 0644 man/bar.7 /usr/local/share/man/man7/bar.7' <$<
+	GREP -qFx 'install -m 0644 man/bar.8 /usr/local/share/man/man8/bar.8' <$<
+	GREP -qFx 'install -m 0644 man/bar.9 /usr/local/share/man/man9/bar.9' <$<
 
 install-destdir: install-destdir.log
 	# Destdir is created
@@ -61,6 +73,18 @@ install-destdir: install-destdir.log
 	GREP -qFx 'install -m 0644 foo.8 /destdir/usr/local/share/man/man8/foo.8' <$<
 	GREP -qFx 'install -d /destdir/usr/local/share/man/man9' <$<
 	GREP -qFx 'install -m 0644 foo.9 /destdir/usr/local/share/man/man9/foo.9' <$<
+	# Manual pages that are provided by path locally are not retaining that path
+	# in the installed location. If desired this can be customised by setting
+	# InstallDir on the appropriate objects.
+	GREP -qFx 'install -m 0644 man/bar.1 /destdir/usr/local/share/man/man1/bar.1' <$<
+	GREP -qFx 'install -m 0644 man/bar.2 /destdir/usr/local/share/man/man2/bar.2' <$<
+	GREP -qFx 'install -m 0644 man/bar.3 /destdir/usr/local/share/man/man3/bar.3' <$<
+	GREP -qFx 'install -m 0644 man/bar.4 /destdir/usr/local/share/man/man4/bar.4' <$<
+	GREP -qFx 'install -m 0644 man/bar.5 /destdir/usr/local/share/man/man5/bar.5' <$<
+	GREP -qFx 'install -m 0644 man/bar.6 /destdir/usr/local/share/man/man6/bar.6' <$<
+	GREP -qFx 'install -m 0644 man/bar.7 /destdir/usr/local/share/man/man7/bar.7' <$<
+	GREP -qFx 'install -m 0644 man/bar.8 /destdir/usr/local/share/man/man8/bar.8' <$<
+	GREP -qFx 'install -m 0644 man/bar.9 /destdir/usr/local/share/man/man9/bar.9' <$<
 
 uninstall: uninstall.log
 	# The uninstall target removes manual pages.
@@ -73,3 +97,12 @@ uninstall: uninstall.log
 	GREP -qFx 'rm -f /usr/local/share/man/man7/foo.7' <$<
 	GREP -qFx 'rm -f /usr/local/share/man/man8/foo.8' <$<
 	GREP -qFx 'rm -f /usr/local/share/man/man9/foo.9' <$<
+	GREP -qFx 'rm -f /usr/local/share/man/man1/bar.1' <$<
+	GREP -qFx 'rm -f /usr/local/share/man/man2/bar.2' <$<
+	GREP -qFx 'rm -f /usr/local/share/man/man3/bar.3' <$<
+	GREP -qFx 'rm -f /usr/local/share/man/man4/bar.4' <$<
+	GREP -qFx 'rm -f /usr/local/share/man/man5/bar.5' <$<
+	GREP -qFx 'rm -f /usr/local/share/man/man6/bar.6' <$<
+	GREP -qFx 'rm -f /usr/local/share/man/man7/bar.7' <$<
+	GREP -qFx 'rm -f /usr/local/share/man/man8/bar.8' <$<
+	GREP -qFx 'rm -f /usr/local/share/man/man9/bar.9' <$<

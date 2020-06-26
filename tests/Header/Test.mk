@@ -17,8 +17,10 @@ all: all.log
 install: install.log
 	GREP -qFx 'install -d /usr/local/include' <$<
 	GREP -qFx 'install -m 0644 foo.h /usr/local/include/foo.h' <$<
+	GREP -qFx 'install -m 0644 include/bar.h /usr/local/include/bar.h' <$<
 uninstall: uninstall.log
 	GREP -qFx 'rm -f /usr/local/include/foo.h' <$<
+	GREP -qFx 'rm -f /usr/local/include/bar.h' <$<
 clean: clean.log
 	GREP -qF 'Nothing to be done for' <$<
 
@@ -28,7 +30,9 @@ install-destdir: install-destdir.log
 	GREP -qFx 'mkdir -p /destdir' <$<
 	GREP -qFx 'install -d /destdir/usr/local/include' <$<
 	GREP -qFx 'install -m 0644 foo.h /destdir/usr/local/include/foo.h' <$<
+	GREP -qFx 'install -m 0644 include/bar.h /destdir/usr/local/include/bar.h' <$<
 uninstall-destdir: uninstall-destdir.log
 	GREP -qFx 'rm -f /destdir/usr/local/include/foo.h' <$<
+	GREP -qFx 'rm -f /destdir/usr/local/include/bar.h' <$<
 clean-destdir: clean-destdir.log
 	GREP -qF 'Nothing to be done for' <$<

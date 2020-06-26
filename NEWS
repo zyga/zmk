@@ -1,3 +1,11 @@
+Changes in 0.3.6:
+
+* InstallUninstall no longer reuses the relative directory in the source tree
+  to represent the target directory. Instead the InstallDir property is the
+  only way to influence the final path. This was a late discovery but one that
+  is ultimately only sensible. ZMK itself was adjusted to install correctly in
+  this new scheme.
+
 Changes in 0.3.5:
 
 * Make distclean no longer breaks building of packages in Debian, by not

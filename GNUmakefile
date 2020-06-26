@@ -25,8 +25,10 @@ include ./z.mk
 $(eval $(call ZMK.Import,GitVersion))
 $(eval $(call ZMK.Import,Directories))
 
-# Install all of zmk to the include directory.
-$(foreach f,$(ZMK.DistFiles),$(eval $f.InstallDir=$(includedir)))
+# Install all of zmk to the sub-directory in the include directory.
+# Except for z.mk itself, which should live there directly.
+$(foreach f,$(ZMK.DistFiles),$(eval $f.InstallDir=$(includedir)/zmk))
+z.mk.InstallDir=$(includedir)
 $(foreach f,$(ZMK.DistFiles),$(eval $(call ZMK.Expand,InstallUninstall,$f)))
 
 # Install all of the manual pages, generating them from .in files first.
