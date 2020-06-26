@@ -24,7 +24,7 @@ If the script is a
 .Em shell script
 then it can be automatically checked with
 .Nm shellcheck ,
-if avaialble.
+if available.
 .Sh TARGETS
 This module provides the following targets.
 .Ss install
@@ -68,7 +68,7 @@ target depends on the target
 .Sh VARIABLES
 This module provides the following variables.
 .Ss $(scriptName).Interpreter
-Name of the script interpeter.
+Name of the script interpreter.
 .Pp
 The default value is inferred from the extension of the file name.
 .Ss $(scriptName).InstallDir

@@ -25,7 +25,7 @@ of the build system to modify its behavior accordingly.
 This module provides the following targets.
 .Ss configure
 This target generates the configuration script. The script is also
-automatically placed inside the source archive, so that the receipent
+automatically placed inside the source archive, so that the recipient
 does not need to have a local installation of
 .Em zmk
 to build a project from source.
@@ -71,7 +71,7 @@ Popular values include
 .Em aarch64-linux-gnu
 and
 .Em riscv64-linux-gnu .
-Note that there is a lot of variablity in the architecte name and special
+Note that there is a lot of variability in the architecture name and special
 cases related to the ARM architecture.
 .Ss Configure.BuildArchTriplet
 This variable is set by the
@@ -92,7 +92,7 @@ when
 .Nm CC
 and
 .Nm CXX
-are not overriden, then zmk automatically selects a
+are not overridden, then zmk automatically selects a
 .Em cross-compiler
 from the
 .Em GNU Compiler Collection
@@ -106,7 +106,7 @@ This variable is controlled by the
 .Nm configure
 script options
 .Em --enable-dependency-tracking
-(defaut) and
+(default) and
 .Em --disable-dependency-tracking .
 When enabled it expands to
 .Em yes
@@ -122,7 +122,7 @@ This variable is controlled by the
 .Nm configure
 script options
 .Em --enable-maintainer-mode
-(defaut) and
+(default) and
 .Em --disable-maintainer-mode .
 When enabled it expands to
 .Em yes
@@ -180,7 +180,7 @@ the programs built with the
 and the
 .Nm Script
 templates. The transformation affects the entire name, together with any
-prefix or suffix defined byo ther options.
+prefix or suffix defined by their options.
 .Ss Configure.Configured
 This variable expands to
 .Em yes

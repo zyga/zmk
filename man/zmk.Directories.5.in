@@ -87,7 +87,7 @@ Directory with system configuration files.
 The default value is
 .Em $(prefix)/etc .
 .Pp
-In distribution packaging this directory is typically overriden to be detached
+In distribution packaging this directory is typically overridden to be detached
 from prefix and hold the literal value
 .Em /etc .
 .Ss sharedstatedir
@@ -129,7 +129,7 @@ Directory with stattic or dynamic libraries.
 The default value is
 .Em $(exec_prefix)/lib .
 .Pp
-This directory differs between Linux distributions. Some distribututions
+This directory differs between Linux distributions. Some distributions
 differentiate between 32bit and 64bit libraries while others store libraries in
 a directory named after the architecture triplet they are compiled for. It is
 common for one system to use a mixture of directories used at the same time,
