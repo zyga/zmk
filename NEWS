@@ -1,7 +1,7 @@
 Changes in 0.3.7:
 
 * The release archive no longer contains the pre-compiled manual pages. Instead
- the .in files are shipped, to be compiled locally.
+  the .in files are shipped, to be compiled locally.
 
 Changes in 0.3.6:
 
