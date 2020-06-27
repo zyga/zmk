@@ -13,6 +13,8 @@ t:: debug-defaults debug-dependency-tracking \
 
 # Isolate from any tools installed on the host.
 # This is useful to verify with forkstat(1).
+%.log: ZMK.makeOverrides += Toolchain.CC.IsAvailable=yes
+%.log: ZMK.makeOverrides += Toolchain.CXX.IsAvailable=yes
 %.log: ZMK.makeOverrides += Toolchain.cc=/usr/bin/host-linux-gnu-gcc
 %.log: ZMK.makeOverrides += Toolchain.cc.dumpmachine=host-linux-gnu
 %.log: ZMK.makeOverrides += Toolchain.gcc.dumpmachine=build-linux-gnu

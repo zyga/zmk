@@ -4,6 +4,8 @@ include zmk/internalTest.mk
 
 t:: all install uninstall clean
 
+$(eval $(ZMK.isolateHostToolchain))
+
 all: all.log
 	GREP -qFx 'cc -MMD -c -o hello-hello.o hello.c' <$<
 	GREP -qFx 'cc -o hello hello-hello.o' <$<

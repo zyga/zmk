@@ -5,6 +5,7 @@ include zmk/internalTest.mk
 t:: all install uninstall clean \
     all-destdir install-destdir uninstall-destdir clean-destdir
 
+$(eval $(ZMK.isolateHostToolchain))
 # Test logs will contain debugging messages
 %.log: ZMK.makeOverrides += DEBUG=library.so
 # Some logs have DESTDIR set to /destdir

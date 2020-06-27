@@ -4,6 +4,8 @@ include zmk/internalTest.mk
 
 t:: all install uninstall clean
 
+$(eval $(ZMK.isolateHostToolchain))
+
 # MacOS uses c++, GNU uses g++ by default.
 %.log: ZMK.makeOverrides += CXX=c++
 

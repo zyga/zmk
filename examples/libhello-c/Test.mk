@@ -4,6 +4,8 @@ include zmk/internalTest.mk
 
 t:: all install uninstall clean
 
+$(eval $(ZMK.isolateHostToolchain))
+
 # Test has three variants, for Linux, MacOS and the rest.
 %-other.log: ZMK.makeOverrides += Toolchain.CC.ImageFormat=Irrelevant
 %-linux.log: ZMK.makeOverrides += Toolchain.CC.ImageFormat=ELF

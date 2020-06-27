@@ -5,6 +5,15 @@
 .PHONY: t
 t::
 
+# Pretend that GCC is installed.
+# This shields the test from whatever is installed on the host.
+define ZMK.isolateHostToolchain
+%.log: ZMK.makeOverrides += Toolchain.CC.IsAvailable=yes
+%.log: ZMK.makeOverrides += Toolchain.CXX.IsAvailable=yes
+%.log: ZMK.makeOverrides += Toolchain.CC.IsGcc=yes
+%.log: ZMK.makeOverrides += Toolchain.CXX.IsGcc=yes
+endef
+
 # Find the path of the zmk installation
 ZMK.Path := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/..)
 
