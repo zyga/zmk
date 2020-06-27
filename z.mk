@@ -77,7 +77,7 @@ ZMK.DistFiles = z.mk $(addprefix zmk/,$(foreach m,$(ZMK.modules),$m.mk) pvs-filt
 
 # If zmk is provided externally add rules to copy it to the source tree and
 # make the distclean target remove it from the tree.
-ifneq ($(ZMK.Path),$(srcdir))
+ifneq ($(realpath $(ZMK.Path)),$(realpath $(srcdir)))
 $(srcdir)/zmk:
 	install -d $@
 $(srcdir)/zmk/%: $(ZMK.Path)/zmk/% | $(srcdir)/zmk
