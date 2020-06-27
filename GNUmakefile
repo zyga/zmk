@@ -18,8 +18,8 @@ NAME = zmk
 VERSION = 0.3.8  # This needs to match ZMK.Version
 
 # Use the local copy of zmk rather than the system-wide one.
-ZMK.Path = .
-include ./z.mk
+ZMK.Path ?= .
+include $(ZMK.Path)/z.mk
 
 # Use git to augment version.
 $(eval $(call ZMK.Import,GitVersion))
