@@ -4,6 +4,7 @@
         "shellscript"
     ],
     "cSpell.words": [
+        "TMPDIR",
         "abspath",
         "addprefix",
         "addsuffix",
@@ -20,6 +21,7 @@
         "datadir",
         "datarootdir",
         "destdir",
+        "distcheck",
         "distclean",
         "docdir",
         "dumpmachine",
@@ -42,6 +44,7 @@
         "ifneq",
         "includedir",
         "infodir",
+        "installcheck",
         "kfreebsd",
         "krynicki",
         "lastword",
