@@ -24,15 +24,18 @@ GitVersion.versionFromMakefile := $(strip $(VERSION))
 GitVersion.versionFromFile =
 GitVersion.versionFromGit =
 GitVersion.Active =
+GitVersion.Origin =
 
 ifeq (yes,$(GitVersion.versionFilePresent))
 # Note that we never generate this file from any rule in zmk!
 # If the source tree contains the .version file then it is authoritative.
 GitVersion.versionFromFile:=$(shell cat $(srcdir)/.version 2>/dev/null)
+GitVersion.Origin = file
 else
 ifeq (yes,$(and $(GitVersion.gitAvailable),$(GitVersion.gitMetaDataPresent)))
 # If we have the git program and the .git directory then we can also ask git.
 GitVersion.versionFromGit=$(shell GIT_DIR=$(srcdir)/.git git describe --abbrev=10 --tags 2>/dev/null | sed -e 's/^v//')
+GitVersion.Origin = git
 ifneq (,$(value CI))
 # If we are in CI and git version was empty then perhaps this is a shallow clone?
 ifeq (,$(GitVersion.versionFromGit))

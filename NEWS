@@ -3,6 +3,11 @@ Changes in the next release:
 * The ObjectGroup template used by Program, Program.Test, Library.A, Library.So
   and Library.DyLib is now performing rudimentary detection of a missing compiler.
 
+* The GitVersion module now provides GitVersion.Origin attribute
+  to indicate how the version information was obtained. The value "git" is used
+  when git history along with git tags were used. The value "file" is used when
+  the .version file was read.
+
 Changes in 0.3.8:
 
 * The release archive now contains the full collection of test files.
