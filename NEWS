@@ -13,6 +13,9 @@ Changes in the next release:
 * The Program and Script modules no longer attempt to transform installed name
   when the Configure module is not imported.
 
+* The internal toolchain.GCC module no longer attempts to invoke gcc and g++
+  if they are not installed.
+
 Changes in 0.3.8:
 
 * The release archive now contains the full collection of test files.

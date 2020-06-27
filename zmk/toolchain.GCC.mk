@@ -17,9 +17,9 @@ endif # !cross-compiling
 endif # !configured
 
 # Indirection for testability.
-Toolchain.gcc ?= $(shell sh -c "command -v gcc")
+Toolchain.gcc ?= $(shell sh -c "command -v gcc 2>/dev/null")
 Toolchain.cc.dumpmachine  ?= $(shell $(CC)  -dumpmachine)
-Toolchain.gcc.dumpmachine ?= $(if Toolchain.gcc,$(shell gcc    -dumpmachine))
+Toolchain.gcc.dumpmachine ?= $(if $(Toolchain.gcc),$(shell gcc    -dumpmachine))
 
 # Are we targeting Windows with mingw?
 ifneq (,$(findstring mingw,$(Toolchain.cc.dumpmachine)))
@@ -55,9 +55,9 @@ endif # !cross-compiling
 endif # !configured
 
 # Indirection for testability.
-Toolchain.g++ ?= $(shell sh -c "command -v g++")
+Toolchain.g++ ?= $(shell sh -c "command -v g++ 2>/dev/null")
 Toolchain.cxx.dumpmachine ?= $(shell $(CXX) -dumpmachine)
-Toolchain.g++.dumpmachine ?= $(if Toolchain.g++,$(shell g++    -dumpmachine))
+Toolchain.g++.dumpmachine ?= $(if $(Toolchain.g++),$(shell g++    -dumpmachine))
 
 # Are we targeting Windows with mingw?
 ifneq (,$(findstring mingw,$(Toolchain.cxx.dumpmachine)))
