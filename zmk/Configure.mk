@@ -17,7 +17,7 @@
 # Is zmk debugging enabled for this module?
 Configure.debug ?= $(findstring configure,$(DEBUG))
 
-# Configuration system defaults, also changed by GNUMakefile.configure.mk
+# Configuration system defaults, also changed by GNUmakefile.configure.mk
 Configure.HostArchTriplet ?=
 Configure.BuildArchTriplet ?=
 Configure.DependencyTracking ?= yes

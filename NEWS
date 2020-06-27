@@ -20,6 +20,10 @@ Changes in the next release:
   was disabled in an earlier release as it was showing a problem with zmk
   that was not understood at the time.
 
+* ZMK now contains an internal "distcheck" target that has found numerous smaller
+  issues and should improve the development process. At a later stage, this target
+  will be generalized for all projects.
+
 Changes in 0.3.8:
 
 * The release archive now contains the full collection of test files.

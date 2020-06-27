@@ -27,7 +27,7 @@ dist-gnu: dist-gnu.log
 dist-non-gnu.log: ZMK.makeOverrides += Tarball.isGNU= OS.Kernel=test
 dist-non-gnu: dist-non-gnu.log
 	# Archiving source release tarball archives the files given by the user
-	GREP -qF 'tar -zcf test_1.tar.gz -C . ' <$<
+	GREP -qF 'tar -zcf test_1.tar.gz -C $(srcdir) ' <$<
 	GREP -qF 'foo.txt' <$<
 	# It also archives zmk (only parts are tested)
 	GREP -qF 'z.mk' <$<

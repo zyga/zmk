@@ -38,7 +38,7 @@ t:: \
 
 # The configure script is generated.
 configure: Makefile $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
-	$(MAKE) -I $(ZMK.Path) $@
+	$(MAKE) -I $(ZMK.Path) -f $(srcdir)/Makefile $@
 c::
 	rm -f configure
 
@@ -85,7 +85,7 @@ debug-configure: debug-configure.log
 
 configured-defaults: configured.defaults.mk
 	# Minimal defaults are set
-	GREP -qFx 'srcdir=.' <$<
+	GREP -qFx 'srcdir=$(srcdir)' <$<
 	GREP -qFx 'VPATH=$$(srcdir)' <$<
 	GREP -qFx 'Configure.Configured=yes' <$<
 	GREP -qFx 'Configure.Options=' <$<

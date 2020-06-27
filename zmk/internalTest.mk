@@ -21,6 +21,10 @@ endef
 # Find the path of the zmk installation
 ZMK.Path := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/..)
 
+# Location of the source tree, for out-of-tree testing.
+srcdir ?= .
+VPATH ?=
+
 # Put extra test tools on PATH
 export PATH := $(ZMK.Path)/tests/bin:$(PATH)
 
@@ -39,11 +43,19 @@ ZMK.makeTarget ?=
 # Tests warn about undefined variables
 %.log: MAKEFLAGS=Bn
 %.log: Test.mk Makefile $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
-	$(strip LANG=C $(MAKE) $(ZMK.makeOverrides) -I $(ZMK.Path) \
+	$(strip LANG=C $(MAKE) $(ZMK.makeOverrides) \
+		-I $(ZMK.Path) \
+		$(if $(VPATH),VPATH=$(VPATH)) \
+		srcdir=$(srcdir) \
 		--warn-undefined-variables \
 		--always-make \
 		--dry-run \
-		$(or $(ZMK.makeTarget),$(firstword $(subst -, ,$*))) >$@ 2>&1) || true
+		-f $(srcdir)/Makefile \
+		$(or $(ZMK.makeTarget),$(firstword $(subst -, ,$*))) >$@ 2>&1 || true)
+	# Detect references to undefined variables
+	if grep -F 'warning: undefined variable' $@; then exit 1; fi
+	# Detect attempted usage of missing programs
+	if grep -F 'Command not found' $@; then exit 1; fi
 
 configure: $(ZMK.Path)/zmk/internalTest.mk
 

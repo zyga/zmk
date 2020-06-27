@@ -45,31 +45,32 @@ man/%: man/%.in | $(CURDIR)/man
 $(foreach f,$(ZMK.manPages),$(eval $(call ZMK.Expand,ManPage,man/$f)))
 
 # Build the release tarball.
-$(NAME)_$(VERSION).tar.gz.Files = GNUmakefile README.md LICENSE NEWS
-$(NAME)_$(VERSION).tar.gz.Files += $(addsuffix .in,$(addprefix man/,$(ZMK.manPages)))
-$(NAME)_$(VERSION).tar.gz.Files += $(addprefix examples/hello-c/,Makefile Test.mk hello.c)
-$(NAME)_$(VERSION).tar.gz.Files += $(addprefix examples/hello-cpp/,Makefile Test.mk hello.cpp)
-$(NAME)_$(VERSION).tar.gz.Files += $(addprefix examples/hello-objc/,Makefile Test.mk hello.m README.txt)
-$(NAME)_$(VERSION).tar.gz.Files += $(addprefix examples/libhello-c/,Makefile Test.mk hello.c hello.h)
-$(NAME)_$(VERSION).tar.gz.Files += $(addprefix examples/libhello-cpp/,Makefile Test.mk hello.cpp hello.h)
-$(NAME)_$(VERSION).tar.gz.Files += $(addprefix examples/libhello-objc/,Makefile Test.mk hello.m hello.h)
-$(NAME)_$(VERSION).tar.gz.Files += $(addprefix examples/true_false/,Makefile Test.mk true_false.c README.txt)
-$(NAME)_$(VERSION).tar.gz.Files += $(addprefix examples/script/,Makefile Test.mk hello.sh)
-$(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Configure/,Makefile Test.mk)
-$(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Directories/,Makefile Test.mk)
-$(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Directory/,Makefile Test.mk)
-$(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Header/,Makefile Test.mk foo.h include/bar.h)
-$(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Library.A/,Makefile Test.mk foo.c)
-$(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Library.DyLib/,Makefile Test.mk foo.c)
-$(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Library.So/,Makefile Test.mk foo.c)
-$(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/ManPage/,Makefile Test.mk foo.1 foo.2 foo.3 foo.4 foo.5 foo.6 foo.7 foo.8 foo.9 man/bar.1 man/bar.2 man/bar.3 man/bar.4 man/bar.5 man/bar.6 man/bar.7 man/bar.8 man/bar.9)
-$(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/OS/,Makefile Test.mk)
-$(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Program/,Makefile Test.mk foo.c bar.cpp froz.m)
-$(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Symlink/,Makefile Test.mk)
-$(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Tarball.Src/,Makefile Test.mk foo.txt)
-$(NAME)_$(VERSION).tar.gz.Files += $(addprefix tests/Toolchain/,Makefile Test.mk)
-$(NAME)_$(VERSION).tar.gz.Files += tests/bin/GREP
-$(eval $(call ZMK.Expand,Tarball.Src,$(NAME)_$(VERSION).tar.gz))
+zmkReleaseArchive?=$(NAME)_$(VERSION).tar.gz
+$(zmkReleaseArchive).Files = GNUmakefile README.md LICENSE NEWS
+$(zmkReleaseArchive).Files += $(addsuffix .in,$(addprefix man/,$(ZMK.manPages)))
+$(zmkReleaseArchive).Files += $(addprefix examples/hello-c/,Makefile Test.mk hello.c)
+$(zmkReleaseArchive).Files += $(addprefix examples/hello-cpp/,Makefile Test.mk hello.cpp)
+$(zmkReleaseArchive).Files += $(addprefix examples/hello-objc/,Makefile Test.mk hello.m README.txt)
+$(zmkReleaseArchive).Files += $(addprefix examples/libhello-c/,Makefile Test.mk hello.c hello.h)
+$(zmkReleaseArchive).Files += $(addprefix examples/libhello-cpp/,Makefile Test.mk hello.cpp hello.h)
+$(zmkReleaseArchive).Files += $(addprefix examples/libhello-objc/,Makefile Test.mk hello.m hello.h)
+$(zmkReleaseArchive).Files += $(addprefix examples/true_false/,Makefile Test.mk true_false.c README.txt)
+$(zmkReleaseArchive).Files += $(addprefix examples/script/,Makefile Test.mk hello.sh)
+$(zmkReleaseArchive).Files += $(addprefix tests/Configure/,Makefile Test.mk)
+$(zmkReleaseArchive).Files += $(addprefix tests/Directories/,Makefile Test.mk)
+$(zmkReleaseArchive).Files += $(addprefix tests/Directory/,Makefile Test.mk)
+$(zmkReleaseArchive).Files += $(addprefix tests/Header/,Makefile Test.mk foo.h include/bar.h)
+$(zmkReleaseArchive).Files += $(addprefix tests/Library.A/,Makefile Test.mk foo.c)
+$(zmkReleaseArchive).Files += $(addprefix tests/Library.DyLib/,Makefile Test.mk foo.c)
+$(zmkReleaseArchive).Files += $(addprefix tests/Library.So/,Makefile Test.mk foo.c)
+$(zmkReleaseArchive).Files += $(addprefix tests/ManPage/,Makefile Test.mk foo.1 foo.2 foo.3 foo.4 foo.5 foo.6 foo.7 foo.8 foo.9 man/bar.1 man/bar.2 man/bar.3 man/bar.4 man/bar.5 man/bar.6 man/bar.7 man/bar.8 man/bar.9)
+$(zmkReleaseArchive).Files += $(addprefix tests/OS/,Makefile Test.mk)
+$(zmkReleaseArchive).Files += $(addprefix tests/Program/,Makefile Test.mk foo.c bar.cpp froz.m)
+$(zmkReleaseArchive).Files += $(addprefix tests/Symlink/,Makefile Test.mk)
+$(zmkReleaseArchive).Files += $(addprefix tests/Tarball.Src/,Makefile Test.mk foo.txt)
+$(zmkReleaseArchive).Files += $(addprefix tests/Toolchain/,Makefile Test.mk)
+$(zmkReleaseArchive).Files += tests/bin/GREP
+$(eval $(call ZMK.Expand,Tarball.Src,$(zmkReleaseArchive)))
 
 
 #check-examples = $(addprefix check,$(subst /,-,$(subst $(srcdir)/,/,$(wildcard $(srcdir)/examples/*))))
@@ -84,13 +85,102 @@ $(eval $(call ZMK.Expand,Tarball.Src,$(NAME)_$(VERSION).tar.gz))
 check:: check-unit
 
 # Some hackery is performed to map slashes to dashes, except in "(lib)?hello-".
-tests = $(patsubst -%-,%,$(subst /,-,$(subst $(srcdir)/,/,$(dir $(shell find . -name Test.mk)))))
+tests = $(patsubst -%-,%,$(subst /,-,$(subst $(srcdir)/,/,$(dir $(shell find $(srcdir) -name Test.mk)))))
 .PHONY: check-unit
 check-unit: $(addprefix check-,$(tests))
 .PHONY: $(addprefix check-,$(tests))
+
+check-%: TESTDIR=$(patsubst examples/libhello/%,examples/libhello-%,$(patsubst examples/hello/%,examples/hello-%,$(subst -,/,$*)))
 $(addprefix check-,$(tests)): check-%:
-	$(MAKE) \
-		--no-print-directory --warn-undefined-variables \
-		-I $(abspath $(srcdir)) \
-		-C $(srcdir)/$(patsubst examples/libhello/%,examples/libhello-%,$(patsubst examples/hello/%,examples/hello-%,$(subst -,/,$*))) \
-		-f Test.mk
+ifeq ($(srcdir),.)
+	$(strip $(MAKE)	--no-print-directory --warn-undefined-variables \
+		-I $(abspath $(ZMK.Path)) \
+		-C $(TESTDIR) \
+		-f Test.mk)
+else
+	mkdir -p $(TESTDIR)
+	$(strip $(MAKE)	--no-print-directory --warn-undefined-variables \
+		VPATH=$(srcdir)/$(TESTDIR) \
+		srcdir=$(srcdir)/$(TESTDIR) \
+		-I $(abspath $(ZMK.Path)) \
+		-C $(TESTDIR) \
+		-f $(srcdir)/$(TESTDIR)/Test.mk)
+endif
+
+TMPDIR ?= /tmp
+
+.PHONY: distcheck
+distcheck: ZMK.distCheckArchive ?= $(NAME)-distcheck.tar.gz
+distcheck: ZMK.distCheckBase ?= $(TMPDIR)/$(NAME)-distcheck
+distcheck: | $(TMPDIR)
+	# Prepare scratch space for distcheck
+	-test -d $(ZMK.distCheckBase) && chmod -R +w $(ZMK.distCheckBase)
+	rm -rf $(ZMK.distCheckBase)
+	mkdir -p $(ZMK.distCheckBase)/tree
+	mkdir -p $(ZMK.distCheckBase)/build
+	# Prepare a release archive of $(NAME)
+	$(MAKE) zmkReleaseArchive=$(ZMK.distCheckArchive) dist
+	# Unpack the release archive of $(NAME) to temporary directory
+	mv $(ZMK.distCheckArchive) $(ZMK.distCheckBase)
+	tar -zxf $(ZMK.distCheckBase)/$(ZMK.distCheckArchive) --strip-components=1 -C $(ZMK.distCheckBase)/tree
+	# Make the source tree read-only for all out-of-tree checks
+	chmod -R -w $(ZMK.distCheckBase)/tree
+	# $(NAME), when out-of-tree, builds correctly
+	$(strip $(MAKE) all \
+		ZMK.Path=$(ZMK.distCheckBase)/tree \
+		srcdir=$(ZMK.distCheckBase)/tree \
+		VPATH=$(ZMK.distCheckBase)/tree \
+		-f $(ZMK.distCheckBase)/tree/GNUmakefile \
+		-C $(ZMK.distCheckBase)/build)
+	# $(NAME), when out-of-tree, checks out
+	$(strip $(MAKE) check \
+		ZMK.Path=$(ZMK.distCheckBase)/tree \
+		srcdir=$(ZMK.distCheckBase)/tree \
+		VPATH=$(ZMK.distCheckBase)/tree \
+		-f $(ZMK.distCheckBase)/tree/GNUmakefile \
+		-C $(ZMK.distCheckBase)/build)
+	# $(NAME), when out-of-tree, installs via DESTDIR
+	$(strip $(MAKE) install \
+		ZMK.Path=$(ZMK.distCheckBase)/tree \
+		srcdir=$(ZMK.distCheckBase)/tree \
+		VPATH=$(ZMK.distCheckBase)/tree \
+		-f $(ZMK.distCheckBase)/tree/GNUmakefile \
+		-C $(ZMK.distCheckBase)/build \
+		DESTDIR=$(ZMK.distCheckBase)/installcheck)
+	# $(NAME), when out-of-tree, uninstalls via DESTDIR
+	$(strip $(MAKE) uninstall \
+		ZMK.Path=$(ZMK.distCheckBase)/tree \
+		srcdir=$(ZMK.distCheckBase)/tree \
+		VPATH=$(ZMK.distCheckBase)/tree \
+		-f $(ZMK.distCheckBase)/tree/GNUmakefile \
+		-C $(ZMK.distCheckBase)/build \
+		DESTDIR=$(ZMK.distCheckBase)/installcheck)
+	# Uninstalled $(NAME) does not leave files or symbolic links
+	test "$$(find $(ZMK.distCheckBase)/installcheck -type f -o -type l | wc -l)" -eq 0
+	rm -rf $(ZMK.distCheckBase)/installcheck
+	# $(NAME), when out-of-tree, can re-create the release archive
+	$(strip $(MAKE) dist \
+		ZMK.Path=$(ZMK.distCheckBase)/tree \
+		srcdir=$(ZMK.distCheckBase)/tree \
+		VPATH=$(ZMK.distCheckBase)/tree \
+		-f $(ZMK.distCheckBase)/tree/GNUmakefile \
+		-C $(ZMK.distCheckBase)/build)
+	# Make the source tree read-write for in-tree checks
+	chmod -R +w $(ZMK.distCheckBase)/tree
+	# $(NAME), when in-tree, builds correctly
+	$(MAKE) -C $(ZMK.distCheckBase)/tree all
+	# $(NAME), when in-tree, checks out
+	$(MAKE) -C $(ZMK.distCheckBase)/tree check
+	# $(NAME), when in-tree, installs via DESTDIR
+	$(strip $(MAKE) -C $(ZMK.distCheckBase)/tree install \
+		DESTDIR=$(ZMK.distCheckBase)/installcheck)
+	# $(NAME), when in-tree, uninstalls via DESTDIR
+	$(strip $(MAKE) -C $(ZMK.distCheckBase)/tree uninstall \
+		DESTDIR=$(ZMK.distCheckBase)/installcheck)
+	# Uninstalled $(NAME) does not leave files or symbolic links
+	test "$$(find $(ZMK.distCheckBase)/installcheck -type f -o -type l | wc -l)" -eq 0
+	rm -rf $(ZMK.distCheckBase)/installcheck
+	# $(NAME), when in-tree, can re-create the release archive
+	$(MAKE) -C $(ZMK.distCheckBase)/tree dist
+	# Clean up after distcheck
+	rm -rf $(ZMK.distCheckBase)
