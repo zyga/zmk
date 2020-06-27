@@ -10,6 +10,9 @@ Changes in the next release:
 
 * The Tarball.Src template no longer breaks when used from a dist archive.
 
+* The Program and Script modules no longer attempt to transform installed name
+  when the Configure module is not imported.
+
 Changes in 0.3.8:
 
 * The release archive now contains the full collection of test files.

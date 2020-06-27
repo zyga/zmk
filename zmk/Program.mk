@@ -35,10 +35,12 @@ $1$$(exe): $$($1.Objects)
 # Install program binary.
 $1.InstallDir ?= $$(bindir)
 $1.InstallMode ?= 0755
+ifneq (,$$(filter Configure,$$(ZMK.ImportedModules)))
 $1.InstallName ?= $$(if $$(Configure.ProgramTransformName),$$(shell echo '$$(Configure.ProgramPrefix)$$(notdir $1)$$(Configure.ProgramSuffix)' | sed -e '$$(Configure.ProgramTransformName)'),$$(Configure.ProgramPrefix)$$(notdir $1)$$(Configure.ProgramSuffix))
+$1$$(exe).InstallName ?= $$($1.InstallName)
+endif
 $1$$(exe).InstallDir ?= $$($1.InstallDir)
 $1$$(exe).InstallMode ?= $$($1.InstallMode)
-$1$$(exe).InstallName ?=  $$($1.InstallName)
 $$(eval $$(call ZMK.Expand,InstallUninstall,$1$$(exe)))
 
 # React to "all" and "clean".

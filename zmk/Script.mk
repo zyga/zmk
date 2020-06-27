@@ -29,7 +29,9 @@ Script.Variables=Interpreter InstallDir InstallMode
 define Script.Template
 $1.InstallDir ?= $$(bindir)
 $1.InstallMode ?= 0755
+ifneq (,$$(filter Configure,$$(ZMK.ImportedModules)))
 $1.InstallName ?= $$(if $$(Configure.ProgramTransformName),$$(shell echo '$$(Configure.ProgramPrefix)$$(notdir $1)$$(Configure.ProgramSuffix)' | sed -e '$$(Configure.ProgramTransformName)'),$$(Configure.ProgramPrefix)$$(notdir $1)$$(Configure.ProgramSuffix))
+endif
 $$(eval $$(call ZMK.Expand,InstallUninstall,$1))
 
 $1.Interpreter ?= $$(if $$(suffix $1),$$(patsubst .%,%,$$(suffix $1)),$$(error define $1.Interpreter - the script interpreter name, sh, bash or other))
