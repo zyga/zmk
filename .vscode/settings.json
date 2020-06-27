@@ -100,5 +100,6 @@
         "watcom",
         "xcrun",
         "zygmunt"
-    ]
+    ],
+    "files.insertFinalNewline": true
 }
