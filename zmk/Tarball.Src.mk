@@ -31,11 +31,26 @@ ifneq (,$$(filter Configure,$$(ZMK.ImportedModules)))
 $1.Files += configure
 endif
 
-# If the GitVersion module is imported then put the .version-from-git file
-# inside the source archive. This way the GitVersion module will not attempt to
-# refer to git after the archive is extracted for installation later.
+# If the GitVersion module is imported then attempt to insert version
+# information into the release archive. There are two possible cases.
+#
+# 1) We may be in the directory still with git meta-data and history present,
+# enough to compute the version. This case is signified by
+# GitVersion.Origin=git. When this happens, the GitVersion module contains a
+# rule for generating the file .version-from-git, which we can add to the
+# source archive. The tar command will automatically rename that file to just
+# .version.
+#
+# 2) We may be running without the git meta-data, for example after unpacking
+# the release archive itself. In this case we typically have the .version file
+# already so we should just preserve it.
 ifneq (,$$(filter GitVersion,$$(ZMK.ImportedModules)))
+ifeq (git,$$(GitVersion.Origin))
 $1.Files += .version-from-git
+endif
+ifeq (file,$$(GitVersion.Origin))
+$1.Files += .version
+endif
 endif
 
 ifneq (,$$($1.Sign))

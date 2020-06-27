@@ -8,6 +8,8 @@ Changes in the next release:
   when git history along with git tags were used. The value "file" is used when
   the .version file was read.
 
+* The Tarball.Src template no longer breaks when used from a dist archive.
+
 Changes in 0.3.8:
 
 * The release archive now contains the full collection of test files.
