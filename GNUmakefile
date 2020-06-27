@@ -112,34 +112,40 @@ TMPDIR ?= /tmp
 .PHONY: distcheck
 distcheck: ZMK.distCheckArchive ?= $(NAME)-distcheck.tar.gz
 distcheck: ZMK.distCheckBase ?= $(TMPDIR)/$(NAME)-distcheck
+distcheck: ZMK.absSrcdir ?= $(abspath $(srcdir))
+distcheck: ZMK.srcdirMakefile ?= $(or $(wildcard $(abspath $(srcdir)/GNUmakefile)),$(wildcard $(abspath $(srcdir)/Makefile)))
 distcheck: | $(TMPDIR)
-	# Prepare scratch space for distcheck
+	# Prepare scratch space for distcheck.
 	-test -d $(ZMK.distCheckBase) && chmod -R +w $(ZMK.distCheckBase)
 	rm -rf $(ZMK.distCheckBase)
 	mkdir -p $(ZMK.distCheckBase)/tree
 	mkdir -p $(ZMK.distCheckBase)/build
-	# Prepare a release archive of $(NAME)
-	$(MAKE) zmkReleaseArchive=$(ZMK.distCheckArchive) dist
-	# Unpack the release archive of $(NAME) to temporary directory
-	mv $(ZMK.distCheckArchive) $(ZMK.distCheckBase)
-	tar -zxf $(ZMK.distCheckBase)/$(ZMK.distCheckArchive) --strip-components=1 -C $(ZMK.distCheckBase)/tree
-	# Make the source tree read-only for all out-of-tree checks
+	# Prepare a release archive of $(NAME) in a temporary directory.
+	$(strip $(MAKE) dist \
+		-C $(ZMK.distCheckBase) \
+		-f $(ZMK.srcdirMakefile) \
+		-I $(ZMK.absSrcdir) \
+		VPATH=$(ZMK.absSrcdir) \
+		srcdir=$(ZMK.absSrcdir))
+	# Unpack the release archive of $(NAME) to temporary directory.
+	tar -zxf $(ZMK.distCheckBase)/$(NAME)_$(VERSION).tar.gz --strip-components=1 -C $(ZMK.distCheckBase)/tree
+	# Make the source tree read-only for all out-of-tree checks.
 	chmod -R -w $(ZMK.distCheckBase)/tree
-	# $(NAME), when out-of-tree, builds correctly
+	# $(NAME), when out-of-tree, builds correctly.
 	$(strip $(MAKE) all \
 		ZMK.Path=$(ZMK.distCheckBase)/tree \
 		srcdir=$(ZMK.distCheckBase)/tree \
 		VPATH=$(ZMK.distCheckBase)/tree \
 		-f $(ZMK.distCheckBase)/tree/GNUmakefile \
 		-C $(ZMK.distCheckBase)/build)
-	# $(NAME), when out-of-tree, checks out
+	# $(NAME), when out-of-tree, checks out.
 	$(strip $(MAKE) check \
 		ZMK.Path=$(ZMK.distCheckBase)/tree \
 		srcdir=$(ZMK.distCheckBase)/tree \
 		VPATH=$(ZMK.distCheckBase)/tree \
 		-f $(ZMK.distCheckBase)/tree/GNUmakefile \
 		-C $(ZMK.distCheckBase)/build)
-	# $(NAME), when out-of-tree, installs via DESTDIR
+	# $(NAME), when out-of-tree, installs via DESTDIR.
 	$(strip $(MAKE) install \
 		ZMK.Path=$(ZMK.distCheckBase)/tree \
 		srcdir=$(ZMK.distCheckBase)/tree \
@@ -147,7 +153,7 @@ distcheck: | $(TMPDIR)
 		-f $(ZMK.distCheckBase)/tree/GNUmakefile \
 		-C $(ZMK.distCheckBase)/build \
 		DESTDIR=$(ZMK.distCheckBase)/installcheck)
-	# $(NAME), when out-of-tree, uninstalls via DESTDIR
+	# $(NAME), when out-of-tree, uninstalls via DESTDIR.
 	$(strip $(MAKE) uninstall \
 		ZMK.Path=$(ZMK.distCheckBase)/tree \
 		srcdir=$(ZMK.distCheckBase)/tree \
@@ -155,32 +161,33 @@ distcheck: | $(TMPDIR)
 		-f $(ZMK.distCheckBase)/tree/GNUmakefile \
 		-C $(ZMK.distCheckBase)/build \
 		DESTDIR=$(ZMK.distCheckBase)/installcheck)
-	# Uninstalled $(NAME) does not leave files or symbolic links
+	# Uninstalled $(NAME) does not leave files or symbolic links.
 	test "$$(find $(ZMK.distCheckBase)/installcheck -type f -o -type l | wc -l)" -eq 0
 	rm -rf $(ZMK.distCheckBase)/installcheck
-	# $(NAME), when out-of-tree, can re-create the release archive
+	# $(NAME), when out-of-tree, can re-create the release archive.
 	$(strip $(MAKE) dist \
 		ZMK.Path=$(ZMK.distCheckBase)/tree \
 		srcdir=$(ZMK.distCheckBase)/tree \
 		VPATH=$(ZMK.distCheckBase)/tree \
 		-f $(ZMK.distCheckBase)/tree/GNUmakefile \
 		-C $(ZMK.distCheckBase)/build)
-	# Make the source tree read-write for in-tree checks
+	# Make the source tree read-write for in-tree checks.
 	chmod -R +w $(ZMK.distCheckBase)/tree
-	# $(NAME), when in-tree, builds correctly
+	# $(NAME), when in-tree, builds correctly.
 	$(MAKE) -C $(ZMK.distCheckBase)/tree all
-	# $(NAME), when in-tree, checks out
+	# $(NAME), when in-tree, checks out.
 	$(MAKE) -C $(ZMK.distCheckBase)/tree check
-	# $(NAME), when in-tree, installs via DESTDIR
+	# $(NAME), when in-tree, installs via DESTDIR.
 	$(strip $(MAKE) -C $(ZMK.distCheckBase)/tree install \
 		DESTDIR=$(ZMK.distCheckBase)/installcheck)
-	# $(NAME), when in-tree, uninstalls via DESTDIR
+	# $(NAME), when in-tree, uninstalls via DESTDIR.
 	$(strip $(MAKE) -C $(ZMK.distCheckBase)/tree uninstall \
 		DESTDIR=$(ZMK.distCheckBase)/installcheck)
-	# Uninstalled $(NAME) does not leave files or symbolic links
+	# Uninstalled $(NAME) does not leave files or symbolic links.
 	test "$$(find $(ZMK.distCheckBase)/installcheck -type f -o -type l | wc -l)" -eq 0
 	rm -rf $(ZMK.distCheckBase)/installcheck
-	# $(NAME), when in-tree, can re-create the release archive
+	# $(NAME), when in-tree, can re-create the release archive.
 	$(MAKE) -C $(ZMK.distCheckBase)/tree dist
-	# Clean up after distcheck
+	# Clean up after distcheck.
 	rm -rf $(ZMK.distCheckBase)
+	@echo "dist-check successful"
