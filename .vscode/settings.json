@@ -4,6 +4,8 @@
         "shellscript"
     ],
     "cSpell.words": [
+        "CURDIR",
+        "TESTDIR",
         "TMPDIR",
         "abspath",
         "addprefix",
@@ -37,6 +39,7 @@
         "fpic",
         "fprofile",
         "freebsd",
+        "froz",
         "fvisibility",
         "gn",
         "gn umakefile",
@@ -80,6 +83,7 @@
         "profdata",
         "profraw",
         "realpath",
+        "rmdir",
         "runstatedir",
         "sbin",
         "sbindir",
