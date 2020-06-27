@@ -72,6 +72,10 @@ $(eval $(call ZMK.Import,toolchain.Clang))
 $(eval $(call ZMK.Import,toolchain.Watcom))
 $(eval $(call ZMK.Import,toolchain.Tcc))
 
+# Is the C and C++ compiler really available?
+Toolchain.CC.IsAvailable ?= $(if $(wildcard $(realpath $(CC))),yes)
+Toolchain.CXX.IsAvailable ?= $(if $(wildcard $(realpath $(CXX))),yes)
+
 # Is either the C or C++ compiler a cross compiler?
 Toolchain.IsCross ?= $(or $(Toolchain.CC.IsCross),$(Toolchain.CXX.IsCross))
 

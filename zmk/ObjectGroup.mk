@@ -25,6 +25,10 @@ $1.ObjectsCxx ?= $$(addsuffix .o,$$(addprefix $1-,$$(basename $$(filter %.cpp,$$
 $1.ObjectsObjC ?= $$(addsuffix .o,$$(addprefix $1-,$$(basename $$(filter %.m,$$($1.Sources)))))
 $1.Objects ?= $$(strip $$($1.ObjectsC) $$($1.ObjectsCxx) $$($1.ObjectsObjC))
 
+# Check if we have the required compiler.
+$$(if $$(or $$($1.ObjectsC),$$($1.ObjectsObjC)),$$(if $$(Toolchain.CC.IsAvailable),,$$(error Building $1 requires a C compiler)))
+$$(if $$($1.ObjectsCxx),$$(if $$(Toolchain.CXX.IsAvailable),,$$(error Building $1 requires a C++ compiler)))
+
 # This is how to compile each type of source files.
 $$($1.ObjectsC): $1-%.o: %.c
 	$$(strip $$(COMPILE.c) -o $$@ $$<)

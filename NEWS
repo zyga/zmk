@@ -1,3 +1,8 @@
+Changes in the next release:
+
+* The ObjectGroup template used by Program, Program.Test, Library.A, Library.So
+  and Library.DyLib is now performing rudimentary detection of a missing compiler.
+
 Changes in 0.3.8:
 
 * The release archive now contains the full collection of test files.
