@@ -12,6 +12,10 @@ define ZMK.isolateHostToolchain
 %.log: ZMK.makeOverrides += Toolchain.CXX.IsAvailable=yes
 %.log: ZMK.makeOverrides += Toolchain.CC.IsGcc=yes
 %.log: ZMK.makeOverrides += Toolchain.CXX.IsGcc=yes
+%.log: ZMK.makeOverrides += Toolchain.cc.dumpmachine=
+%.log: ZMK.makeOverrides += Toolchain.gcc.dumpmachine=
+%.log: ZMK.makeOverrides += Toolchain.cxx.dumpmachine=
+%.log: ZMK.makeOverrides += Toolchain.g++.dumpmachine=
 endef
 
 # Find the path of the zmk installation
