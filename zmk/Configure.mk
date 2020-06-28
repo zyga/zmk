@@ -283,7 +283,12 @@ if [ "$${configureFailed:-0}" -eq 1 ]; then
 fi
 
 if [ ! -e Makefile ] && [ ! -e GNUmakefile ]; then
-    ln -s "$$(dirname "$$0")"/GNUmakefile GNUmakefile
+    if [ -e "$$srcdir"/GNUmakefile ]; then
+        ln -s "$$srcdir"/GNUmakefile GNUmakefile
+    fi
+    if [ -e "$$srcdir"/Makefile ]; then
+        ln -s "$$srcdir"/Makefile Makefile
+    fi
 fi
 endef
 
