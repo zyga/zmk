@@ -264,6 +264,7 @@ done
             ;;
         implicit)
             echo "#   Configure.SilentRules was not specified."
+            echo "#   This feature is disabled by default."
             ;;
     esac
     echo
