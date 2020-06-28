@@ -26,6 +26,9 @@ srcdir ?= .
 # Version of the zmk library.
 ZMK.Version = 0.3.8
 
+# Temporary directory, used by distcheck.
+TMPDIR ?= /tmp
+
 # Location of include files used by the makefile system. Normally this is the
 # zmk subdirectory of /usr/include, as this is where make is importing things
 # from.
@@ -98,7 +101,7 @@ $(info z.mk v$(ZMK.Version), Copyright (c) 2019-2020 Zygmunt Krynicki)
 endif
 
 # Meta-targets that don't have specific specific commands
-.PHONY: $(sort all clean coverage fmt static-check check install uninstall dist distclean)
+.PHONY: $(sort all clean coverage fmt static-check check install uninstall dist distclean distcheck)
 
 # Run static checks when checking
 check:: static-check
