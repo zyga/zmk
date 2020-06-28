@@ -21,7 +21,9 @@ Tarball.Src.Variables=Name Files Sign
 define Tarball.Src.Template
 $1.Name ?= $$(patsubst %.tar$$(suffix $1),%,$1)
 $1.Files ?= $$(error define $1.Files - the list of files to include in the tarball)
+ifeq (,$(ZMK.NeverBundle))
 $1.Files += $$(ZMK.DistFiles)
+endif
 # Sign archives that are not git snapshots and if CI is unset
 $1.Sign ?= $$(if $$(or $$(value CI),$$(and $$(filter GitVersion,$$(ZMK.ImportedModules)),$$(GitVersion.Active))),,yes)
 
@@ -79,6 +81,10 @@ distcheck-$1: | $$(TMPDIR)
 	tar -zxf $$(ZMK.distCheckBase)/$1 --strip-components=1 -C $$(ZMK.distCheckBase)/tree
 	# Make the source tree read-only for all out-of-tree checks.
 	chmod -R -w $$(ZMK.distCheckBase)/tree
+ifneq (,$$(filter Configure,$$(ZMK.ImportedModules)))
+	# $1, can be configured for an out-of-tree build
+	(cd $$(ZMK.distCheckBase)/build/ && ../tree/configure) 
+endif
 	# $1, when out-of-tree, builds correctly.
 	$$(strip $$(MAKE) all \
 		ZMK.Path=$$(ZMK.distCheckBase)/tree \

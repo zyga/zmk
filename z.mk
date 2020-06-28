@@ -20,14 +20,8 @@ VERSION ?= $(error define VERSION - the static version of the project)
 # Speed up make by removing suffix rules.
 .SUFFIXES:
 
-# The location of the source code.
-srcdir ?= .
-
 # Version of the zmk library.
 ZMK.Version = 0.3.8
-
-# Temporary directory, used by distcheck.
-TMPDIR ?= /tmp
 
 # Location of include files used by the makefile system. Normally this is the
 # zmk subdirectory of /usr/include, as this is where make is importing things
@@ -78,6 +72,26 @@ ZMK.manPages = \
 # Files belonging to ZMK that need to be distributed in third-party release tarballs.
 ZMK.DistFiles = z.mk $(addprefix zmk/,$(foreach m,$(ZMK.modules),$m.mk) pvs-filter.awk)
 
+# Temporary directory, used by distcheck.
+TMPDIR ?= /tmp
+
+# The location of the source code.
+srcdir ?= .
+
+# Are we building out-of-tree
+ifneq ($(srcdir),.)
+ZMK.OutOfTreeBuild = yes
+else
+ZMK.OutOfTreeBuild =
+endif
+ZMK.SrcDir = $(srcdir)
+$(info ZMK.OutOfTreeBuild=$(ZMK.OutOfTreeBuild))
+$(info ZMK.SrcDir=$(ZMK.SrcDir))
+
+# Allow preventing ZMK from ever being bundled.
+ZMK.NeverBundle ?= $(if $(value ZMK_NEVER_BUNDLE),yes)
+
+ifeq (,$(ZMK.NeverBundle))
 # If zmk is provided externally add rules to copy it to the source tree and
 # make the distclean target remove it from the tree.
 ifneq ($(realpath $(ZMK.Path)),$(realpath $(srcdir)))
@@ -91,6 +105,7 @@ distclean::
 	rm -rf $(srcdir)/zmk
 	rm -f $(srcdir)/z.mk
 	rm -f configure
+endif
 endif
 
 # ZMK Copyright Banner. Do not remove.

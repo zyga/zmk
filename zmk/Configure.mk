@@ -269,18 +269,14 @@ done
     esac
     echo
     echo "# Program name customization options."
-    test -n "$${programPrefix:-}" && echo "Configure.ProgramPrefix=$$programPrefix" || echo "#   Configure.ProgramPrefix was not specified."
-    test -n "$${programSuffix:-}" && echo "Configure.ProgramSuffix=$$programSuffix" || echo "#   Configure.ProgramSuffix was not specified."
-    test -n "$${programTransformName:-}" && echo "Configure.ProgramTransformName=$$programTransformName" || echo "#   Configure.ProgramTransformName was not specified."
+    test -n "$${programPrefix:-}"           && echo "Configure.ProgramPrefix=$$programPrefix"               || echo "#   Configure.ProgramPrefix was not specified."
+    test -n "$${programSuffix:-}"           && echo "Configure.ProgramSuffix=$$programSuffix"               || echo "#   Configure.ProgramSuffix was not specified."
+    test -n "$${programTransformName:-}"    && echo "Configure.ProgramTransformName=$$programTransformName" || echo "#   Configure.ProgramTransformName was not specified."
     echo
     echo "# Remember that the configuration script was executed."
     echo "Configure.Configured=yes"
     echo "Configure.Options=$$configureOptions"
-} > "$${ZMK_CONFIGURE_MAKEFILE:=GNUmakefile.configure.mk}"
-if [ "$${configureFailed:-0}" -eq 1 ]; then
-    rm -f "$${ZMK_CONFIGURE_MAKEFILE}"
-    exit 1
-fi
+} >"$${ZMK_CONFIGURE_MAKEFILE:=GNUmakefile.configure.mk}"
 
 if [ ! -e Makefile ] && [ ! -e GNUmakefile ]; then
     if [ -e "$$srcdir"/GNUmakefile ]; then
@@ -294,8 +290,8 @@ endef
 
 # In maintainer mode the configure script is automatically updated.
 ifeq ($(Configure.MaintainerMode),yes)
-configure: export ZMK_CONFIGURE_SCRIPT = $(Configure.script)
-configure: $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
+configure $(if $(ZMK.OutOfTreeBuild),$(srcdir)/configure): export ZMK_CONFIGURE_SCRIPT = $(Configure.script)
+configure $(if $(ZMK.OutOfTreeBuild),$(srcdir)/configure): $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
 	@echo "$${ZMK_CONFIGURE_SCRIPT}" >$@
 	chmod +x $@
 
