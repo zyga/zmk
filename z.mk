@@ -108,6 +108,10 @@ check:: static-check
 
 # Display diagnostic messages when DEBUG has specific items.
 ZMK.comma=,
+define ZMK.newline
+
+
+endef
 DEBUG ?=
 DEBUG := $(subst $(ZMK.comma), ,$(DEBUG))
 
