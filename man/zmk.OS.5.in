@@ -23,11 +23,13 @@ This module provides the following variables.
 Identifier of the operating system kernel.
 .Pp
 Known values are listed in the following table.
+\# See tbl(1) for explanation of the syntax.
 .TS
 tab(:) box;
-lb5 l5.
+cb | cb
+r | l .
 Value:Description
-=:=:=
+=:=
 Darwin:The MacOS kernel
 FreeBSD:The FreeBSD kernel
 GNU/kFreeBSD:The FreeBSD kernel with GNU userspace
@@ -43,9 +45,10 @@ Haiku:The Haiku kernel
 Identifier or the application image format used.
 .TS
 tab(:) box;
-lb5 l5.
+cb | cb
+r | l .
 Value:Description
-=:=:=
+=:=
 ELF:Used by most UNIX-like systems, except Darwin
 Mach-O:Used by MacOS
 PE:Used by Windows
