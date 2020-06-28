@@ -16,6 +16,10 @@ Changes in the next release:
 * The internal toolchain.GCC module no longer attempts to invoke gcc and g++
   if they are not installed.
 
+* The ManPage module again checks for errors in manual pages. This feature
+  was disabled in an earlier release as it was showing a problem with zmk
+  that was not understood at the time.
+
 Changes in 0.3.8:
 
 * The release archive now contains the full collection of test files.
