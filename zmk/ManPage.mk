@@ -16,12 +16,24 @@
 
 $(eval $(call ZMK.Import,Directories))
 
+ManPage.isAvailable ?= $(if $(shell command -v man 2>/dev/null),yes)
+ManPage.isGNU ?= $(if $(and $(ManPage.isAvailable),$(shell man --help 2>&1 | grep -F -- --warning)),yes)
 # GNU man can be used to perform rudimentary validation of manual pages.
-#ifneq ($(and $(shell command -v man 2>/dev/null),$(shell man --help 2>&1 | grep -F -- --warning)),)
-#static-check-manpages:
-#	LC_ALL=C MANROFFSEQ='' MANWIDTH=80 man --warnings -E UTF-8 -l -Tutf8 -Z $^ 2>&1 >/dev/null | diff -u - /dev/null
-#static-check:: static-check-manpages
-#endif
+ifeq ($(ManPage.isGNU),yes)
+# Set of arcane options that turn GNU troff into a validator.
+# TODO: man is extremely slow, refactor this to support parallelism.
+static-check-manpages: export LC_ALL=C
+static-check-manpages: export MANROFFSEQ=
+static-check-manpages: export MANWIDTH=80
+static-check-manpages: man_opts += --warnings=all
+static-check-manpages: man_opts += --encoding=UTF-8
+static-check-manpages: man_opts += --troff-device=utf8
+static-check-manpages: man_opts += --ditroff
+static-check-manpages: man_opts += --local-file
+static-check-manpages:
+	$(foreach m,$^,man $(MAN_OPTS) $m 2>&1 >/dev/null | sed -e 's@tbl:<standard input>@$m@g'$(ZMK.newline))
+static-check:: static-check-manpages
+endif
 
 ManPage.Variables=Section
 define ManPage.Template
