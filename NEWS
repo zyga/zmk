@@ -64,7 +64,7 @@ Changes in 0.3.1:
    The only public attribute is GitVersion.Active, which expands to yes if
    the module has altered VERSION as compared to what was set in the makefile.
 
- * The Tarball.Src module no longer attempts to sign releases in CI systems.
+ * The Tarball.Src module no longer attempts to sign releases in CI systems
    and no longer issues warnings if the GitVersion module is not used.
 
 Changes in 0.3:
