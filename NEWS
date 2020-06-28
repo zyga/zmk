@@ -135,7 +135,7 @@ Changes in 0.2:
 
  * The Module.configure module can now synthesize the configure script.
 
- * The configure script now handles --runtstatedir=DIR option.
+ * The configure script now handles --runstatedir=DIR option.
 
  * The configure script no longer considers --build=TRIPLET as cross-compiling,
    both --build=TRIPLET and --host=TRIPLET must be used and must differ for
