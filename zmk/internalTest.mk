@@ -25,6 +25,17 @@ ZMK.Path := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/..)
 srcdir ?= .
 VPATH ?=
 
+# For consistency with real z.mk
+ifneq ($(srcdir),.)
+ZMK.OutOfTreeBuild = yes
+ZMK.OutOfTreeSourcePath = $(srcdir)/
+else
+ZMK.OutOfTreeBuild =
+ZMK.OutOfTreeSourcePath =
+endif
+ZMK.SrcDir = $(srcdir)
+
+
 # Put extra test tools on PATH
 export PATH := $(ZMK.Path)/tests/bin:$(PATH)
 

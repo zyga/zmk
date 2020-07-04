@@ -16,8 +16,8 @@ all: all.log
 	GREP -qF 'Nothing to be done for' <$<
 install: install.log
 	GREP -qFx 'install -d /usr/local/include' <$<
-	GREP -qFx 'install -m 0644 $(if $(VPATH),$(VPATH)/)foo.h /usr/local/include/foo.h' <$<
-	GREP -qFx 'install -m 0644 $(if $(VPATH),$(VPATH)/)include/bar.h /usr/local/include/bar.h' <$<
+	GREP -qFx 'install -m 0644 $(ZMK.OutOfTreeSourcePath)foo.h /usr/local/include/foo.h' <$<
+	GREP -qFx 'install -m 0644 $(ZMK.OutOfTreeSourcePath)include/bar.h /usr/local/include/bar.h' <$<
 uninstall: uninstall.log
 	GREP -qFx 'rm -f /usr/local/include/foo.h' <$<
 	GREP -qFx 'rm -f /usr/local/include/bar.h' <$<
@@ -29,8 +29,8 @@ all-destdir: all-destdir.log
 install-destdir: install-destdir.log
 	GREP -qFx 'mkdir -p /destdir' <$<
 	GREP -qFx 'install -d /destdir/usr/local/include' <$<
-	GREP -qFx 'install -m 0644 $(if $(VPATH),$(VPATH)/)foo.h /destdir/usr/local/include/foo.h' <$<
-	GREP -qFx 'install -m 0644 $(if $(VPATH),$(VPATH)/)include/bar.h /destdir/usr/local/include/bar.h' <$<
+	GREP -qFx 'install -m 0644 $(ZMK.OutOfTreeSourcePath)foo.h /destdir/usr/local/include/foo.h' <$<
+	GREP -qFx 'install -m 0644 $(ZMK.OutOfTreeSourcePath)include/bar.h /destdir/usr/local/include/bar.h' <$<
 uninstall-destdir: uninstall-destdir.log
 	GREP -qFx 'rm -f /destdir/usr/local/include/foo.h' <$<
 	GREP -qFx 'rm -f /destdir/usr/local/include/bar.h' <$<

@@ -81,12 +81,12 @@ srcdir ?= .
 # Are we building out-of-tree
 ifneq ($(srcdir),.)
 ZMK.OutOfTreeBuild = yes
+ZMK.OutOfTreeSourcePath = $(srcdir)/
 else
 ZMK.OutOfTreeBuild =
+ZMK.OutOfTreeSourcePath =
 endif
 ZMK.SrcDir = $(srcdir)
-$(info ZMK.OutOfTreeBuild=$(ZMK.OutOfTreeBuild))
-$(info ZMK.SrcDir=$(ZMK.SrcDir))
 
 # Allow preventing ZMK from ever being bundled.
 ZMK.NeverBundle ?= $(if $(value ZMK_NEVER_BUNDLE),yes)
