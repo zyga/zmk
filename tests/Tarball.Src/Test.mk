@@ -16,15 +16,15 @@ t:: dist-gnu dist-non-gnu dist-darwin dist-CI
 dist-gnu.log: ZMK.makeOverrides += Tarball.isGNU=yes OS.Kernel=test
 dist-gnu: dist-gnu.log
 	# Archiving source release tarball archives the files given by the user
-	GREP -qF "/usr/bin/tar -zcf test_1.tar.gz$(if $(ZMK.OutOfTreeBuild), -C $(ZMK.SrcDir)) --absolute-names " <$<
+	GREP -qF "/usr/bin/tar -zcf test_1.tar.gz$(if $(ZMK.test.OutOfTreeBuild), -C $(ZMK.test.SrcDir)) --absolute-names " <$<
 	GREP -qF ' foo.txt' <$<
 	# It also archives zmk (only parts are tested)
-	GREP -qF '$(ZMK.Path)/z.mk' <$<
-	GREP -qF '$(ZMK.Path)/zmk/Configure.mk' <$<
-	GREP -qF '$(ZMK.Path)/zmk/pvs-filter.awk' <$<
+	GREP -qF '$(ZMK.test.Path)/z.mk' <$<
+	GREP -qF '$(ZMK.test.Path)/zmk/Configure.mk' <$<
+	GREP -qF '$(ZMK.test.Path)/zmk/pvs-filter.awk' <$<
 	# GNU-specific transformation syntax is supported.
 	GREP -qF -- " --xform='s@$(CURDIR)/@@g' " <$<
-	GREP -qF -- " --xform='s@$(ZMK.Path)/@@g' " <$<
+	GREP -qF -- " --xform='s@$(ZMK.test.Path)/@@g' " <$<
 	GREP -qF -- " --xform='s@.version-from-git@.version@' " <$<
 	GREP -qF -- " --xform='s@^@test_1/@' " <$<
 	# Releases are also signed
@@ -33,15 +33,15 @@ dist-gnu: dist-gnu.log
 dist-non-gnu.log: ZMK.makeOverrides += Tarball.isGNU= OS.Kernel=test
 dist-non-gnu: dist-non-gnu.log
 	# Archiving source release tarball archives the files given by the user
-	GREP -qF "/usr/bin/tar -zcf test_1.tar.gz$(if $(ZMK.OutOfTreeBuild), -C $(ZMK.SrcDir)) " <$<
+	GREP -qF "/usr/bin/tar -zcf test_1.tar.gz$(if $(ZMK.test.OutOfTreeBuild), -C $(ZMK.test.SrcDir)) " <$<
 	GREP -qF ' foo.txt' <$<
 	# It also archives zmk (only parts are tested)
-	GREP -qF '$(ZMK.Path)/z.mk' <$<
-	GREP -qF '$(ZMK.Path)/zmk/Configure.mk' <$<
-	GREP -qF '$(ZMK.Path)/zmk/pvs-filter.awk' <$<
+	GREP -qF '$(ZMK.test.Path)/z.mk' <$<
+	GREP -qF '$(ZMK.test.Path)/zmk/Configure.mk' <$<
+	GREP -qF '$(ZMK.test.Path)/zmk/pvs-filter.awk' <$<
 	# BSD-specific transformation syntax is supported.
 	GREP -qF -- " -s '@$(CURDIR)/@@g' " <$<
-	GREP -qF -- " -s '@$(ZMK.Path)/@@g' " <$<
+	GREP -qF -- " -s '@$(ZMK.test.Path)/@@g' " <$<
 	GREP -qF -- " -s '@^.version-from-git@test_1/.version@' " <$<
 	GREP -qF -- " -s '@^.@test_1/~@' " <$<
 	# Releases are also signed

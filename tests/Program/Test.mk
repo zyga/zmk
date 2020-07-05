@@ -13,11 +13,11 @@ $(eval $(ZMK.isolateHostToolchain))
 
 all: all.log
 	# C/C++/ObjC programs can be built.
-	GREP -qFx 'cc -MMD -c -o foo-foo.o $(ZMK.OutOfTreeSourcePath)foo.c' <$<
+	GREP -qFx 'cc -MMD -c -o foo-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
 	GREP -qFx 'cc -o foo foo-foo.o' <$<
-	GREP -qFx 'c++ -MMD -c -o bar-bar.o $(ZMK.OutOfTreeSourcePath)bar.cpp' <$<
+	GREP -qFx 'c++ -MMD -c -o bar-bar.o $(ZMK.test.OutOfTreeSourcePath)bar.cpp' <$<
 	GREP -qFx 'c++ -MMD -o bar bar-bar.o' <$<
-	GREP -qFx 'cc -MMD -c -o froz-froz.o $(ZMK.OutOfTreeSourcePath)froz.m' <$<
+	GREP -qFx 'cc -MMD -c -o froz-froz.o $(ZMK.test.OutOfTreeSourcePath)froz.m' <$<
 	GREP -qFx 'cc -MMD -o froz froz-froz.o -lobjc' <$<
 install: install.log
 	# C/C++/ObjC programs can be installed.
@@ -47,9 +47,9 @@ t:: all-exe
 all-exe.log: ZMK.makeOverrides += exe=.exe
 all-exe: all-exe.log
 	# C/C++ programs respect the .exe suffix (during building)
-	GREP -qFx 'cc -MMD -c -o foo-foo.o $(ZMK.OutOfTreeSourcePath)foo.c' <$<
+	GREP -qFx 'cc -MMD -c -o foo-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
 	GREP -qFx 'cc -o foo.exe foo-foo.o' <$<
-	GREP -qFx 'c++ -MMD -c -o bar-bar.o $(ZMK.OutOfTreeSourcePath)bar.cpp' <$<
+	GREP -qFx 'c++ -MMD -c -o bar-bar.o $(ZMK.test.OutOfTreeSourcePath)bar.cpp' <$<
 	GREP -qFx 'c++ -MMD -o bar.exe bar-bar.o' <$<
 
 
@@ -85,7 +85,7 @@ t:: install-program-prefix
 install-program-prefix.log: ZMK.makeOverrides += Configure.ProgramPrefix=prefix-
 install-program-prefix: install-program-prefix.log
 	# Configured program prefix is used during the install phase.
-	GREP -qFx 'cc -MMD -c -o foo-foo.o $(ZMK.OutOfTreeSourcePath)foo.c' <$<
+	GREP -qFx 'cc -MMD -c -o foo-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
 	GREP -qFx 'cc -o foo foo-foo.o' <$<
 	GREP -qFx 'install -m 0755 foo /usr/local/bin/prefix-foo' <$<
 
@@ -93,7 +93,7 @@ t:: install-program-suffix
 install-program-suffix.log: ZMK.makeOverrides += Configure.ProgramSuffix=-suffix
 install-program-suffix: install-program-suffix.log
 	# Configured program suffix is used during the install phase.
-	GREP -qFx 'cc -MMD -c -o foo-foo.o $(ZMK.OutOfTreeSourcePath)foo.c' <$<
+	GREP -qFx 'cc -MMD -c -o foo-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
 	GREP -qFx 'cc -o foo foo-foo.o' <$<
 	GREP -qFx 'install -m 0755 foo /usr/local/bin/foo-suffix' <$<
 
@@ -101,7 +101,7 @@ t:: install-program-transform-name
 install-program-transform-name.log: ZMK.makeOverrides += Configure.ProgramTransformName=s/foo/potato/g
 install-program-transform-name: install-program-transform-name.log
 	# Configured program transform expression is applied during the install phase.
-	GREP -qFx 'cc -MMD -c -o foo-foo.o $(ZMK.OutOfTreeSourcePath)foo.c' <$<
+	GREP -qFx 'cc -MMD -c -o foo-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
 	GREP -qFx 'cc -o foo foo-foo.o' <$<
 	GREP -qFx 'install -m 0755 foo /usr/local/bin/potato' <$<
 

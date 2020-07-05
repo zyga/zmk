@@ -7,7 +7,7 @@ t:: all install uninstall clean
 $(eval $(ZMK.isolateHostToolchain))
 
 all: all.log
-	GREP -qFx 'cc -MMD -c -o hello-hello.o $(ZMK.OutOfTreeSourcePath)hello.m' <$<
+	GREP -qFx 'cc -MMD -c -o hello-hello.o $(ZMK.test.OutOfTreeSourcePath)hello.m' <$<
 	GREP -qFx 'cc -MMD -o hello hello-hello.o -lobjc' <$<
 install: install.log
 	GREP -qFx 'install -d /usr/local/bin' <$<

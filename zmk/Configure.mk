@@ -294,7 +294,7 @@ ifeq ($(Configure.MaintainerMode),yes)
 $(CURDIR)/configure configure: export ZMK_CONFIGURE_SCRIPT = $(Configure.script)
 $(CURDIR)/configure configure: $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
 	@echo "$${ZMK_CONFIGURE_SCRIPT}" >$@
-	chmod +x $@
+	@chmod +x $@
 
 # In maintainer mode, re-configure in response to updates to the configuration script.
 ifeq ($(Configure.Configured),yes)

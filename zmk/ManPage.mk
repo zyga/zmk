@@ -31,7 +31,7 @@ static-check-manpages: man_opts += --troff-device=utf8
 static-check-manpages: man_opts += --ditroff
 static-check-manpages: man_opts += --local-file
 static-check-manpages:
-	$(foreach m,$^,man $(MAN_OPTS) $m 2>&1 >/dev/null | sed -e 's@tbl:<standard input>@$m@g'$(ZMK.newline))
+	$(foreach m,$^,man $(man_opts) $m 2>&1 >/dev/null | sed -e 's@tbl:<standard input>@$m@g'$(ZMK.newline))
 static-check:: static-check-manpages
 endif
 

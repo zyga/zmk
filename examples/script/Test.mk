@@ -7,7 +7,7 @@ all: all.log
 	GREP -q "Nothing to be done for [\`']all'\." <$<
 install: install.log
 	GREP -qF 'install -d /usr/local/bin' <$<
-	GREP -qF 'install -m 0755 $(ZMK.OutOfTreeSourcePath)hello.sh /usr/local/bin/hello.sh' <$<
+	GREP -qF 'install -m 0755 $(ZMK.test.OutOfTreeSourcePath)hello.sh /usr/local/bin/hello.sh' <$<
 uninstall: uninstall.log
 	GREP -qF 'rm -f /usr/local/bin/hello.sh' <$<
 clean: clean.log
@@ -15,7 +15,7 @@ clean: clean.log
 check: check-with-shellcheck check-without-shellcheck
 check-with-shellcheck.log: ZMK.makeOverrides = ZMK.shellcheck=shellcheck
 check-with-shellcheck: check-with-shellcheck.log
-	GREP -qF 'shellcheck $(ZMK.OutOfTreeSourcePath)hello.sh' <$<
+	GREP -qF 'shellcheck $(ZMK.test.OutOfTreeSourcePath)hello.sh' <$<
 check-without-shellcheck.log: ZMK.makeOverrides = ZMK.shellcheck=
 check-without-shellcheck: check-without-shellcheck.log
-	GREP -qF 'echo "ZMK: install shellcheck to analyze $(ZMK.OutOfTreeSourcePath)hello.sh"' <$<
+	GREP -qF 'echo "ZMK: install shellcheck to analyze $(ZMK.test.OutOfTreeSourcePath)hello.sh"' <$<

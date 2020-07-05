@@ -87,7 +87,7 @@ $(addprefix check-,$(tests)): check-%:
 ifeq ($(ZMK.IsOutOfTreeBuild),yes)
 	mkdir -p $(TESTDIR)
 	$(strip $(MAKE)	--warn-undefined-variables \
-		ZMK.SrcDir=$(ZMK.SrcDir)/$(TESTDIR) \
+		ZMK.test.SrcDir=$(ZMK.SrcDir)/$(TESTDIR) \
 		-I $(abspath $(ZMK.Path)) \
 		-C $(TESTDIR) \
 		-f $(ZMK.SrcDir)/$(TESTDIR)/Test.mk)
