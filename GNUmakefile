@@ -84,7 +84,7 @@ check-unit: $(addprefix check-,$(tests))
 
 check-%: TESTDIR=$(patsubst examples/libhello/%,examples/libhello-%,$(patsubst examples/hello/%,examples/hello-%,$(subst -,/,$*)))
 $(addprefix check-,$(tests)): check-%:
-ifeq ($(ZMK.OutOfTreeBuild),yes)
+ifeq ($(ZMK.IsOutOfTreeBuild),yes)
 	mkdir -p $(TESTDIR)
 	$(strip $(MAKE)	--warn-undefined-variables \
 		ZMK.SrcDir=$(ZMK.SrcDir)/$(TESTDIR) \

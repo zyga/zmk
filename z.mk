@@ -80,11 +80,11 @@ ZMK.SrcDir ?= .
 
 # Are we building out-of-tree
 ifneq ($(ZMK.SrcDir),.)
-ZMK.OutOfTreeBuild = yes
+ZMK.IsOutOfTreeBuild = yes
 ZMK.OutOfTreeSourcePath = $(ZMK.SrcDir)/
 VPATH = $(ZMK.SrcDir)
 else
-ZMK.OutOfTreeBuild =
+ZMK.IsOutOfTreeBuild =
 ZMK.OutOfTreeSourcePath =
 endif
 

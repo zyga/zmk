@@ -174,6 +174,7 @@ while [ "$$#" -ge 1 ]; do
         OBJCXXFLAGS=*)                  OBJCXXFLAGS="$$(rhs "$$1")" && shift ;;
         CPPFLAGS=*)                     CPPFLAGS="$$(rhs "$$1")" && shift ;;
         LDFLAGS=*)                      LDFLAGS="$$(rhs "$$1")" && shift ;;
+        ZMK.SrcDir=*)                   srcdir="$$(rhs "$$1")" && shift ;;
 
         *)
             if [ "$${disableOptionChecking:-}" != yes ]; then
@@ -290,8 +291,8 @@ endef
 
 # In maintainer mode the configure script is automatically updated.
 ifeq ($(Configure.MaintainerMode),yes)
-configure: export ZMK_CONFIGURE_SCRIPT = $(Configure.script)
-configure: $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
+$(CURDIR)/configure configure: export ZMK_CONFIGURE_SCRIPT = $(Configure.script)
+$(CURDIR)/configure configure: $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
 	@echo "$${ZMK_CONFIGURE_SCRIPT}" >$@
 	chmod +x $@
 
@@ -299,7 +300,7 @@ configure: $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
 ifeq ($(Configure.Configured),yes)
 GNUmakefile.configure.mk: configure
 	@echo "re-configuring, $< script is newer than $@"
-	sh $< $(Configure.Options)
+	sh $< $(Configure.Options) ZMK.SrcDir=$(ZMK.SrcDir)
 endif # !configured
 endif # !maintainer mode
 

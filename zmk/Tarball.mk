@@ -61,7 +61,7 @@ endif
 $1: $$(sort $$($1.Files))
 	$$(strip $$(Tarball.tar) \
 		-$$(or $$(Tarball.compressFlag),a)cf $$@ \
-		$$(if $$(ZMK.OutOfTreeBuild),-C $$(ZMK.SrcDir)) \
+		$$(if $$(ZMK.IsOutOfTreeBuild),-C $$(ZMK.SrcDir)) \
 		$$(Tarball.tarOptions) \
 		$$(patsubst $$(ZMK.SrcDir)/%,%,$$^))
 endef

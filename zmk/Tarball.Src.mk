@@ -28,7 +28,7 @@ ifeq ($$(ZMK.DoNotBundle),)
 $1.Files += $$(addprefix $$(ZMK.Path)/,$$(ZMK.DistFiles))
 # If the Configure module is imported then include the configure script.
 ifneq (,$$(filter Configure,$$(ZMK.ImportedModules)))
-$1.Files += $$(CURDIR)/configure
+$1.Files += $(CURDIR)/configure
 endif
 endif
 # Sign archives that are not git snapshots and if CI is unset
@@ -78,7 +78,7 @@ distcheck-$1: | $$(TMPDIR)
 		ZMK.SrcDir=$$(ZMK.absSrcdir)) \
 		-I $$(ZMK.absSrcdir) \
 		-C $$(ZMK.distCheckBase) \
-		-f $$(ZMK.srcDirMakefile) \
+		-f $$(ZMK.srcDirMakefile)
 	# Unpack the release archive $1 to temporary directory.
 	tar -zxf $$(ZMK.distCheckBase)/$1 --strip-components=1 -C $$(ZMK.distCheckBase)/tree
 	# Make the source tree read-only for all out-of-tree checks.

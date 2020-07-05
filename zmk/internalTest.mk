@@ -26,11 +26,11 @@ ZMK.SrcDir ?= .
 
 # For consistency with real z.mk
 ifneq ($(ZMK.SrcDir),.)
-ZMK.OutOfTreeBuild = yes
+ZMK.IsOutOfTreeBuild = yes
 ZMK.OutOfTreeSourcePath = $(ZMK.SrcDir)/
 VPATH = $(ZMK.SrcDir)
 else
-ZMK.OutOfTreeBuild =
+ZMK.IsOutOfTreeBuild =
 ZMK.OutOfTreeSourcePath =
 endif
 
