@@ -19,7 +19,7 @@ clean: clean.log
 	GREP -qFx 'rm -f name' <$<
 	GREP -qFx 'rm -f subdir/name' <$<
 install: install.log
-	# Installing a symlink creates the install directory 
+	# Installing a symlink creates the install directory
 	# and then places the symlink there.
 	GREP -qFx 'install -d /some' <$<
 	GREP -qFx 'install -d /some/path' <$<
@@ -43,7 +43,7 @@ clean-destdir: clean-destdir.log
 	GREP -qFx 'rm -f name' <$<
 	GREP -qFx 'rm -f subdir/name' <$<
 install-destdir: install-destdir.log
-	# Installing a symlink creates the install directory 
+	# Installing a symlink creates the install directory
 	# and then places the symlink there.
 	GREP -qFx 'mkdir -p /destdir' <$<
 	GREP -qFx 'install -d /destdir/some' <$<
