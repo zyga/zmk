@@ -300,7 +300,7 @@ $(CURDIR)/configure configure: $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
 ifeq ($(Configure.Configured),yes)
 GNUmakefile.configure.mk: configure
 	@echo "re-configuring, $< script is newer than $@"
-	sh $< $(Configure.Options) ZMK.SrcDir=$(ZMK.SrcDir)
+	$(strip sh $< $(Configure.Options) ZMK.SrcDir=$(ZMK.SrcDir))
 endif # !configured
 endif # !maintainer mode
 
