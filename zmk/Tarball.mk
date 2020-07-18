@@ -19,6 +19,8 @@ $(eval $(call ZMK.Import,OS))
 _bsd_tar_options ?=
 _tar_compress_flag ?=
 
+Tarball.isGNU ?= $(if $(shell tar --version 2>&1 | grep GNU),yes)
+
 # If using a Mac, filter out extended meta-data files.
 ifeq ($(OS.Kernel),Darwin)
 _bsd_tar_options := --no-mac-metadata
@@ -35,7 +37,7 @@ $1.Files ?= $$(error define $1.Files - the list of files to include in the tarba
 
 dist:: $1
 $1: $$(sort $$(addprefix $$(srcdir)/,$$($1.Files)))
-ifneq ($(shell tar --version 2>&1 | grep GNU),)
+ifeq ($(Tarball.isGNU),yes)
 	tar -$$(or $$(_tar_compress_flag),a)cf $$@ -C $$(srcdir) --xform='s@^@$$($1.Name)/@g' --xform='s@.version-from-git@.version@' $$(patsubst $$(srcdir)/%,%,$$^)
 else
 	tar $$(strip $$(_bsd_tar_options) -$$(or $$(_tar_compress_flag),a)cf) $$@ -C $$(srcdir) -s '@.@$$($1.Name)/~@' -s '@.version-from-git@.version@' $$(patsubst $$(srcdir)/%,%,$$^)
