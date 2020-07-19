@@ -16,7 +16,7 @@ t:: dist-gnu dist-non-gnu dist-darwin dist-CI
 dist-gnu.log: ZMK.makeOverrides += Tarball.isGNU=yes OS.Kernel=test
 dist-gnu: dist-gnu.log
 	# Archiving source release tarball archives the files given by the user
-	GREP -qF "/usr/bin/tar -zcf test_1.tar.gz$(if $(ZMK.test.OutOfTreeBuild), -C $(ZMK.test.SrcDir)) --absolute-names " <$<
+	GREP -qF "/usr/bin/tar -zcf test_1.tar.gz$(if $(ZMK.test.IsOutOfTreeBuild), -C $(ZMK.test.SrcDir)) --absolute-names " <$<
 	GREP -qF ' foo.txt' <$<
 	# It also archives zmk (only parts are tested)
 	GREP -qF '$(ZMK.test.Path)/z.mk' <$<
@@ -33,7 +33,7 @@ dist-gnu: dist-gnu.log
 dist-non-gnu.log: ZMK.makeOverrides += Tarball.isGNU= OS.Kernel=test
 dist-non-gnu: dist-non-gnu.log
 	# Archiving source release tarball archives the files given by the user
-	GREP -qF "/usr/bin/tar -zcf test_1.tar.gz$(if $(ZMK.test.OutOfTreeBuild), -C $(ZMK.test.SrcDir)) " <$<
+	GREP -qF "/usr/bin/tar -zcf test_1.tar.gz$(if $(ZMK.test.IsOutOfTreeBuild), -C $(ZMK.test.SrcDir)) " <$<
 	GREP -qF ' foo.txt' <$<
 	# It also archives zmk (only parts are tested)
 	GREP -qF '$(ZMK.test.Path)/z.mk' <$<
@@ -51,7 +51,7 @@ dist-darwin.log: ZMK.makeOverrides += OS.Kernel=Darwin
 dist-darwin.log: ZMK.makeOverrides += Tarball.isGNU=
 dist-darwin: dist-darwin.log
 	# Darwin meta-data is excluded.
-	GREP -qF 'tar -zcf test_1.tar.gz --no-mac-metadata ' <$<
+	GREP -qF 'tar -zcf test_1.tar.gz$(if $(ZMK.test.IsOutOfTreeBuild), -C $(ZMK.test.SrcDir)) --no-mac-metadata ' <$<
 
 dist-CI.log: ZMK.makeOverrides += CI=fake
 dist-CI: dist-CI.log
