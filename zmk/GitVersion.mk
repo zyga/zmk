@@ -17,9 +17,9 @@
 # Craft a better version if we have Git.
 
 GitVersion.debug ?= $(findstring version,$(DEBUG))
-GitVersion.versionFilePresent = $(if $(wildcard $(srcdir)/.version),yes)
-GitVersion.gitAvailable ?= $(if $(shell command -v git 2>/dev/null),yes)
-GitVersion.gitMetaDataPresent ?= $(if $(wildcard $(srcdir)/.git),yes)
+GitVersion.versionFilePresent = $(if $(wildcard $(ZMK.SrcDir)/.version),yes)
+GitVersion.gitAvailable ?= $(if $(shell sh -c "command -v git" 2>/dev/null),yes)
+GitVersion.gitMetaDataPresent ?= $(if $(wildcard $(ZMK.SrcDir)/.git),yes)
 GitVersion.versionFromMakefile := $(strip $(VERSION))
 GitVersion.versionFromFile =
 GitVersion.versionFromGit =
@@ -29,12 +29,12 @@ GitVersion.Origin =
 ifeq (yes,$(GitVersion.versionFilePresent))
 # Note that we never generate this file from any rule in zmk!
 # If the source tree contains the .version file then it is authoritative.
-GitVersion.versionFromFile:=$(shell cat $(srcdir)/.version 2>/dev/null)
+GitVersion.versionFromFile:=$(shell cat $(ZMK.SrcDir)/.version 2>/dev/null)
 GitVersion.Origin = file
 else
 ifeq (yes,$(and $(GitVersion.gitAvailable),$(GitVersion.gitMetaDataPresent)))
 # If we have the git program and the .git directory then we can also ask git.
-GitVersion.versionFromGit=$(shell GIT_DIR=$(srcdir)/.git git describe --abbrev=10 --tags 2>/dev/null | sed -e 's/^v//')
+GitVersion.versionFromGit=$(shell GIT_DIR=$(ZMK.SrcDir)/.git git describe --abbrev=10 --tags 2>/dev/null | sed -e 's/^v//')
 GitVersion.Origin = git
 ifneq (,$(value CI))
 # If we are in CI and git version was empty then perhaps this is a shallow clone?
@@ -50,7 +50,7 @@ endif # !version from version file
 # to .version inside the archive. When we see the .version file we do not look
 # for git information anymore, as it may no longer be the "same" git history.
 ifneq (,$(GitVersion.versionFromGit))
-$(srcdir)/.version-from-git: $(srcdir)/.git
+$(ZMK.SrcDir)/.version-from-git: $(ZMK.SrcDir)/.git
 	echo $(GitVersion.versionFromGit) >$@
 endif
 

@@ -16,19 +16,18 @@
 $(eval $(call ZMK.Import,Directories))
 $(eval $(call ZMK.Import,OS))
 
-_bsd_tar_options ?=
-_tar_compress_flag ?=
+Tarball.tar ?= $(shell sh -c "command -v tar" 2>/dev/null)
+Tarball.isGNU ?= $(if $(shell $(Tarball.tar) --version 2>&1 | grep GNU),yes)
 
-Tarball.isGNU ?= $(if $(shell tar --version 2>&1 | grep GNU),yes)
-
-# If using a Mac, filter out extended meta-data files.
+# When using MacOS, ask tar not to store mac-specific meta-data through .DS_Store files.
 ifeq ($(OS.Kernel),Darwin)
-_bsd_tar_options := --no-mac-metadata
+Tarball.tarOptions += --no-mac-metadata
 endif
 
-%.tar.gz:  _tar_compress_flag=z
-%.tar.bz2: _tar_compress_flag=j
-%.tar.xz:  _tar_compress_flag=J
+# Recognize common compression formats
+%.tar.gz:  Tarball.compressFlag=z
+%.tar.bz2: Tarball.compressFlag=j
+%.tar.xz:  Tarball.compressFlag=J
 
 Tarball.Variables=Name Files
 define Tarball.Template
@@ -36,10 +35,33 @@ $1.Name ?= $$(patsubst %.tar$$(suffix $1),%,$1)
 $1.Files ?= $$(error define $1.Files - the list of files to include in the tarball)
 
 dist:: $1
-$1: $$(sort $$(addprefix $$(srcdir)/,$$($1.Files)))
-ifeq ($(Tarball.isGNU),yes)
-	tar -$$(or $$(_tar_compress_flag),a)cf $$@ -C $$(srcdir) --xform='s@^@$$($1.Name)/@g' --xform='s@.version-from-git@.version@' $$(patsubst $$(srcdir)/%,%,$$^)
-else
-	tar $$(strip $$(_bsd_tar_options) -$$(or $$(_tar_compress_flag),a)cf) $$@ -C $$(srcdir) -s '@.@$$($1.Name)/~@' -s '@.version-from-git@.version@' $$(patsubst $$(srcdir)/%,%,$$^)
+
+# Apply transforms, using either GNU or BSD tar syntax.
+# - strip $(CURDIR), this fixes out-of-tree configure
+# - strip $(ZMK.Path), this effectively bundles ZMK into the root directory of the archive
+# - insert directory with archive name up front
+# - rename the .version-from-git file to .version (see GitVersion module)
+ifeq ($$(Tarball.isGNU),yes)
+$1: Tarball.tarOptions += --absolute-names
+$1: Tarball.tarOptions += --xform='s@$$(CURDIR)/@@g'
+ifneq ($$(ZMK.Path),.)
+$1: Tarball.tarOptions += --xform='s@$$(ZMK.Path)/@@g'
 endif
+$1: Tarball.tarOptions += --xform='s@.version-from-git@.version@'
+$1: Tarball.tarOptions += --xform='s@^@$$($1.Name)/@'
+else
+$1: Tarball.tarOptions += -s '@$$(CURDIR)/@@g'
+ifneq ($$(ZMK.Path),.)
+$1: Tarball.tarOptions += -s '@$$(ZMK.Path)/@@g'
+endif
+$1: Tarball.tarOptions += -s '@^.version-from-git@$$($1.Name)/.version@'
+$1: Tarball.tarOptions += -s '@^.@$$($1.Name)/~@'
+endif
+
+$1: $$(sort $$($1.Files))
+	$$(strip $$(Tarball.tar) \
+		-$$(or $$(Tarball.compressFlag),a)cf $$@ \
+		$$(if $$(ZMK.OutOfTreeBuild),-C $$(ZMK.SrcDir)) \
+		$$(Tarball.tarOptions) \
+		$$(patsubst $$(ZMK.SrcDir)/%,%,$$^))
 endef

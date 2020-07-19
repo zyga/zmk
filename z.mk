@@ -76,37 +76,18 @@ ZMK.DistFiles = z.mk $(addprefix zmk/,$(foreach m,$(ZMK.modules),$m.mk) pvs-filt
 TMPDIR ?= /tmp
 
 # The location of the source code.
-srcdir ?= .
+ZMK.SrcDir ?= .
 
 # Are we building out-of-tree
-ifneq ($(srcdir),.)
+ifneq ($(ZMK.SrcDir),.)
 ZMK.OutOfTreeBuild = yes
-ZMK.OutOfTreeSourcePath = $(srcdir)/
+ZMK.OutOfTreeSourcePath = $(ZMK.SrcDir)/
+VPATH = $(ZMK.SrcDir)
 else
 ZMK.OutOfTreeBuild =
 ZMK.OutOfTreeSourcePath =
 endif
-ZMK.SrcDir = $(srcdir)
 
-# Allow preventing ZMK from ever being bundled.
-ZMK.NeverBundle ?= $(if $(value ZMK_NEVER_BUNDLE),yes)
-
-ifeq (,$(ZMK.NeverBundle))
-# If zmk is provided externally add rules to copy it to the source tree and
-# make the distclean target remove it from the tree.
-ifneq ($(realpath $(ZMK.Path)),$(realpath $(srcdir)))
-$(srcdir)/zmk:
-	install -d $@
-$(srcdir)/zmk/%: $(ZMK.Path)/zmk/% | $(srcdir)/zmk
-	install -m 644 $< $@
-$(srcdir)/z.mk: $(ZMK.Path)/z.mk
-	install -m 644 $< $@
-distclean::
-	rm -rf $(srcdir)/zmk
-	rm -f $(srcdir)/z.mk
-	rm -f configure
-endif
-endif
 
 # ZMK Copyright Banner. Do not remove.
 # You are not allowed to remove or alter this while staying compliant with the LGPL license.

@@ -38,7 +38,7 @@ t:: \
 
 # The configure script is generated.
 configure: Makefile $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
-	$(MAKE) -I $(ZMK.Path) -f $(srcdir)/Makefile $@
+	$(MAKE) -I $(ZMK.Path) -f $(ZMK.SrcDir)/Makefile $@
 c::
 	rm -f configure
 
@@ -47,7 +47,7 @@ c::
 # the test redirects that to a different file to enable parallelism.
 configureOptions ?=
 configured.%.mk: configure Test.mk
-	$(strip ZMK_CONFIGURE_MAKEFILE=$@ ./$< $(configureOptions))
+	$(strip ZMK_CONFIGURE_MAKEFILE=$@ sh $< $(configureOptions))
 c::
 	rm -f configured.*.mk
 
@@ -85,8 +85,8 @@ debug-configure: debug-configure.log
 
 configured-defaults: configured.defaults.mk
 	# Minimal defaults are set
-	GREP -qFx 'srcdir=$(srcdir)' <$<
-	GREP -qFx 'VPATH=$$(srcdir)' <$<
+	GREP -qFx 'ZMK.SrcDir=$(ZMK.SrcDir)' <$<
+	GREP -qFx '# VPATH=$$(ZMK.SrcDir)' <$<
 	GREP -qFx 'Configure.Configured=yes' <$<
 	GREP -qFx 'Configure.Options=' <$<
 	# Other options are not explicitly set.

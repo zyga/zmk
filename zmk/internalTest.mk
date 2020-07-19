@@ -22,19 +22,17 @@ endef
 ZMK.Path := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/..)
 
 # Location of the source tree, for out-of-tree testing.
-srcdir ?= .
-VPATH ?=
+ZMK.SrcDir ?= .
 
 # For consistency with real z.mk
-ifneq ($(srcdir),.)
+ifneq ($(ZMK.SrcDir),.)
 ZMK.OutOfTreeBuild = yes
-ZMK.OutOfTreeSourcePath = $(srcdir)/
+ZMK.OutOfTreeSourcePath = $(ZMK.SrcDir)/
+VPATH = $(ZMK.SrcDir)
 else
 ZMK.OutOfTreeBuild =
 ZMK.OutOfTreeSourcePath =
 endif
-ZMK.SrcDir = $(srcdir)
-
 
 # Put extra test tools on PATH
 export PATH := $(ZMK.Path)/tests/bin:$(PATH)
@@ -56,12 +54,11 @@ ZMK.makeTarget ?=
 %.log: Test.mk Makefile $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
 	$(strip LANG=C $(MAKE) $(ZMK.makeOverrides) \
 		-I $(ZMK.Path) \
-		$(if $(VPATH),VPATH=$(VPATH)) \
-		srcdir=$(srcdir) \
+		ZMK.SrcDir=$(ZMK.SrcDir) \
 		--warn-undefined-variables \
 		--always-make \
 		--dry-run \
-		-f $(srcdir)/Makefile \
+		-f $(ZMK.SrcDir)/Makefile \
 		$(or $(ZMK.makeTarget),$(firstword $(subst -, ,$*))) >$@ 2>&1 || true)
 	# Detect references to undefined variables
 	if grep -F 'warning: undefined variable' $@; then exit 1; fi

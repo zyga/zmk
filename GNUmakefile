@@ -17,13 +17,15 @@
 NAME = zmk
 VERSION = 0.3.8  # This needs to match ZMK.Version
 
-# Use the local copy of zmk rather than the system-wide one.
-ZMK.Path ?= .
+ZMK.SrcDir ?= .
+-include GNUmakefile.configure.mk
+ZMK.Path = $(ZMK.SrcDir)
 include $(ZMK.Path)/z.mk
 
 # Use git to augment version.
 $(eval $(call ZMK.Import,GitVersion))
 $(eval $(call ZMK.Import,Directories))
+$(eval $(call ZMK.Import,Configure))
 
 # Install all of zmk to the sub-directory in the include directory.
 # Except for z.mk itself, which should live there directly.
@@ -35,7 +37,7 @@ $(foreach f,$(ZMK.DistFiles),$(eval $(call ZMK.Expand,InstallUninstall,$f)))
 all:: $(foreach f,$(ZMK.manPages),man/$f)
 clean::
 	rm -f $(addprefix man/,$(ZMK.manPages))
-ifneq ($(srcdir),.)
+ifneq ($(ZMK.SrcDir),.)
 	test -d man && rmdir man || :
 endif
 $(CURDIR)/man: # For out-of-tree builds.
@@ -45,64 +47,53 @@ man/%: man/%.in | $(CURDIR)/man
 $(foreach f,$(ZMK.manPages),$(eval $(call ZMK.Expand,ManPage,man/$f)))
 
 # Build the release tarball.
-zmkReleaseArchive?=$(NAME)_$(VERSION).tar.gz
-$(zmkReleaseArchive).Files = GNUmakefile README.md LICENSE NEWS
-$(zmkReleaseArchive).Files += $(addsuffix .in,$(addprefix man/,$(ZMK.manPages)))
-$(zmkReleaseArchive).Files += $(addprefix examples/hello-c/,Makefile Test.mk hello.c)
-$(zmkReleaseArchive).Files += $(addprefix examples/hello-cpp/,Makefile Test.mk hello.cpp)
-$(zmkReleaseArchive).Files += $(addprefix examples/hello-objc/,Makefile Test.mk hello.m README.txt)
-$(zmkReleaseArchive).Files += $(addprefix examples/libhello-c/,Makefile Test.mk hello.c hello.h)
-$(zmkReleaseArchive).Files += $(addprefix examples/libhello-cpp/,Makefile Test.mk hello.cpp hello.h)
-$(zmkReleaseArchive).Files += $(addprefix examples/libhello-objc/,Makefile Test.mk hello.m hello.h)
-$(zmkReleaseArchive).Files += $(addprefix examples/true_false/,Makefile Test.mk true_false.c README.txt)
-$(zmkReleaseArchive).Files += $(addprefix examples/script/,Makefile Test.mk hello.sh)
-$(zmkReleaseArchive).Files += $(addprefix tests/Configure/,Makefile Test.mk)
-$(zmkReleaseArchive).Files += $(addprefix tests/Directories/,Makefile Test.mk)
-$(zmkReleaseArchive).Files += $(addprefix tests/Directory/,Makefile Test.mk)
-$(zmkReleaseArchive).Files += $(addprefix tests/Header/,Makefile Test.mk foo.h include/bar.h)
-$(zmkReleaseArchive).Files += $(addprefix tests/Library.A/,Makefile Test.mk foo.c)
-$(zmkReleaseArchive).Files += $(addprefix tests/Library.DyLib/,Makefile Test.mk foo.c)
-$(zmkReleaseArchive).Files += $(addprefix tests/Library.So/,Makefile Test.mk foo.c)
-$(zmkReleaseArchive).Files += $(addprefix tests/ManPage/,Makefile Test.mk foo.1 foo.2 foo.3 foo.4 foo.5 foo.6 foo.7 foo.8 foo.9 man/bar.1 man/bar.2 man/bar.3 man/bar.4 man/bar.5 man/bar.6 man/bar.7 man/bar.8 man/bar.9)
-$(zmkReleaseArchive).Files += $(addprefix tests/OS/,Makefile Test.mk)
-$(zmkReleaseArchive).Files += $(addprefix tests/Program/,Makefile Test.mk foo.c bar.cpp froz.m)
-$(zmkReleaseArchive).Files += $(addprefix tests/Symlink/,Makefile Test.mk)
-$(zmkReleaseArchive).Files += $(addprefix tests/Tarball.Src/,Makefile Test.mk foo.txt)
-$(zmkReleaseArchive).Files += $(addprefix tests/Toolchain/,Makefile Test.mk)
-$(zmkReleaseArchive).Files += tests/bin/GREP
-$(eval $(call ZMK.Expand,Tarball.Src,$(zmkReleaseArchive)))
-
-
-#check-examples = $(addprefix check,$(subst /,-,$(subst $(srcdir)/,/,$(wildcard $(srcdir)/examples/*))))
-#check:: $(check-examples)
-#$(check-examples): check-examples-%:
-#	$(MAKE) -I $(abspath $(srcdir)) --warn-undefined-variables -C $(srcdir)/examples/$* clean
-#	$(MAKE) -I $(abspath $(srcdir)) --warn-undefined-variables -C $(srcdir)/examples/$* all
-#	rm -rf /tmp/zmk-example-$*
-#	$(MAKE) -I $(abspath $(srcdir)) --warn-undefined-variables -C $(srcdir)/examples/$* install DESTDIR=/tmp/zmk-example-$*
-
+ZMK.releaseArchive?=$(NAME)_$(VERSION).tar.gz
+$(ZMK.releaseArchive).Files = GNUmakefile README.md LICENSE NEWS
+$(ZMK.releaseArchive).Files += $(addsuffix .in,$(addprefix man/,$(ZMK.manPages)))
+$(ZMK.releaseArchive).Files += $(addprefix examples/hello-c/,Makefile Test.mk hello.c)
+$(ZMK.releaseArchive).Files += $(addprefix examples/hello-cpp/,Makefile Test.mk hello.cpp)
+$(ZMK.releaseArchive).Files += $(addprefix examples/hello-objc/,Makefile Test.mk hello.m README.txt)
+$(ZMK.releaseArchive).Files += $(addprefix examples/libhello-c/,Makefile Test.mk hello.c hello.h)
+$(ZMK.releaseArchive).Files += $(addprefix examples/libhello-cpp/,Makefile Test.mk hello.cpp hello.h)
+$(ZMK.releaseArchive).Files += $(addprefix examples/libhello-objc/,Makefile Test.mk hello.m hello.h)
+$(ZMK.releaseArchive).Files += $(addprefix examples/true_false/,Makefile Test.mk true_false.c README.txt)
+$(ZMK.releaseArchive).Files += $(addprefix examples/script/,Makefile Test.mk hello.sh)
+$(ZMK.releaseArchive).Files += $(addprefix tests/Configure/,Makefile Test.mk)
+$(ZMK.releaseArchive).Files += $(addprefix tests/Directories/,Makefile Test.mk)
+$(ZMK.releaseArchive).Files += $(addprefix tests/Directory/,Makefile Test.mk)
+$(ZMK.releaseArchive).Files += $(addprefix tests/Header/,Makefile Test.mk foo.h include/bar.h)
+$(ZMK.releaseArchive).Files += $(addprefix tests/Library.A/,Makefile Test.mk foo.c)
+$(ZMK.releaseArchive).Files += $(addprefix tests/Library.DyLib/,Makefile Test.mk foo.c)
+$(ZMK.releaseArchive).Files += $(addprefix tests/Library.So/,Makefile Test.mk foo.c)
+$(ZMK.releaseArchive).Files += $(addprefix tests/ManPage/,Makefile Test.mk foo.1 foo.2 foo.3 foo.4 foo.5 foo.6 foo.7 foo.8 foo.9 man/bar.1 man/bar.2 man/bar.3 man/bar.4 man/bar.5 man/bar.6 man/bar.7 man/bar.8 man/bar.9)
+$(ZMK.releaseArchive).Files += $(addprefix tests/OS/,Makefile Test.mk)
+$(ZMK.releaseArchive).Files += $(addprefix tests/Program/,Makefile Test.mk foo.c bar.cpp froz.m)
+$(ZMK.releaseArchive).Files += $(addprefix tests/Symlink/,Makefile Test.mk)
+$(ZMK.releaseArchive).Files += $(addprefix tests/Tarball.Src/,Makefile Test.mk foo.txt)
+$(ZMK.releaseArchive).Files += $(addprefix tests/Toolchain/,Makefile Test.mk)
+$(ZMK.releaseArchive).Files += tests/bin/GREP
+$(eval $(call ZMK.Expand,Tarball.Src,$(ZMK.releaseArchive)))
 
 check:: check-unit
 
 # Some hackery is performed to map slashes to dashes, except in "(lib)?hello-".
-tests = $(patsubst -%-,%,$(subst /,-,$(subst $(srcdir)/,/,$(dir $(shell find $(srcdir) -name Test.mk)))))
+tests = $(patsubst -%-,%,$(subst /,-,$(subst $(ZMK.SrcDir)/,/,$(dir $(shell find $(ZMK.SrcDir) -name Test.mk)))))
 .PHONY: check-unit
 check-unit: $(addprefix check-,$(tests))
 .PHONY: $(addprefix check-,$(tests))
 
 check-%: TESTDIR=$(patsubst examples/libhello/%,examples/libhello-%,$(patsubst examples/hello/%,examples/hello-%,$(subst -,/,$*)))
 $(addprefix check-,$(tests)): check-%:
-ifeq ($(srcdir),.)
-	$(strip $(MAKE)	--no-print-directory --warn-undefined-variables \
+ifeq ($(ZMK.OutOfTreeBuild),yes)
+	mkdir -p $(TESTDIR)
+	$(strip $(MAKE)	--warn-undefined-variables \
+		ZMK.SrcDir=$(ZMK.SrcDir)/$(TESTDIR) \
+		-I $(abspath $(ZMK.Path)) \
+		-C $(TESTDIR) \
+		-f $(ZMK.SrcDir)/$(TESTDIR)/Test.mk)
+else
+	$(strip $(MAKE)	--warn-undefined-variables \
 		-I $(abspath $(ZMK.Path)) \
 		-C $(TESTDIR) \
 		-f Test.mk)
-else
-	mkdir -p $(TESTDIR)
-	$(strip $(MAKE)	--no-print-directory --warn-undefined-variables \
-		VPATH=$(srcdir)/$(TESTDIR) \
-		srcdir=$(srcdir)/$(TESTDIR) \
-		-I $(abspath $(ZMK.Path)) \
-		-C $(TESTDIR) \
-		-f $(srcdir)/$(TESTDIR)/Test.mk)
 endif

@@ -17,20 +17,23 @@
 %.asc: %
 		gpg --detach-sign --armor $<
 
+# Allow preventing ZMK from ever being bundled.
+ZMK.DoNotBundle ?= $(if $(value ZMK_DO_NOT_BUNDLE),yes)
+
 Tarball.Src.Variables=Name Files Sign
 define Tarball.Src.Template
 $1.Name ?= $$(patsubst %.tar$$(suffix $1),%,$1)
 $1.Files ?= $$(error define $1.Files - the list of files to include in the tarball)
-ifeq (,$(ZMK.NeverBundle))
-$1.Files += $$(ZMK.DistFiles)
+ifeq ($$(ZMK.DoNotBundle),)
+$1.Files += $$(addprefix $$(ZMK.Path)/,$$(ZMK.DistFiles))
+# If the Configure module is imported then include the configure script.
+ifneq (,$$(filter Configure,$$(ZMK.ImportedModules)))
+$1.Files += $$(CURDIR)/configure
+endif
 endif
 # Sign archives that are not git snapshots and if CI is unset
 $1.Sign ?= $$(if $$(or $$(value CI),$$(and $$(filter GitVersion,$$(ZMK.ImportedModules)),$$(GitVersion.Active))),,yes)
 
-# If the Configure module is imported then include the configure script.
-ifneq (,$$(filter Configure,$$(ZMK.ImportedModules)))
-$1.Files += configure
-endif
 
 # If the GitVersion module is imported then attempt to insert version
 # information into the release archive. There are two possible cases.
@@ -62,8 +65,8 @@ distcheck:: distcheck-$1
 
 .PHONY: distcheck-$1
 distcheck-$1: ZMK.distCheckBase ?= $$(TMPDIR)/$1-distcheck
-distcheck-$1: ZMK.absSrcdir ?= $$(abspath $$(srcdir))
-distcheck-$1: ZMK.srcdirMakefile ?= $$(or $$(wildcard $$(abspath $$(srcdir)/GNUmakefile)),$$(wildcard $$(abspath $$(srcdir)/Makefile)))
+distcheck-$1: ZMK.absSrcdir ?= $$(abspath $$(ZMK.SrcDir))
+distcheck-$1: ZMK.srcDirMakefile ?= $$(or $$(wildcard $$(abspath $$(ZMK.SrcDir)/GNUmakefile)),$$(wildcard $$(abspath $$(ZMK.SrcDir)/Makefile)))
 distcheck-$1: | $$(TMPDIR)
 	# Prepare scratch space for distcheck.
 	-test -d $$(ZMK.distCheckBase) && chmod -R +w $$(ZMK.distCheckBase)
@@ -72,11 +75,10 @@ distcheck-$1: | $$(TMPDIR)
 	mkdir -p $$(ZMK.distCheckBase)/build
 	# Prepare a release archive $1 in a temporary directory.
 	$$(strip $$(MAKE) dist \
-		-C $$(ZMK.distCheckBase) \
-		-f $$(ZMK.srcdirMakefile) \
+		ZMK.SrcDir=$$(ZMK.absSrcdir)) \
 		-I $$(ZMK.absSrcdir) \
-		VPATH=$$(ZMK.absSrcdir) \
-		srcdir=$$(ZMK.absSrcdir))
+		-C $$(ZMK.distCheckBase) \
+		-f $$(ZMK.srcDirMakefile) \
 	# Unpack the release archive $1 to temporary directory.
 	tar -zxf $$(ZMK.distCheckBase)/$1 --strip-components=1 -C $$(ZMK.distCheckBase)/tree
 	# Make the source tree read-only for all out-of-tree checks.
@@ -88,30 +90,26 @@ endif
 	# $1, when out-of-tree, builds correctly.
 	$$(strip $$(MAKE) all \
 		ZMK.Path=$$(ZMK.distCheckBase)/tree \
-		srcdir=$$(ZMK.distCheckBase)/tree \
-		VPATH=$$(ZMK.distCheckBase)/tree \
+		ZMK.SrcDir=$$(ZMK.distCheckBase)/tree \
 		-f $$(ZMK.distCheckBase)/tree/GNUmakefile \
 		-C $$(ZMK.distCheckBase)/build)
 	# $1, when out-of-tree, checks out.
 	$$(strip $$(MAKE) check \
 		ZMK.Path=$$(ZMK.distCheckBase)/tree \
-		srcdir=$$(ZMK.distCheckBase)/tree \
-		VPATH=$$(ZMK.distCheckBase)/tree \
+		ZMK.SrcDir=$$(ZMK.distCheckBase)/tree \
 		-f $$(ZMK.distCheckBase)/tree/GNUmakefile \
 		-C $$(ZMK.distCheckBase)/build)
 	# $1, when out-of-tree, installs via DESTDIR.
 	$$(strip $$(MAKE) install \
 		ZMK.Path=$$(ZMK.distCheckBase)/tree \
-		srcdir=$$(ZMK.distCheckBase)/tree \
-		VPATH=$$(ZMK.distCheckBase)/tree \
+		ZMK.SrcDir=$$(ZMK.distCheckBase)/tree \
 		-f $$(ZMK.distCheckBase)/tree/GNUmakefile \
 		-C $$(ZMK.distCheckBase)/build \
 		DESTDIR=$$(ZMK.distCheckBase)/installcheck)
 	# $(NAME), when out-of-tree, uninstalls via DESTDIR.
 	$$(strip $$(MAKE) uninstall \
 		ZMK.Path=$$(ZMK.distCheckBase)/tree \
-		srcdir=$$(ZMK.distCheckBase)/tree \
-		VPATH=$$(ZMK.distCheckBase)/tree \
+		ZMK.SrcDir=$$(ZMK.distCheckBase)/tree \
 		-f $$(ZMK.distCheckBase)/tree/GNUmakefile \
 		-C $$(ZMK.distCheckBase)/build \
 		DESTDIR=$$(ZMK.distCheckBase)/installcheck)
@@ -121,8 +119,7 @@ endif
 	# $1, when out-of-tree, can re-create the release archive.
 	$$(strip $$(MAKE) dist \
 		ZMK.Path=$$(ZMK.distCheckBase)/tree \
-		srcdir=$$(ZMK.distCheckBase)/tree \
-		VPATH=$$(ZMK.distCheckBase)/tree \
+		ZMK.SrcDir=$$(ZMK.distCheckBase)/tree \
 		-f $$(ZMK.distCheckBase)/tree/GNUmakefile \
 		-C $$(ZMK.distCheckBase)/build)
 	# Make the source tree read-write for in-tree checks.

@@ -190,10 +190,10 @@ done
     echo "# Invoked as: $$srcdir/configure $$configureOptions"
     echo
     echo "# Location of the source code."
-    echo "srcdir=$$srcdir"
+    echo "ZMK.SrcDir=$$srcdir"
     echo
     echo "# Set VPATH for make (for out-of-tree builds)."
-    echo "VPATH=\$$(srcdir)"
+    echo "# VPATH=\$$(ZMK.SrcDir)"
     echo
     echo "# Build and host architecture triplets."
     echo "# Note that those impact compiler selection unless CC and CXX are overridden."
@@ -290,8 +290,8 @@ endef
 
 # In maintainer mode the configure script is automatically updated.
 ifeq ($(Configure.MaintainerMode),yes)
-configure $(if $(ZMK.OutOfTreeBuild),$(srcdir)/configure): export ZMK_CONFIGURE_SCRIPT = $(Configure.script)
-configure $(if $(ZMK.OutOfTreeBuild),$(srcdir)/configure): $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
+configure: export ZMK_CONFIGURE_SCRIPT = $(Configure.script)
+configure: $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
 	@echo "$${ZMK_CONFIGURE_SCRIPT}" >$@
 	chmod +x $@
 
@@ -299,7 +299,7 @@ configure $(if $(ZMK.OutOfTreeBuild),$(srcdir)/configure): $(ZMK.Path)/z.mk $(wi
 ifeq ($(Configure.Configured),yes)
 GNUmakefile.configure.mk: configure
 	@echo "re-configuring, $< script is newer than $@"
-	$(srcdir)/$< $(Configure.Options)
+	sh $< $(Configure.Options)
 endif # !configured
 endif # !maintainer mode
 

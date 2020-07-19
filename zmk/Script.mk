@@ -16,7 +16,7 @@
 
 $(eval $(call ZMK.Import,Directories))
 
-ZMK.shellcheck ?= $(shell command -v shellcheck 2>/dev/null)
+ZMK.shellcheck ?= $(shell sh -c "command -v shellcheck" 2>/dev/null)
 static-check-shellcheck:
 ifneq (,$(ZMK.shellcheck))
 	$(ZMK.shellcheck) $^

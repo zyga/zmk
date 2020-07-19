@@ -16,7 +16,7 @@
 
 $(eval $(call ZMK.Import,Directories))
 
-ManPage.isAvailable ?= $(if $(shell command -v man 2>/dev/null),yes)
+ManPage.isAvailable ?= $(if $(shell sh -c "command -v man" 2>/dev/null),yes)
 ManPage.isGNU ?= $(if $(and $(ManPage.isAvailable),$(shell man --help 2>&1 | grep -F -- --warning)),yes)
 # GNU man can be used to perform rudimentary validation of manual pages.
 ifeq ($(ManPage.isGNU),yes)

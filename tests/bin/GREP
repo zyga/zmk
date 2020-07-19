@@ -41,7 +41,7 @@ fi
 # Display information about failed match, along with the input and the pattern.
 printf 'GREP: failed to match: grep'
 for arg in "$@"; do
-	printf " '%s'" "$(echo "$arg" | sed -e "s/'/\\'/g")"
+	printf ' "%s"' "$(echo "$arg" | sed -e 's@\(["$]\)@\\\1@g')"
 done
 printf '\n'
 if [ "$(echo "$input" | wc -l)" -gt 1 ]; then
@@ -49,6 +49,6 @@ if [ "$(echo "$input" | wc -l)" -gt 1 ]; then
 	printf '%s\n' "$input"
 	printf '\nGREP: input ends above.\n'
 else
-	printf "GREP: for input '%s'\n" "$(echo "$input" | sed -e "s/'/\\'/g")"
+	printf 'GREP: for input "%s"\n' "$(echo "$input" | sed -e 's@\(["$]\)@\\\1@g')"
 fi
 exit 1

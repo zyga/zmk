@@ -19,23 +19,23 @@ PVS.Sources ?= $(error define PVS.Sources - the list of source files to analyze 
 PLOG_CONVERTER_FLAGS ?=
 
 # If we have pvs-studio then run it during static checks.
-ifneq (,$(shell command -v pvs-studio 2>/dev/null))
+ifneq (,$(shell sh -c "command -v pvs-studio" 2>/dev/null))
 static-check:: static-check-pvs
 endif
 
 .PHONY: static-check-pvs
 static-check-pvs: $(addsuffix .PVS-Studio.log,$(PVS.Sources))
 	$(strip plog-converter \
-		--settings $(srcdir)/.pvs-studio.cfg \
+		--settings $(ZMK.SrcDir)/.pvs-studio.cfg \
 		$(PLOG_CONVERTER_FLAGS) \
-		--srcRoot $(srcdir) \
-		--renderTypes errorfile $^ | srcdir=$(srcdir) abssrcdir=$(abspath $(srcdir)) awk -f $(ZMK.Path)/zmk/pvs-filter.awk)
+		--srcRoot $(ZMK.SrcDir) \
+		--renderTypes errorfile $^ | srcdir=$(ZMK.SrcDir) abssrcdir=$(abspath $(ZMK.SrcDir)) awk -f $(ZMK.Path)/zmk/pvs-filter.awk)
 
 pvs-report: $(addsuffix .PVS-Studio.log,$(PVS.Sources))
 	$(strip plog-converter \
-		--settings $(srcdir)/.pvs-studio.cfg \
+		--settings $(ZMK.SrcDir)/.pvs-studio.cfg \
 		$(PLOG_CONVERTER_FLAGS) \
-		--srcRoot $(srcdir) \
+		--srcRoot $(ZMK.SrcDir) \
 		--projectName $(NAME) \
 		--projectVersion $(VERSION) \
 		--renderTypes fullhtml \
@@ -44,7 +44,7 @@ pvs-report: $(addsuffix .PVS-Studio.log,$(PVS.Sources))
 
 %.c.PVS-Studio.log: %.c.i ~/.config/PVS-Studio/PVS-Studio.lic | %.c
 	$(strip pvs-studio \
-		--cfg $(srcdir)/.pvs-studio.cfg \
+		--cfg $(ZMK.SrcDir)/.pvs-studio.cfg \
 		--i-file $< \
 		--source-file $(firstword $|) \
 		--output-file $@)

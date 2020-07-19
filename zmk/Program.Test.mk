@@ -54,7 +54,7 @@ endif
 ifeq (,$$(Toolchain.IsCross))
 # Support coverage analysis when building with clang and supplied with llvm
 # or when using xcrun.
-ifneq (,$$(or $$(xcrun),$$(and $$(Toolchain.IsClang),$$(shell command -v llvm-cov 2>/dev/null),$$(shell command -v llvm-profdata 2>/dev/null))))
+ifneq (,$$(or $$(xcrun),$$(and $$(Toolchain.IsClang),$$(shell sh -c "command -v llvm-cov" 2>/dev/null),$$(shell sh -c "command -v llvm-profdata" 2>/dev/null))))
 # Build test program with code coverage measurements and show them via "coverage" target.
 $1$$(exe): CFLAGS += -fcoverage-mapping -fprofile-instr-generate
 $1$$(exe): LDFLAGS += -fcoverage-mapping -fprofile-instr-generate
