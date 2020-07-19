@@ -6,7 +6,7 @@ t:: run-shellcheck GREP-pass GREP-fail GREP-redirect
 
 run-shellcheck:
 	# If we have shellcheck, then GREP should pass it without issues.
-	if [ -n "$$(command -v shellcheck)" ]; then shellcheck $(ZMK.Path)/tests/bin/GREP; fi
+	if [ -n "$$(command -v shellcheck)" ]; then shellcheck $(ZMK.test.Path)/tests/bin/GREP; fi
 
 GREP-pass:
 	# When GREP finds a match, the result is success.
