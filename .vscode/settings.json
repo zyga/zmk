@@ -108,6 +108,7 @@
         "vpath",
         "watcom",
         "xcrun",
+        "xform",
         "zygmunt"
     ],
     "files.insertFinalNewline": true
