@@ -15,7 +15,7 @@ $(eval $(ZMK.isolateHostToolchain))
 
 all: all.log
 	# Building a shared library compiles objects
-	GREP -qFx 'cc -fpic -MMD -c -o libfoo.so.1-foo.o foo.c' <$<
+	GREP -qFx 'cc -fpic -MMD -c -o libfoo.so.1-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
 	# Links objects together
 	GREP -qFx 'cc -shared -Wl,-soname=libfoo.so.1 -o libfoo.so.1 libfoo.so.1-foo.o' <$<
 	# And provides the .so alias
@@ -43,7 +43,7 @@ clean: clean.log
 
 all-destdir: all-destdir.log
 	# Building a shared library compiles objects
-	GREP -qFx 'cc -fpic -MMD -c -o libfoo.so.1-foo.o foo.c' <$<
+	GREP -qFx 'cc -fpic -MMD -c -o libfoo.so.1-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
 	# Links objects together
 	GREP -qFx 'cc -shared -Wl,-soname=libfoo.so.1 -o libfoo.so.1 libfoo.so.1-foo.o' <$<
 	# And provides the .so alias
