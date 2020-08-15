@@ -18,12 +18,14 @@ NAME = zmk
 VERSION = 0.3.8  # This needs to match ZMK.Version
 
 ZMK.SrcDir ?= .
+-include GNUmakefile.configure.mk
 ZMK.Path = $(ZMK.SrcDir)
 include $(ZMK.Path)/z.mk
 
 # Use git to augment version.
 $(eval $(call ZMK.Import,GitVersion))
 $(eval $(call ZMK.Import,Directories))
+$(eval $(call ZMK.Import,Configure))
 
 # Install all of zmk to the sub-directory in the include directory.
 # Except for z.mk itself, which should live there directly.
