@@ -288,8 +288,8 @@ endef
 
 # In maintainer mode the configure script is automatically updated.
 ifeq ($(Configure.MaintainerMode),yes)
-configure: export ZMK_CONFIGURE_SCRIPT = $(Configure.script)
-configure: $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
+$(CURDIR)/configure configure: export ZMK_CONFIGURE_SCRIPT = $(Configure.script)
+$(CURDIR)/configure configure: $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
 	@echo "$${ZMK_CONFIGURE_SCRIPT}" >$@
 	chmod +x $@
 
