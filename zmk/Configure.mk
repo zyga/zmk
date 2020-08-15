@@ -267,9 +267,9 @@ done
     esac
     echo
     echo "# Program name customization options."
-    test -n "$${programPrefix:-}" && echo "Configure.ProgramPrefix=$$programPrefix" || echo "#   Configure.ProgramPrefix was not specified."
-    test -n "$${programSuffix:-}" && echo "Configure.ProgramSuffix=$$programSuffix" || echo "#   Configure.ProgramSuffix was not specified."
-    test -n "$${programTransformName:-}" && echo "Configure.ProgramTransformName=$$programTransformName" || echo "#   Configure.ProgramTransformName was not specified."
+    test -n "$${programPrefix:-}"           && echo "Configure.ProgramPrefix=$$programPrefix"               || echo "#   Configure.ProgramPrefix was not specified."
+    test -n "$${programSuffix:-}"           && echo "Configure.ProgramSuffix=$$programSuffix"               || echo "#   Configure.ProgramSuffix was not specified."
+    test -n "$${programTransformName:-}"    && echo "Configure.ProgramTransformName=$$programTransformName" || echo "#   Configure.ProgramTransformName was not specified."
     echo
     echo "# Remember that the configuration script was executed."
     echo "Configure.Configured=yes"
