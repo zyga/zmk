@@ -190,8 +190,7 @@ done
     echo "# Invoked as: $$srcdir/configure $$configureOptions"
     echo
     echo "# Location of the source code."
-    echo "srcdir=$$srcdir"
-    echo
+    echo "ZMK.SrcDir=$$srcdir"
     echo "# Set VPATH for make (for out-of-tree builds)."
     echo "VPATH=\$$(srcdir)"
     echo

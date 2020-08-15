@@ -17,8 +17,8 @@
 NAME = zmk
 VERSION = 0.3.8  # This needs to match ZMK.Version
 
-# Use the local copy of zmk rather than the system-wide one.
-ZMK.Path ?= .
+ZMK.SrcDir ?= .
+ZMK.Path = $(ZMK.SrcDir)
 include $(ZMK.Path)/z.mk
 
 # Use git to augment version.
@@ -35,7 +35,7 @@ $(foreach f,$(ZMK.DistFiles),$(eval $(call ZMK.Expand,InstallUninstall,$f)))
 all:: $(foreach f,$(ZMK.manPages),man/$f)
 clean::
 	rm -f $(addprefix man/,$(ZMK.manPages))
-ifneq ($(srcdir),.)
+ifneq ($(ZMK.SrcDir),.)
 	test -d man && rmdir man || :
 endif
 $(CURDIR)/man: # For out-of-tree builds.
@@ -84,7 +84,7 @@ $(eval $(call ZMK.Expand,Tarball.Src,$(NAME)_$(VERSION).tar.gz))
 check:: check-unit
 
 # Some hackery is performed to map slashes to dashes, except in "(lib)?hello-".
-tests = $(patsubst -%-,%,$(subst /,-,$(subst $(srcdir)/,/,$(dir $(shell find . -name Test.mk)))))
+tests = $(patsubst -%-,%,$(subst /,-,$(subst $(ZMK.SrcDir)/,/,$(dir $(shell find $(ZMK.SrcDir) -name Test.mk)))))
 .PHONY: check-unit
 check-unit: $(addprefix check-,$(tests))
 .PHONY: $(addprefix check-,$(tests))

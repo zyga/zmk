@@ -20,9 +20,6 @@ VERSION ?= $(error define VERSION - the static version of the project)
 # Speed up make by removing suffix rules.
 .SUFFIXES:
 
-# The location of the source code.
-srcdir ?= .
-
 # Version of the zmk library.
 ZMK.Version = 0.3.8
 
@@ -88,6 +85,8 @@ distclean::
 	rm -rf $(srcdir)/zmk
 	rm -f $(srcdir)/z.mk
 	rm -f configure
+# The location of the source code.
+ZMK.SrcDir ?= .
 endif
 
 # ZMK Copyright Banner. Do not remove.

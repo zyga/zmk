@@ -85,7 +85,7 @@ debug-configure: debug-configure.log
 
 configured-defaults: configured.defaults.mk
 	# Minimal defaults are set
-	GREP -qFx 'srcdir=.' <$<
+	GREP -qFx 'ZMK.SrcDir=$(ZMK.test.SrcDir)' <$<
 	GREP -qFx 'VPATH=$$(srcdir)' <$<
 	GREP -qFx 'Configure.Configured=yes' <$<
 	GREP -qFx 'Configure.Options=' <$<
