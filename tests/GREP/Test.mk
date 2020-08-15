@@ -32,4 +32,4 @@ GREP-redirect: export LC_ALL=C
 GREP-redirect:
 	# GREP, if invoked as the lower-case grep, redirects back to system grep.
 	# Note that GREP describes itself as upper-case GREP in the usage string.
-	./grep 2>&1 | grep -q 'usage: grep'
+	./grep 2>&1 | grep -q '[Uu]sage: grep'
