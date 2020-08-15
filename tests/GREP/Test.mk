@@ -28,6 +28,7 @@ GREP-fail:
 	echo '"this is one thing"' | GREP that | grep -qFx 'GREP: for input "\"this is one thing\""'
 	echo 'dollar is $$' | GREP cent | grep -qFx 'GREP: for input "dollar is \$$"'
 
+GREP-redirect: export LC_ALL=C
 GREP-redirect:
 	# GREP, if invoked as the lower-case grep, redirects back to system grep.
 	# Note that GREP describes itself as upper-case GREP in the usage string.
