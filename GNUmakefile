@@ -74,16 +74,6 @@ $(ZMK.releaseArchive).Files += $(addprefix tests/Toolchain/,Makefile Test.mk)
 $(ZMK.releaseArchive).Files += tests/bin/GREP
 $(eval $(call ZMK.Expand,Tarball.Src,$(ZMK.releaseArchive)))
 
-
-#check-examples = $(addprefix check,$(subst /,-,$(subst $(srcdir)/,/,$(wildcard $(srcdir)/examples/*))))
-#check:: $(check-examples)
-#$(check-examples): check-examples-%:
-#	$(MAKE) -I $(abspath $(srcdir)) --warn-undefined-variables -C $(srcdir)/examples/$* clean
-#	$(MAKE) -I $(abspath $(srcdir)) --warn-undefined-variables -C $(srcdir)/examples/$* all
-#	rm -rf /tmp/zmk-example-$*
-#	$(MAKE) -I $(abspath $(srcdir)) --warn-undefined-variables -C $(srcdir)/examples/$* install DESTDIR=/tmp/zmk-example-$*
-
-
 check:: check-unit
 
 # Some hackery is performed to map slashes to dashes, except in "(lib)?hello-".
