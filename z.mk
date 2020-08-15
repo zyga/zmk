@@ -88,6 +88,7 @@ ZMK.IsOutOfTreeBuild =
 ZMK.OutOfTreeSourcePath =
 endif
 
+
 # ZMK Copyright Banner. Do not remove.
 # You are not allowed to remove or alter this while staying compliant with the LGPL license.
 MAKECMDGOALS ?=
@@ -96,7 +97,7 @@ $(info z.mk v$(ZMK.Version), Copyright (c) 2019-2020 Zygmunt Krynicki)
 endif
 
 # Meta-targets that don't have specific specific commands
-.PHONY: $(sort all clean coverage fmt static-check check install uninstall dist distclean)
+.PHONY: $(sort all clean coverage fmt static-check check install uninstall dist distclean distcheck)
 
 # Run static checks when checking
 check:: static-check
