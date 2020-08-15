@@ -21,7 +21,7 @@ fi
 
 # Make sure we have the pattern or any other arguments given.
 if [ $# -eq 0 ]; then
-	echo "usage: GREP [options] [pattern] [file ...]"
+	echo "Usage: GREP [options] [pattern] [file ...]"
 	exit
 fi
 
