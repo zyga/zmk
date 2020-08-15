@@ -19,10 +19,23 @@ define ZMK.isolateHostToolchain
 endef
 
 # Find the path of the zmk installation
-ZMK.Path := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/..)
+ZMK.test.Path := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/..)
+
+# Location of the source tree, for out-of-tree testing.
+ZMK.test.SrcDir ?= .
+
+# For consistency with real z.mk
+ifneq ($(ZMK.test.SrcDir),.)
+ZMK.test.IsOutOfTreeBuild = yes
+ZMK.test.OutOfTreeSourcePath = $(ZMK.test.SrcDir)/
+VPATH = $(ZMK.test.SrcDir)
+else
+ZMK.test.IsOutOfTreeBuild =
+ZMK.test.OutOfTreeSourcePath =
+endif
 
 # Put extra test tools on PATH
-export PATH := $(ZMK.Path)/tests/bin:$(PATH)
+export PATH := $(ZMK.test.Path)/tests/bin:$(PATH)
 
 # Make overrides can be used in order to test specific behavior
 ZMK.makeOverrides ?=
@@ -37,15 +50,18 @@ ZMK.makeTarget ?=
 # Tests print commands instead of invoking them
 # Tests do not mention directory changes
 # Tests warn about undefined variables
-%.log: MAKEFLAGS=Bn
-%.log: Test.mk Makefile $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
-	$(strip LANG=C $(MAKE) $(ZMK.makeOverrides) -I $(ZMK.Path) \
+%.log: MAKEFLAGS=
+%.log: Test.mk Makefile $(ZMK.test.Path)/z.mk $(wildcard $(ZMK.test.Path)/zmk/*.mk)
+	$(strip LANG=C $(MAKE) -Bn $(ZMK.makeOverrides) \
+		-I $(ZMK.test.Path) \
+		ZMK.SrcDir=$(ZMK.test.SrcDir) \
 		--warn-undefined-variables \
 		--always-make \
 		--dry-run \
-		$(or $(ZMK.makeTarget),$(firstword $(subst -, ,$*))) >$@ 2>&1) || true
+		-f $(ZMK.test.SrcDir)/Makefile \
+		$(or $(ZMK.makeTarget),$(firstword $(subst -, ,$*))) >$@ 2>&1 || true)
 
-configure: $(ZMK.Path)/zmk/internalTest.mk
+$(CURDIR)/configure configure: $(ZMK.test.Path)/zmk/internalTest.mk
 
 c::
 	rm -f *.log

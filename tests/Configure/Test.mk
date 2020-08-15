@@ -37,8 +37,9 @@ t:: \
 %.log: ZMK.makeOverrides += DEBUG=configure
 
 # The configure script is generated.
-configure: Makefile $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
-	$(MAKE) -I $(ZMK.Path) $@
+configure: MAKEFLAGS=B
+configure: Makefile $(ZMK.test.Path)/z.mk $(wildcard $(ZMK.test.Path)/zmk/*.mk)
+	$(MAKE) --no-print-directory -I $(ZMK.test.Path) -f $(ZMK.test.SrcDir)/Makefile $@
 c::
 	rm -f configure
 
@@ -46,6 +47,7 @@ c::
 # Note that normally the file is GNUmakefile.configure.mk but
 # the test redirects that to a different file to enable parallelism.
 configureOptions ?=
+configureOptions += $(if $(ZMK.test.IsOutOfTreeBuild),ZMK.SrcDir=$(ZMK.test.SrcDir))
 configured.%.mk: configure Test.mk
 	$(strip ZMK_CONFIGURE_MAKEFILE=$@ ./$< $(configureOptions))
 c::
@@ -86,9 +88,8 @@ debug-configure: debug-configure.log
 configured-defaults: configured.defaults.mk
 	# Minimal defaults are set
 	GREP -qFx 'ZMK.SrcDir=$(ZMK.test.SrcDir)' <$<
-	GREP -qFx 'VPATH=$$(srcdir)' <$<
 	GREP -qFx 'Configure.Configured=yes' <$<
-	GREP -qFx 'Configure.Options=' <$<
+	GREP -qFx 'Configure.Options=$(if $(ZMK.test.IsOutOfTreeBuild),ZMK.SrcDir=$(ZMK.test.SrcDir))' <$<
 	# Other options are not explicitly set.
 	# Note the lack of whole-line matching (-x).
 	GREP -v -qF 'Configure.BuildArchTriplet=' <$<
@@ -104,12 +105,13 @@ configured.build.mk: configureOptions += --build=foo-linux-gnu
 configured-build: configured.build.mk
 	# configure --build= sets Configure.BuildArchTriplet
 	GREP -qFx 'Configure.BuildArchTriplet=foo-linux-gnu' <$<
-	GREP -qFx 'Configure.Options=--build=foo-linux-gnu' <$<
+	GREP -qFx 'Configure.Options=$(if $(ZMK.test.IsOutOfTreeBuild),ZMK.SrcDir=$(ZMK.test.SrcDir) )--build=foo-linux-gnu' <$<
 
 configured.host.mk: configureOptions += --host=foo-linux-gnu
 configured-host: configured.host.mk
 	# configure --host= sets Configure.HostArchTriplet
 	GREP -qFx 'Configure.HostArchTriplet=foo-linux-gnu' <$<
+	GREP -qFx 'Configure.Options=$(if $(ZMK.test.IsOutOfTreeBuild),ZMK.SrcDir=$(ZMK.test.SrcDir) )--host=foo-linux-gnu' <$<
 
 configured.enable-dependency-tracking.mk: configureOptions += --enable-dependency-tracking
 configured-enable-dependency-tracking: configured.enable-dependency-tracking.mk

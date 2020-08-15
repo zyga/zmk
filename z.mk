@@ -87,6 +87,15 @@ distclean::
 	rm -f configure
 # The location of the source code.
 ZMK.SrcDir ?= .
+
+# Are we building out-of-tree
+ifneq ($(ZMK.SrcDir),.)
+ZMK.IsOutOfTreeBuild = yes
+ZMK.OutOfTreeSourcePath = $(ZMK.SrcDir)/
+VPATH = $(ZMK.SrcDir)
+else
+ZMK.IsOutOfTreeBuild =
+ZMK.OutOfTreeSourcePath =
 endif
 
 # ZMK Copyright Banner. Do not remove.
