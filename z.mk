@@ -72,6 +72,9 @@ ZMK.manPages = \
 # Files belonging to ZMK that need to be distributed in third-party release tarballs.
 ZMK.DistFiles = z.mk $(addprefix zmk/,$(foreach m,$(ZMK.modules),$m.mk) pvs-filter.awk)
 
+# Temporary directory, used by distcheck.
+TMPDIR ?= /tmp
+
 # The location of the source code.
 ZMK.SrcDir ?= .
 
