@@ -274,11 +274,7 @@ done
     echo "# Remember that the configuration script was executed."
     echo "Configure.Configured=yes"
     echo "Configure.Options=$$configureOptions"
-} > "$${ZMK_CONFIGURE_MAKEFILE:=GNUmakefile.configure.mk}"
-if [ "$${configureFailed:-0}" -eq 1 ]; then
-    rm -f "$${ZMK_CONFIGURE_MAKEFILE}"
-    exit 1
-fi
+} >"$${ZMK_CONFIGURE_MAKEFILE:=GNUmakefile.configure.mk}"
 
 if [ ! -e Makefile ] && [ ! -e GNUmakefile ]; then
     if [ -e "$$srcdir"/GNUmakefile ]; then
