@@ -58,8 +58,8 @@ Toolchain.DependencyTracking ?= $(Configure.DependencyTracking)
 # Deduce the kind of the selected compiler. Some build rules or compiler
 # options depend on the compiler used. As an alternative we could look at
 # preprocessor macros but this way seems sufficient for now.
-Toolchain.cc ?= $(shell sh -c "command -v $(CC)")
-Toolchain.cxx ?= $(shell sh -c "command -v $(CXX)")
+Toolchain.cc ?= $(shell command -v $(CC) 2>/dev/null)
+Toolchain.cxx ?= $(shell command -v $(CXX) 2>/dev/null)
 
 # When CC or CXX point to platform default compiler alias, resolve
 # them to the real value, which is better to identify the toolchain.

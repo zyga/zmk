@@ -16,7 +16,7 @@
 $(eval $(call ZMK.Import,Directories))
 $(eval $(call ZMK.Import,OS))
 
-Tarball.tar ?= $(shell sh -c "command -v tar" 2>/dev/null)
+Tarball.tar ?= $(shell command -v tar 2>/dev/null)
 Tarball.isGNU ?= $(if $(shell $(Tarball.tar) --version 2>&1 | grep GNU),yes)
 
 # When using MacOS, ask tar not to store mac-specific meta-data through .DS_Store files.
