@@ -17,7 +17,7 @@ endif # !cross-compiling
 endif # !configured
 
 # Indirection for testability.
-Toolchain.gcc ?= $(shell sh -c "command -v gcc 2>/dev/null")
+Toolchain.gcc ?= $(shell command -v gcc 2>/dev/null)
 Toolchain.cc.dumpmachine  ?= $(shell $(CC)  -dumpmachine)
 Toolchain.gcc.dumpmachine ?= $(if $(Toolchain.gcc),$(shell gcc    -dumpmachine))
 
@@ -55,7 +55,7 @@ endif # !cross-compiling
 endif # !configured
 
 # Indirection for testability.
-Toolchain.g++ ?= $(shell sh -c "command -v g++ 2>/dev/null")
+Toolchain.g++ ?= $(shell command -v g++ 2>/dev/null)
 Toolchain.cxx.dumpmachine ?= $(shell $(CXX) -dumpmachine)
 Toolchain.g++.dumpmachine ?= $(if $(Toolchain.g++),$(shell g++    -dumpmachine))
 

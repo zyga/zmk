@@ -17,7 +17,7 @@
 $(eval $(call ZMK.Import,Directories))
 
 # ManPage.isAvailable expand to "yes" when the man command is available.
-ManPage.isAvailable ?= $(if $(shell sh -c "command -v man" 2>/dev/null),yes)
+ManPage.isAvailable ?= $(if $(shell command -v man 2>/dev/null),yes)
 # ManPage.isGNU expands to "yes" when man is the GNU man implementation, with various additional options over BSD.
 ManPage.isGNU ?= $(if $(and $(ManPage.isAvailable),$(shell man --help 2>&1 | grep -F -- --warning)),yes)
 
