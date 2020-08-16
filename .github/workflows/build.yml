@@ -20,18 +20,14 @@ jobs:
       run: echo "::add-matcher::${{ github.workspace }}/.github/make.json"
     - name: Check make version
       run: make --version
+    - name: Install missing ObjC compiler
+      if: runner.os == 'Linux'
+      run: sudo apt-get install gobjc
+    - name: Run distcheck
+      run: make --warn-undefined-variables distcheck
     - name: Create dist archive
       run: make --warn-undefined-variables dist
     - uses: actions/upload-artifact@v2
       with:
         name: dist-archive
         path: zmk_*.tar.gz
-    - name: Unpack dist archive in /tmp
-      run: tar zxvf ${{ github.workspace }}/zmk_*.tar.gz -C /tmp
-    - name: Install from dist archive
-      run: make --warn-undefined-variables -C /tmp/zmk_* install -j2 DESTDIR=/tmp/DIST
-    - name: Install missing ObjC compiler
-      if: runner.os == 'Linux'
-      run: sudo apt-get install gobjc
-    - name: Check from dist archive
-      run: make --warn-undefined-variables -C /tmp/zmk_* check -j2
