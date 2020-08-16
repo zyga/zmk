@@ -2,9 +2,10 @@
 
 # Find the system grep, taking precautions not to pick this script again.
 IFS=:
-self_dev_ino=$(stat -f "%d/%i" "$0")
+
 for dir in $PATH; do
-	if [ -x "$dir/grep" ] && [ "$self_dev_ino" != "$(stat -f "%d/%i" "$dir/grep")" ]; then
+	# shellcheck disable=2039
+	if [ -x "$dir/grep" ] && [ ! "$0" -ef "$dir/grep" ]; then
 		grep="$dir/grep"
 		break
 	fi
@@ -20,7 +21,7 @@ fi
 
 # Make sure we have the pattern or any other arguments given.
 if [ $# -eq 0 ]; then
-	echo "usage: GREP [options] [pattern] [file ...]"
+	echo "Usage: GREP [options] [pattern] [file ...]"
 	exit
 fi
 
@@ -41,7 +42,7 @@ fi
 # Display information about failed match, along with the input and the pattern.
 printf 'GREP: failed to match: grep'
 for arg in "$@"; do
-	printf " '%s'" "$(echo "$arg" | sed -e "s/'/\\'/g")"
+	printf ' "%s"' "$(echo "$arg" | sed -e 's@\(["$]\)@\\\1@g')"
 done
 printf '\n'
 if [ "$(echo "$input" | wc -l)" -gt 1 ]; then
@@ -49,6 +50,6 @@ if [ "$(echo "$input" | wc -l)" -gt 1 ]; then
 	printf '%s\n' "$input"
 	printf '\nGREP: input ends above.\n'
 else
-	printf "GREP: for input '%s'\n" "$(echo "$input" | sed -e "s/'/\\'/g")"
+	printf 'GREP: for input "%s"\n' "$(echo "$input" | sed -e 's@\(["$]\)@\\\1@g')"
 fi
 exit 1

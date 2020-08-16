@@ -64,15 +64,15 @@ $1.profraw: %.profraw: %
 $1.profdata: %.profdata: %.profraw
 	$$(strip $$(xcrun) llvm-profdata merge -sparse $$< -o $$@)
 coverage:: $1.profdata
-	$$(strip $$(xcrun) llvm-cov show ./$1$$(exe) -instr-profile=$$< $$(addprefix $$(srcdir)/,$$($1.sources_coverage)))
+	$$(strip $$(xcrun) llvm-cov show ./$1$$(exe) -instr-profile=$$< $$(addprefix $$(ZMK.SrcDir)/,$$($1.sources_coverage)))
 
 .PHONY: coverage-todo
 coverage-todo:: $1.profdata
-	$$(strip $$(xcrun) llvm-cov show ./$1$$(exe) -instr-profile=$$< -region-coverage-lt=100 $$(addprefix $$(srcdir)/,$$($1.sources_coverage)))
+	$$(strip $$(xcrun) llvm-cov show ./$1$$(exe) -instr-profile=$$< -region-coverage-lt=100 $$(addprefix $$(ZMK.SrcDir)/,$$($1.sources_coverage)))
 
 .PHONY: coverage-report
 coverage-report:: $1.profdata
-	$$(strip $$(xcrun) llvm-cov report ./$1$$(exe) -instr-profile=$$< $$(addprefix $$(srcdir)/,$$($1.sources_coverage)))
+	$$(strip $$(xcrun) llvm-cov report ./$1$$(exe) -instr-profile=$$< $$(addprefix $$(ZMK.SrcDir)/,$$($1.sources_coverage)))
 endif # can use llvm-cov
 endif # not-cross-compiling
 endef

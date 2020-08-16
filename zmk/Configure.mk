@@ -17,7 +17,7 @@
 # Is zmk debugging enabled for this module?
 Configure.debug ?= $(findstring configure,$(DEBUG))
 
-# Configuration system defaults, also changed by GNUMakefile.configure.mk
+# Configuration system defaults, also changed by GNUmakefile.configure.mk
 Configure.HostArchTriplet ?=
 Configure.BuildArchTriplet ?=
 Configure.DependencyTracking ?= yes
@@ -174,6 +174,7 @@ while [ "$$#" -ge 1 ]; do
         OBJCXXFLAGS=*)                  OBJCXXFLAGS="$$(rhs "$$1")" && shift ;;
         CPPFLAGS=*)                     CPPFLAGS="$$(rhs "$$1")" && shift ;;
         LDFLAGS=*)                      LDFLAGS="$$(rhs "$$1")" && shift ;;
+        ZMK.SrcDir=*)                   srcdir="$$(rhs "$$1")" && shift ;;
 
         *)
             if [ "$${disableOptionChecking:-}" != yes ]; then
@@ -190,10 +191,7 @@ done
     echo "# Invoked as: $$srcdir/configure $$configureOptions"
     echo
     echo "# Location of the source code."
-    echo "srcdir=$$srcdir"
-    echo
-    echo "# Set VPATH for make (for out-of-tree builds)."
-    echo "VPATH=\$$(srcdir)"
+    echo "ZMK.SrcDir=$$srcdir"
     echo
     echo "# Build and host architecture triplets."
     echo "# Note that those impact compiler selection unless CC and CXX are overridden."
@@ -269,18 +267,14 @@ done
     esac
     echo
     echo "# Program name customization options."
-    test -n "$${programPrefix:-}" && echo "Configure.ProgramPrefix=$$programPrefix" || echo "#   Configure.ProgramPrefix was not specified."
-    test -n "$${programSuffix:-}" && echo "Configure.ProgramSuffix=$$programSuffix" || echo "#   Configure.ProgramSuffix was not specified."
-    test -n "$${programTransformName:-}" && echo "Configure.ProgramTransformName=$$programTransformName" || echo "#   Configure.ProgramTransformName was not specified."
+    test -n "$${programPrefix:-}"           && echo "Configure.ProgramPrefix=$$programPrefix"               || echo "#   Configure.ProgramPrefix was not specified."
+    test -n "$${programSuffix:-}"           && echo "Configure.ProgramSuffix=$$programSuffix"               || echo "#   Configure.ProgramSuffix was not specified."
+    test -n "$${programTransformName:-}"    && echo "Configure.ProgramTransformName=$$programTransformName" || echo "#   Configure.ProgramTransformName was not specified."
     echo
     echo "# Remember that the configuration script was executed."
     echo "Configure.Configured=yes"
     echo "Configure.Options=$$configureOptions"
-} > "$${ZMK_CONFIGURE_MAKEFILE:=GNUmakefile.configure.mk}"
-if [ "$${configureFailed:-0}" -eq 1 ]; then
-    rm -f "$${ZMK_CONFIGURE_MAKEFILE}"
-    exit 1
-fi
+} >"$${ZMK_CONFIGURE_MAKEFILE:=GNUmakefile.configure.mk}"
 
 if [ ! -e Makefile ] && [ ! -e GNUmakefile ]; then
     if [ -e "$$srcdir"/GNUmakefile ]; then
@@ -294,8 +288,8 @@ endef
 
 # In maintainer mode the configure script is automatically updated.
 ifeq ($(Configure.MaintainerMode),yes)
-configure: export ZMK_CONFIGURE_SCRIPT = $(Configure.script)
-configure: $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
+$(CURDIR)/configure configure: export ZMK_CONFIGURE_SCRIPT = $(Configure.script)
+$(CURDIR)/configure configure: $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
 	@echo "$${ZMK_CONFIGURE_SCRIPT}" >$@
 	chmod +x $@
 
@@ -303,7 +297,7 @@ configure: $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
 ifeq ($(Configure.Configured),yes)
 GNUmakefile.configure.mk: configure
 	@echo "re-configuring, $< script is newer than $@"
-	$(srcdir)/$< $(Configure.Options)
+	$(strip sh $< $(Configure.Options) ZMK.SrcDir=$(ZMK.SrcDir))
 endif # !configured
 endif # !maintainer mode
 

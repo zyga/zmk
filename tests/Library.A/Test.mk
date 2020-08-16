@@ -14,7 +14,7 @@ $(eval $(ZMK.isolateHostToolchain))
 %.log: foo.c
 
 all: all.log
-	GREP -qFx 'cc -MMD -c -o libfoo.a-foo.o foo.c' <$<
+	GREP -qFx 'cc -MMD -c -o libfoo.a-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
 	GREP -qFx 'ar -cr libfoo.a libfoo.a-foo.o' <$<
 install: install.log
 	GREP -qFx 'install -d /usr/local/lib' <$<
@@ -27,7 +27,7 @@ clean: clean.log
 	GREP -qFx 'rm -f libfoo.a-foo.d' <$<
 
 all-destdir: all-destdir.log
-	GREP -qFx 'cc -MMD -c -o libfoo.a-foo.o foo.c' <$<
+	GREP -qFx 'cc -MMD -c -o libfoo.a-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
 	GREP -qFx 'ar -cr libfoo.a libfoo.a-foo.o' <$<
 install-destdir: install-destdir.log
 	GREP -qFx 'mkdir -p /destdir' <$<

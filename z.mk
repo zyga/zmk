@@ -20,9 +20,6 @@ VERSION ?= $(error define VERSION - the static version of the project)
 # Speed up make by removing suffix rules.
 .SUFFIXES:
 
-# The location of the source code.
-srcdir ?= .
-
 # Version of the zmk library.
 ZMK.Version = 0.3.8
 
@@ -75,20 +72,22 @@ ZMK.manPages = \
 # Files belonging to ZMK that need to be distributed in third-party release tarballs.
 ZMK.DistFiles = z.mk $(addprefix zmk/,$(foreach m,$(ZMK.modules),$m.mk) pvs-filter.awk)
 
-# If zmk is provided externally add rules to copy it to the source tree and
-# make the distclean target remove it from the tree.
-ifneq ($(realpath $(ZMK.Path)),$(realpath $(srcdir)))
-$(srcdir)/zmk:
-	install -d $@
-$(srcdir)/zmk/%: $(ZMK.Path)/zmk/% | $(srcdir)/zmk
-	install -m 644 $< $@
-$(srcdir)/z.mk: $(ZMK.Path)/z.mk
-	install -m 644 $< $@
-distclean::
-	rm -rf $(srcdir)/zmk
-	rm -f $(srcdir)/z.mk
-	rm -f configure
+# Temporary directory, used by distcheck.
+TMPDIR ?= /tmp
+
+# The location of the source code.
+ZMK.SrcDir ?= .
+
+# Are we building out-of-tree
+ifneq ($(ZMK.SrcDir),.)
+ZMK.IsOutOfTreeBuild = yes
+ZMK.OutOfTreeSourcePath = $(ZMK.SrcDir)/
+VPATH = $(ZMK.SrcDir)
+else
+ZMK.IsOutOfTreeBuild =
+ZMK.OutOfTreeSourcePath =
 endif
+
 
 # ZMK Copyright Banner. Do not remove.
 # You are not allowed to remove or alter this while staying compliant with the LGPL license.
@@ -98,7 +97,7 @@ $(info z.mk v$(ZMK.Version), Copyright (c) 2019-2020 Zygmunt Krynicki)
 endif
 
 # Meta-targets that don't have specific specific commands
-.PHONY: $(sort all clean coverage fmt static-check check install uninstall dist distclean)
+.PHONY: $(sort all clean coverage fmt static-check check install uninstall dist distclean distcheck)
 
 # Run static checks when checking
 check:: static-check
