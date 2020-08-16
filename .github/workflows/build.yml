@@ -24,7 +24,7 @@ jobs:
       if: runner.os == 'Linux'
       run: sudo apt-get install gobjc
     - name: Run distcheck
-      run: make --warn-undefined-variables distcheck
+      run: make --warn-undefined-variables distcheck -j2
     - name: Create dist archive
       run: make --warn-undefined-variables dist
     - uses: actions/upload-artifact@v2
