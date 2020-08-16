@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
+$(eval $(call ZMK.Import,Silent))
 $(eval $(call ZMK.Import,Toolchain))
 $(eval $(call ZMK.Import,OS))
 
@@ -24,6 +25,7 @@ $1.ObjectsC ?= $$(addsuffix .o,$$(addprefix $1-,$$(basename $$(filter %.c,$$($1.
 $1.ObjectsCxx ?= $$(addsuffix .o,$$(addprefix $1-,$$(basename $$(filter %.cpp,$$($1.Sources)))))
 $1.ObjectsObjC ?= $$(addsuffix .o,$$(addprefix $1-,$$(basename $$(filter %.m,$$($1.Sources)))))
 $1.Objects ?= $$(strip $$($1.ObjectsC) $$($1.ObjectsCxx) $$($1.ObjectsObjC))
+$1.SuggestedLinkerSymbol ?= $$(if $$($1.ObjectsObjC),OBJCLD,$$(if $$($1.ObjectsCxx),CXXLD,CCLD))
 
 # Check if we have the required compiler.
 $$(if $$(or $$($1.ObjectsC),$$($1.ObjectsObjC)),$$(if $$(Toolchain.CC.IsAvailable),,$$(error Building $1 requires a C compiler)))
@@ -31,16 +33,21 @@ $$(if $$($1.ObjectsCxx),$$(if $$(Toolchain.CXX.IsAvailable),,$$(error Building $
 
 # This is how to compile each type of source files.
 $$($1.ObjectsC): $1-%.o: %.c
-	$$(strip $$(COMPILE.c) -o $$@ $$<)
+	$$(call Silent.Say2,CC,$$@)
+	$$(Silent.Command)$$(strip $$(COMPILE.c) -o $$@ $$<)
 $$($1.ObjectsCxx): $1-%.o: %.cpp
-	$$(strip $$(COMPILE.cc) -o $$@ $$<)
+	$$(call Silent.Say2,CXX,$$@)
+	$$(Silent.Command)$$(strip $$(COMPILE.cc) -o $$@ $$<)
 $$($1.ObjectsObjC): $1-%.o: %.m
-	$$(strip $$(COMPILE.m) -o $$@ $$<)
+	$$(call Silent.Say2,OBJC,$$@)
+	$$(Silent.Command)$$(strip $$(COMPILE.m) -o $$@ $$<)
 
 clean::
-	rm -f $$($1.Objects)
+	$$(call Silent.Say2,RM,$$($1.Objects))
+	$$(Silent.Command)rm -f $$($1.Objects)
 ifneq (,$$(Toolchain.DependencyTracking))
-	rm -f $$($1.Objects:.o=.d)
+	$$(call Silent.Say2,RM,$$($1.Objects:.o=.d))
+	$$(Silent.Command)rm -f $$($1.Objects:.o=.d)
 endif
 
 ifneq (,$$(Toolchain.DependencyTracking))

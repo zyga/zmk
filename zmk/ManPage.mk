@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
+$(eval $(call ZMK.Import,Silent))
 $(eval $(call ZMK.Import,Directories))
 
 # ManPage.isAvailable expand to "yes" when the man command is available.
@@ -31,7 +32,8 @@ ifeq ($(ManPage.isGNU),yes)
 %.man-check: ManPage.manOpts += --local-file
 .PHONY: %.man-check
 %.man-check: %
-	LC_ALL=C MANROFFSEQ= MANWIDTH=80 man $(ManPage.manOpts) $< 2>&1 >/dev/null | sed -e 's@tbl:<standard input>@$*@g'
+	$(call Silent.Say2,MAN,$<)
+	$(Silent.Command)LC_ALL=C MANROFFSEQ= MANWIDTH=80 man $(ManPage.manOpts) $< 2>&1 >/dev/null | sed -e 's@tbl:<standard input>@$*@g'
 static-check-manpages::
 static-check:: static-check-manpages
 endif

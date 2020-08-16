@@ -1,0 +1,72 @@
+.Dd May 3, 2020
+.Os zmk @VERSION@
+.Dt zmk.Silent 5 PRM
+.Sh NAME
+.Nm Silent
+.Nd module for supporting silent rules
+.Sh SYNOPSIS
+.Bd -literal
+include z.mk
+$(eval $(call ZMK.Import,Silent))
+.Ed
+.Sh DESCRIPTION
+The
+.Nm Silent
+module once
+.Em imported
+provides functions and variables for implementing.
+.Em silent rules .
+Silent rules are a configuration option trading precision of the exact commands
+used by the build system for better visibility of warnings and other output.
+When enabled, each command executed by Make is replaced with a symbolic
+representation of each program executed program.
+.Sh TARGETS
+This module does not provide any targets.
+.Sh VARIABLES
+This module provides the following variables.
+.Ss Silent.Active
+The global silent mode toggle. Any non-empty value enables silent rules.  This
+is automatically configured by the
+.Nm Configure
+module.
+.Ss Silent.Command
+Expands to
+.Em @
+when silent rules are active. Can be placed in front of commands of a make rule
+to cause make not to echo the command itself. It should be paired with one of
+.Nm Silent.Say1 ,
+.Nm Silent.Say2 or
+.Nm Silent.Say3
+for the complete experience. 
+.Ss Silent.Say1
+Function expanding to a shell command printing the 1st argument. This function
+is relatively rare, as it only takes one argument, the program name. It is
+suitable for representing silent rules of commands impacting the entire build
+tree.
+.Ss Silent.Say2
+Function expanding to a shell command printing the 1st and 2nd argument. This
+is the workhorse of the silent rules idea. The first argument should be the
+symbolic name of the tool, such as CC or LD. The second argument should be the
+resulting file, i.e. $@.
+.Ss Silent.Say3
+Function expanding to a shell command printing the 1st, 2nd and 3rd argument.
+This function is also relatively rare as, by convention, silent rules do not
+print their input, only their output. It is left unused in the set of ZMK
+modules, in case it is necessary in a specific situation.
+.Sh EXAMPLES
+A hypothetical rule for compiling .foo files to .bar files, supporting silent
+rules, might look like this.
+.Bd -literal -offset indent
+include z.mk
+$(eval $(call ZMK.Import,Silent))
+
+%.bar: %.foo
+    $(eval $(call Silent.Say2,FOOCC,$@))
+    $(Silent.Command)foocc -c $^ -o $@
+.Ed
+.Sh HISTORY
+The
+.Nm
+module first appeared in zmk 0.4
+.Sh AUTHORS
+.An "Zygmunt Krynicki" Aq Mt me@zygoon.pl

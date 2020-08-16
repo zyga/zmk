@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
+$(eval $(call ZMK.Import,Silent))
 $(eval $(call ZMK.Import,Directories))
 $(eval $(call ZMK.Import,Toolchain))
 $(eval $(call ZMK.Import,OS))
@@ -30,7 +31,8 @@ ifneq (,$$($1.ObjectsObjC))
 $1$$(exe): LDLIBS += -lobjc
 endif # no objective C objects
 $1$$(exe): $$($1.Objects)
-	$$(strip $$(if $$($1.ObjectsObjC),$$(LINK.m),$$(if $$($1.ObjectsCxx),$$(LINK.cc),$$(LINK.o))) -o $$@ $$^ $$(LDLIBS))
+	$$(call Silent.Say2,$$($1.SuggestedLinkerSymbol),$$@)
+	$$(Silent.Command)$$(strip $$(if $$($1.ObjectsObjC),$$(LINK.m),$$(if $$($1.ObjectsCxx),$$(LINK.cc),$$(LINK.o))) -o $$@ $$^ $$(LDLIBS))
 
 # Install program binary.
 $1.InstallDir ?= $$(bindir)

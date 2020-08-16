@@ -50,6 +50,7 @@ ZMK.modules = \
 	Program.Test \
 	PVS \
 	Script \
+	Silent \
 	Symlink \
 	Tarball \
 	Tarball.Src \
@@ -67,6 +68,7 @@ ZMK.manPages = \
 	zmk.OS.5 \
 	zmk.Program.5 \
 	zmk.Script.5 \
+	zmk.Silent.5 \
 	zmk.Toolchain.5
 
 # Files belonging to ZMK that need to be distributed in third-party release tarballs.

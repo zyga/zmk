@@ -18,5 +18,6 @@ AllClean.Variables=
 define AllClean.Template
 all:: $1
 clean::
-	rm -f $1
+	$$(call Silent.Say2,RM,$1)
+	$$(Silent.Command)rm -f $1
 endef

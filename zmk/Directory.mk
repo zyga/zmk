@@ -14,13 +14,16 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
+$(eval $(call ZMK.Import,Silent))
+
+Directory.debug ?= $(findstring directory,$(DEBUG))
+
 # List of directories that need to be created and have corresponding rules.
 # Those are automatically handled, on demand, by expanding the Directory
 # template. That template handles order-only dependencies on the parent
 # directory, so, for example, creating /usr/share/man/man5 automatically
 # depends on /usr/share/man, and so on.
 Directory.known =
-Directory.debug ?= $(findstring directory,$(DEBUG))
 
 # Define DESTDIR to an empty value so that make --warn-undefined-variables
 # does not complain about it.
@@ -28,7 +31,8 @@ ifeq ($(origin DESTDIR),undefined)
 DESTDIR ?=
 else
 $(DESTDIR):
-	mkdir -p $@
+	$(Silent.Command)mkdir -p $@
+	$(call Silent.Say2,MKDIR,$@)
 # Warn if DESTDIR is defined in a makefile. This is probably a mistake.
 ifeq ($(origin DESTDIR),file)
 $(warning DESTDIR should be set only through environment variable, not in a makefile)
@@ -57,11 +61,13 @@ Directory.known += $$($1.cleaned)
 ifeq (/,$$(patsubst /%,/,$$($1.cleaned)))
 # Absolute directories respect DESTDIR
 $$(DESTDIR)$$($1.cleaned): | $$(DESTDIR)$$($1.parentDir)
-	install -d $$@
+	$$(Silent.Command)install -d $$@
+	$$(call Silent.Say2,MKDIR,$$@)
 else
 # Relative directories do not observe DESTDIR
 $$($1.cleaned): | $$($1.parentDir)
-	install -d $$@
+	$$(Silent.Command)install -d $$@
+	$$(call Silent.Say2,MKDIR,$$@)
 endif # !absolute
 endif # !known
 endif # !.

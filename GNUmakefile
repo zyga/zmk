@@ -36,14 +36,16 @@ $(foreach f,$(ZMK.DistFiles),$(eval $(call ZMK.Expand,InstallUninstall,$f)))
 # Install all of the manual pages, generating them from .in files first.
 all:: $(foreach f,$(ZMK.manPages),man/$f)
 clean::
-	rm -f $(addprefix man/,$(ZMK.manPages))
+	$(call Silent.Say2,RM,$(addprefix man/,$(ZMK.manPages)))
+	$(Silent.Command)rm -f $(addprefix man/,$(ZMK.manPages))
 ifneq ($(ZMK.SrcDir),.)
-	test -d man && rmdir man || :
+	$(Silent.Command)test -d man && rmdir man || :
 endif
 $(CURDIR)/man: # For out-of-tree builds.
-	install -d $@
+	$(Silent.Command)install -d $@
 man/%: man/%.in | $(CURDIR)/man
-	sed -e 's/@VERSION@/$(VERSION)/g' $< >$@
+	$(call Silent.Say2,SED,$@)
+	$(Silent.Command)sed -e 's/@VERSION@/$(VERSION)/g' $< >$@
 $(foreach f,$(ZMK.manPages),$(eval $(call ZMK.Expand,ManPage,man/$f)))
 
 # Build the release tarball.
@@ -84,15 +86,16 @@ check-unit: $(addprefix check-,$(tests))
 
 check-%: TESTDIR=$(patsubst examples/libhello/%,examples/libhello-%,$(patsubst examples/hello/%,examples/hello-%,$(subst -,/,$*)))
 $(addprefix check-,$(tests)): check-%:
+	$(call Silent.Say2,MAKE-TEST,$(TESTDIR))
 ifeq ($(ZMK.IsOutOfTreeBuild),yes)
-	mkdir -p $(TESTDIR)
-	$(strip $(MAKE)	--warn-undefined-variables \
+	$(Silent.Command)mkdir -p $(TESTDIR)
+	$(Silent.Command)$(strip $(MAKE)	--warn-undefined-variables \
 		ZMK.test.SrcDir=$(ZMK.SrcDir)/$(TESTDIR) \
 		-I $(abspath $(ZMK.Path)) \
 		-C $(TESTDIR) \
 		-f $(ZMK.SrcDir)/$(TESTDIR)/Test.mk)
 else
-	$(strip $(MAKE)	--warn-undefined-variables \
+	$(Silent.Command)$(strip $(MAKE)	--warn-undefined-variables \
 		-I $(abspath $(ZMK.Path)) \
 		-C $(TESTDIR) \
 		-f Test.mk)

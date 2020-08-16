@@ -14,14 +14,16 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
+$(eval $(call ZMK.Import,Silent))
 $(eval $(call ZMK.Import,Directories))
 
 ZMK.shellcheck ?= $(shell command -v shellcheck 2>/dev/null)
 static-check-shellcheck:
 ifneq (,$(ZMK.shellcheck))
-	$(ZMK.shellcheck) $^
+	$(call Silent.Say2,SHELLCHECK,$^)
+	$(Silent.Command)$(ZMK.shellcheck) $^
 else
-	@echo "ZMK: install shellcheck to analyze $^" 
+	@echo "ZMK: install shellcheck to analyze $^"
 endif
 static-check:: static-check-shellcheck
 

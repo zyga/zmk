@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
+$(eval $(call ZMK.Import,Silent))
+
 # Is zmk debugging enabled for this module?
 Configure.debug ?= $(findstring configure,$(DEBUG))
 
@@ -32,6 +34,9 @@ Configure.Options ?=
 # Include optional generated makefile from the configuration system.
 # This makefile can only set one of the variables listed above.
 -include GNUmakefile.configure.mk
+
+# Enable silent rules if configured.
+override Silent.Active = $(Configure.SilentRules)
 
 $(if $(Configure.debug),$(foreach v,$(filter Configure.%,$(.VARIABLES)),$(info DEBUG: $v=$($v))))
 
@@ -291,15 +296,19 @@ ifeq ($(Configure.MaintainerMode),yes)
 $(CURDIR)/configure configure: export ZMK_CONFIGURE_SCRIPT = $(Configure.script)
 $(CURDIR)/configure configure: $(ZMK.Path)/z.mk $(wildcard $(ZMK.Path)/zmk/*.mk)
 	@echo "$${ZMK_CONFIGURE_SCRIPT}" >$@
-	chmod +x $@
+	$(call Silent.Say2,GENERATE,$@)
+	$(Silent.Command)chmod +x $@
 
 # In maintainer mode, re-configure in response to updates to the configuration script.
 ifeq ($(Configure.Configured),yes)
 GNUmakefile.configure.mk: configure
-	@echo "re-configuring, $< script is newer than $@"
-	$(strip sh $< $(Configure.Options) ZMK.SrcDir=$(ZMK.SrcDir))
+	$(call Silent.Say2,CONFIGURE,$(sort $(Configure.Options) ZMK.SrcDir=$(ZMK.SrcDir)))
+	$(if Configure.SilentRules,,@echo "re-configuring, $< script is newer than $@")
+	$(Silent.Command)$(strip sh $< $(sort $(Configure.Options) ZMK.SrcDir=$(ZMK.SrcDir)))
+
 endif # !configured
 endif # !maintainer mode
 
 distclean::
-	rm -f GNUmakefile.configure.mk
+	$(call Silent.Say2,RM,GNUmakefile.configure.mk)
+	$(Silent.Command)rm -f GNUmakefile.configure.mk

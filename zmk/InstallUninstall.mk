@@ -31,10 +31,12 @@ ifneq ($$($1.InstallDir),noinst)
 
 install:: $$(DESTDIR)$$($1.InstallDir)/$$($1.InstallName)
 uninstall::
-	rm -f $$(DESTDIR)$$($1.InstallDir)/$$($1.InstallName)
+	$$(call Silent.Say2,RM,$$($1.InstallDir)/$$($1.InstallName))
+	$$(Silent.Command)rm -f $$(DESTDIR)$$($1.InstallDir)/$$($1.InstallName)
 
 $$(eval $$(call ZMK.Expand,Directory,$$($1.InstallDir)))
 $$(DESTDIR)$$($1.InstallDir)/$$($1.InstallName): $1 | $$(DESTDIR)$$($1.InstallDir)
-	$$(strip install -m $$($1.InstallMode) $$^ $$@)
+	$$(call Silent.Say2,INSTALL,$$@)
+	$$(Silent.Command)$$(strip install -m $$($1.InstallMode) $$^ $$@)
 endif # noinst
 endef

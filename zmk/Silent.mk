@@ -14,27 +14,9 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
-$(eval $(call ZMK.Import,Directories))
-$(eval $(call ZMK.Import,Toolchain))
-
-Library.A.Variables=Sources Objects
-define Library.A.Template
-ifneq ($$(suffix $1),.a)
-$$(error library name $1 must end with ".a")
-endif
-
-# Compile library objects.
-$$(eval $$(call ZMK.Expand,ObjectGroup,$1))
-
-# Create library archive.
-$1: $$($1.Objects)
-	$$(call Silent.Say2,AR,$$@)
-	$$(Silent.Command)$$(AR) $$(ARFLAGS) $$@ $$^
-
-# Install library archive.
-$1.InstallDir ?= $$(libdir)
-$$(eval $$(call ZMK.Expand,InstallUninstall,$1))
-
-# React to "all" and "clean".
-$$(eval $$(call ZMK.Expand,AllClean,$1))
-endef
+# Is zmk debugging enabled for this module?
+Silent.Active?=
+Silent.Command=$(if $(Silent.Active),@)
+Silent.Say1=$(if $(Silent.Active),@printf "  %-16s\n" "$1")
+Silent.Say2=$(if $(Silent.Active),@printf "  %-16s %s\n" "$1" "$2")
+Silent.Say3=$(if $(Silent.Active),@printf "  %-16s %-32s %-32s\n" "$1" "$2" "$3")

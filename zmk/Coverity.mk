@@ -17,11 +17,15 @@
 Coverity.Sources ?= $(error define Coverity.Sources - the list of source files to analyze with Coverity)
 
 clean::
-	rm -rf cov-int
-	rm -f $(NAME)-$(VERSION)-coverity.tar.gz
+	$(call Silent.Say2,RM,cov-int)
+	$(Silent.Command)rm -rf cov-int
+	$(call Silent.Say2,RM,$(NAME)-$(VERSION)-coverity.tar.gz)
+	$(Silent.Command)rm -f $(NAME)-$(VERSION)-coverity.tar.gz
 
 cov-int: $(Coverity.Sources) $(MAKEFILE_LIST)
-	cov-build --dir $@ $(MAKE)
+	$(call Silent.Say2,COV-BUILD,$@)
+	$(Silent.Command)cov-build --dir $@ $(MAKE)
 
 $(NAME)-$(VERSION)-coverity.tar.gz: cov-int
-	tar zcf $@ $<
+	$(call Silent.Say2,TAR,$@)
+	$(Silent.Command)tar zcf $@ $<

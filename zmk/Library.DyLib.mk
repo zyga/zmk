@@ -43,7 +43,8 @@ endif
 
 # Link library objects.
 $1: $$($1.Objects)
-	$$(strip $$(if $$($1.ObjectsObjC),$$(LINK.m),$$(if $$($1.ObjectsCxx),$$(LINK.cc),$$(LINK.o))) -o $$@ $$(filter %.o,$$^) $$(LDLIBS))
+	$$(call Silent.Say2,$$($1.SuggestedLinkerSymbol),$$@)
+	$$(Silent.Command)$$(strip $$(if $$($1.ObjectsObjC),$$(LINK.m),$$(if $$($1.ObjectsCxx),$$(LINK.cc),$$(LINK.o))) -o $$@ $$(filter %.o,$$^) $$(LDLIBS))
 
 # Install library binary.
 $1.InstallDir ?= $$(libdir)
