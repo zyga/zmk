@@ -31,7 +31,7 @@ ifeq ($(ManPage.isGNU),yes)
 %.man-check: ManPage.manOpts += --local-file
 .PHONY: %.man-check
 %.man-check: %
-	LC_ALL=C MANROFFSEQ= MANWIDTH=80 man $(ManPage.manOpts) $< 2>&1 >/dev/null | sed -e 's@tbl:<standard input>@$m@g'
+	LC_ALL=C MANROFFSEQ= MANWIDTH=80 man $(ManPage.manOpts) $< 2>&1 >/dev/null | sed -e 's@tbl:<standard input>@$*@g'
 static-check-manpages::
 static-check:: static-check-manpages
 endif
