@@ -39,15 +39,16 @@ ZMK.modules = \
 	GitVersion \
 	Header \
 	InstallUninstall \
+	internalTest \
 	Library.A \
 	Library.DyLib \
 	Library.So \
 	ManPage \
-	OS \
 	ObjectGroup \
-	PVS \
+	OS \
 	Program \
 	Program.Test \
+	PVS \
 	Script \
 	Symlink \
 	Tarball \
@@ -56,8 +57,7 @@ ZMK.modules = \
 	toolchain.Clang \
 	toolchain.GCC \
 	toolchain.Tcc \
-	toolchain.Watcom \
-	internalTest
+	toolchain.Watcom
 
 # Manual pages present in the package.
 ZMK.manPages = \
