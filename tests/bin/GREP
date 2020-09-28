@@ -32,10 +32,12 @@ if [ -t 0 ]; then
 fi
 
 # Read the input to a temporary buffer.
-input="$(cat)"
+input_temp="$(mktemp)"
+trap 'rm -f $input_temp' EXIT
+cat >"$input_temp"
 
 # If the input matches the given pattern, we're all set.
-if echo "$input" | "$grep" -q "$@"; then
+if "$grep" -q "$@" "$input_temp"; then
 	exit
 fi
 
@@ -45,11 +47,11 @@ for arg in "$@"; do
 	printf ' "%s"' "$(echo "$arg" | sed -e 's@\(["$]\)@\\\1@g')"
 done
 printf '\n'
-if [ "$(echo "$input" | wc -l)" -gt 1 ]; then
+if [ "$(wc -l "$input_temp" | cut -f 1 -d ' ')" -gt 1 ]; then
 	printf 'GREP: input starts below:\n\n'
-	printf '%s\n' "$input"
+	cat "$input_temp"
 	printf '\nGREP: input ends above.\n'
 else
-	printf 'GREP: for input "%s"\n' "$(echo "$input" | sed -e 's@\(["$]\)@\\\1@g')"
+	printf 'GREP: for input "%s"\n' "$(sed -e 's@\(["$]\)@\\\1@g' "$input_temp")"
 fi
 exit 1
