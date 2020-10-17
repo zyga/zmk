@@ -23,10 +23,10 @@ program written in C, C++ or Objective C.
 .Pp
 Source files are compiled to object files prefixed with
 .Em $(programName)- ,
-so that individual source files can be part of many different programs, using
+so that a single source file can be compiled separately with
 distinct preprocessor, compiler and linker options.
 .Pp
-If cross-compiling for
+When cross-compiling for
 .Em Windows
 or
 .Em DOS ,
