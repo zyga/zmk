@@ -47,7 +47,7 @@ for arg in "$@"; do
 	printf ' "%s"' "$(echo "$arg" | sed -e 's@\(["$]\)@\\\1@g')"
 done
 printf '\n'
-if [ "$(wc -l "$input_temp" | cut -f 1 -d ' ')" -gt 1 ]; then
+if [ "$(wc -l < "$input_temp")" -gt 1 ]; then
 	printf 'GREP: input starts below:\n\n'
 	cat "$input_temp"
 	printf '\nGREP: input ends above.\n'
