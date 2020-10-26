@@ -124,7 +124,7 @@ Directory with documentation in the Info format.
 The default value is
 .Em $(prefix)/doc/info .
 .Ss libdir
-Directory with stattic or dynamic libraries.
+Directory with static or dynamic libraries.
 .Pp
 The default value is
 .Em $(exec_prefix)/lib .
