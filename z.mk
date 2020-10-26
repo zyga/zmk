@@ -14,8 +14,19 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
-NAME ?= $(error define NAME - the name of the project)
-VERSION ?= $(error define VERSION - the static version of the project)
+ifneq ($(value NAME),)
+Project.Name ?= $(NAME)
+else
+Project.Name ?=
+endif
+NAME ?= $(or $(Project.Name),$(error define NAME - the name of the project))
+
+ifneq ($(value VERSION),)
+Project.Version ?= $(VERSION)
+else
+Project.Version ?=
+endif
+VERSION ?= $(or $(Project.Version),$(error define VERSION - the static version of the project))
 
 # Speed up make by removing suffix rules.
 .SUFFIXES:
