@@ -115,9 +115,9 @@ The default value is
 Directory with documentation specific to the project.
 .Pp
 The default value is
-.Em $(prefix)/doc/$(NAME) .
-Since the value depends on NAME, it is only defined
-when NAME is also defined.
+.Em $(prefix)/doc/$(Project.Name) .
+Since the value depends on Project.Name, it is only defined
+when Project.Name is non-empty.
 .Ss infodir
 Directory with documentation in the Info format.
 .Pp

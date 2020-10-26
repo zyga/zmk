@@ -57,9 +57,9 @@ Directories.POSIX = \
 	$(man2dir) $(man3dir) $(man4dir) $(man5dir) $(man6dir) $(man7dir) \
 	$(man8dir) $(man9dir)
 
-# If NAME is defined, also define docdir.
-ifneq ($(value NAME),$$(error define NAME - the name of the project))
-docdir ?= $(datarootdir)/doc/$(NAME)
+# If Project.Name is defined, also define docdir.
+ifneq ($(Project.Name),)
+docdir ?= $(datarootdir)/doc/$(Project.Name)
 Directories.POSIX += $(docdir)
 endif
 
