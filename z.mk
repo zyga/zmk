@@ -72,6 +72,7 @@ ZMK.modules = \
 
 # Manual pages present in the package.
 ZMK.manPages = \
+	z.mk.5 \
 	zmk.AllClean.5 \
 	zmk.Configure.5 \
 	zmk.Directories.5 \
