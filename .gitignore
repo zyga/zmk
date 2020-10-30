@@ -5,8 +5,9 @@ zmk_*.tar.gz.asc
 # Version file used during "make dist"
 .version-from-git
 
-# Generated configure script
+# Generated configure script and settings
 ^configure$
+GNUmakefile.zmk.configure.mk
 
 # Editor swap files
 *.swp

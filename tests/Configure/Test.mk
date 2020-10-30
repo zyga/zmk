@@ -44,7 +44,7 @@ c::
 	rm -f configure
 
 # The configure script writes a configuration file.
-# Note that normally the file is GNUmakefile.configure.mk but
+# Note that normally the file is GNUmakefile.$(NAME).configure.mk but
 # the test redirects that to a different file to enable parallelism.
 configureOptions ?=
 configureOptions += $(if $(ZMK.test.IsOutOfTreeBuild),ZMK.SrcDir=$(ZMK.test.SrcDir))
