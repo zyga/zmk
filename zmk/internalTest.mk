@@ -40,6 +40,10 @@ export PATH := $(ZMK.test.Path)/tests/bin:$(PATH)
 # Make overrides can be used in order to test specific behavior
 ZMK.makeOverrides ?=
 
+# Indicate that we are testing ZMK.
+# In specific cases, we may want to know this.
+ZMK.makeOverrides += ZMK.testing=yes
+
 # Make target can be customized for each log file.
 # For default logic, see the rule below.
 ZMK.makeTarget ?=
