@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
+$(eval $(call ZMK.Import,Silent))
 $(eval $(call ZMK.Import,Directories))
 $(eval $(call ZMK.Import,Toolchain))
 
@@ -43,7 +44,8 @@ endif
 
 # Link library objects.
 $1: $$($1.Objects)
-	$$(strip $$(if $$($1.ObjectsObjC),$$(LINK.m),$$(if $$($1.ObjectsCxx),$$(LINK.cc),$$(LINK.o))) -o $$@ $$(filter %.o,$$^) $$(LDLIBS))
+	$$(call Silent.Say,$$($1.SuggestedLinkerSymbol),$$@)
+	$$(Silent.Command)$$(strip $$(if $$($1.ObjectsObjC),$$(LINK.m),$$(if $$($1.ObjectsCxx),$$(LINK.cc),$$(LINK.o))) -o $$@ $$(filter %.o,$$^) $$(LDLIBS))
 
 # Install library binary.
 $1.InstallDir ?= $$(libdir)

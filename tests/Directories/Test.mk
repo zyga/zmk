@@ -2,13 +2,14 @@
 include zmk/internalTest.mk
 
 t:: debug-defaults debug-name-defined debug-destdir debug-prefix \
-	debug-sysconfdir debug-libexecdir
+	debug-sysconfdir debug-libexecdir debug-silent-rules
 
 # Test logs will contain debugging messages
 %.log: ZMK.makeOverrides += DEBUG=directories,directory
 
 debug-defaults: debug-defaults.log
 	GREP -qFx 'DEBUG: prefix=/usr/local' <$<
+	GREP -qFx 'install -d /usr' <$<
 	GREP -qFx 'install -d /usr/local' <$<
 	GREP -qFx 'install -d /usr/local/bin' <$<
 	GREP -qFx 'install -d /usr/local/sbin' <$<
@@ -32,6 +33,10 @@ debug-defaults: debug-defaults.log
 	GREP -qFx 'install -d /usr/local/share/man/man7' <$<
 	GREP -qFx 'install -d /usr/local/share/man/man8' <$<
 	GREP -qFx 'install -d /usr/local/share/man/man9' <$<
+
+debug-silent-rules.log: ZMK.makeOverrides += Silent.Active=yes
+debug-silent-rules: debug-silent-rules.log
+	GREP -qFx 'printf "  %-16s %s\n" "MKDIR" "/usr"' <$<
 
 debug-name-defined.log: ZMK.makeOverrides += NAME=test
 debug-name-defined: debug-name-defined.log

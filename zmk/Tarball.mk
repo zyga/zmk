@@ -13,6 +13,8 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
+
+$(eval $(call ZMK.Import,Silent))
 $(eval $(call ZMK.Import,Directories))
 $(eval $(call ZMK.Import,OS))
 
@@ -59,7 +61,8 @@ $1: Tarball.tarOptions += -s '@^.@$$($1.Name)/~@'
 endif
 
 $1: $$(sort $$($1.Files))
-	$$(strip $$(Tarball.tar) \
+	$$(call Silent.Say,TAR,$$@)
+	$$(Silent.Command)$$(strip $$(Tarball.tar) \
 		-$$(or $$(Tarball.compressFlag),a)cf $$@ \
 		$$(if $$(ZMK.IsOutOfTreeBuild),-C $$(ZMK.SrcDir)) \
 		$$(Tarball.tarOptions) \

@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
+$(eval $(call ZMK.Import,Silent))
+
 PVS.Sources ?= $(error define PVS.Sources - the list of source files to analyze with PVS Studio)
 
 PLOG_CONVERTER_FLAGS ?=
@@ -25,14 +27,16 @@ endif
 
 .PHONY: static-check-pvs
 static-check-pvs: $(addsuffix .PVS-Studio.log,$(PVS.Sources))
-	$(strip plog-converter \
+	$(call Silent.Say,PLOG-CONVERTER,$@)
+	$(Silent.Command)$(strip plog-converter \
 		--settings $(ZMK.SrcDir)/.pvs-studio.cfg \
 		$(PLOG_CONVERTER_FLAGS) \
 		--srcRoot $(ZMK.SrcDir) \
 		--renderTypes errorfile $^ | srcdir=$(ZMK.SrcDir) abssrcdir=$(abspath $(ZMK.SrcDir)) awk -f $(ZMK.Path)/zmk/pvs-filter.awk)
 
 pvs-report: $(addsuffix .PVS-Studio.log,$(PVS.Sources))
-	$(strip plog-converter \
+	$(call Silent.Say,PLOG-CONVERTER,$@)
+	$(Silent.Command)$(strip plog-converter \
 		--settings $(ZMK.SrcDir)/.pvs-studio.cfg \
 		$(PLOG_CONVERTER_FLAGS) \
 		--srcRoot $(ZMK.SrcDir) \
@@ -43,20 +47,27 @@ pvs-report: $(addsuffix .PVS-Studio.log,$(PVS.Sources))
 		$^)
 
 %.c.PVS-Studio.log: %.c.i ~/.config/PVS-Studio/PVS-Studio.lic | %.c
-	$(strip pvs-studio \
+	$(call Silent.Say,PVS-STUDIO,$@)
+	$(Silent.Command)$(strip pvs-studio \
 		--cfg $(ZMK.SrcDir)/.pvs-studio.cfg \
 		--i-file $< \
 		--source-file $(firstword $|) \
 		--output-file $@)
 
 %.c.i: %.c
-	$(strip $(CC) $(CPPFLAGS) $< -E -o $@)
+	$(call Silent.Say,CPP,$@)
+	$(Silent.Command)$(strip $(CC) $(CPPFLAGS) $< -E -o $@)
 %.cpp.i: %.cpp
-	$(strip $(CXX) $(CPPFLAGS) $< -E -o $@)
+	$(call Silent.Say,CPP,$@)
+	$(Silent.Command)$(strip $(CXX) $(CPPFLAGS) $< -E -o $@)
 %.m.i: %.m
-	$(strip $(CC) $(CPPFLAGS) $< -E -o $@)
+	$(call Silent.Say,CPP,$@)
+	$(Silent.Command)$(strip $(CC) $(CPPFLAGS) $< -E -o $@)
 
 clean::
-	rm -f *.i
-	rm -f *.PVS-Studio.log
-	rm -rf pvs-report
+	$(call Silent.Say,RM,*.i)
+	$(Silent.Command)rm -f *.i
+	$(call Silent.Say,RM,*.PVS-Studio.log)
+	$(Silent.Command)rm -f *.PVS-Studio.log
+	$(call Silent.Say,RM,pvs-report)
+	$(Silent.Command)rm -rf pvs-report
