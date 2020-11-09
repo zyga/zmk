@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 include zmk/internalTest.mk
 
-t:: dist-gnu dist-non-gnu dist-darwin dist-CI
+t:: dist-gnu dist-non-gnu dist-darwin dist-CI dist-as-bob dist-as-alice dist-as-eve
 
 # Test logs will contain debugging messages
 %.log: ZMK.makeOverrides += DEBUG=tarball
@@ -27,8 +27,6 @@ dist-gnu: dist-gnu.log
 	GREP -qF -- " --xform='s@$(ZMK.test.Path)/@@g' " <$<
 	GREP -qF -- " --xform='s@.version-from-git@.version@' " <$<
 	GREP -qF -- " --xform='s@^@test_1/@' " <$<
-	# Releases are also signed
-	GREP -qFx 'gpg --detach-sign --armor test_1.tar.gz' <$<
 
 dist-non-gnu.log: ZMK.makeOverrides += Tarball.isGNU= OS.Kernel=test
 dist-non-gnu: dist-non-gnu.log
@@ -44,8 +42,6 @@ dist-non-gnu: dist-non-gnu.log
 	GREP -qF -- " -s '@$(ZMK.test.Path)/@@g' " <$<
 	GREP -qF -- " -s '@^.version-from-git@test_1/.version@' " <$<
 	GREP -qF -- " -s '@^.@test_1/~@' " <$<
-	# Releases are also signed
-	GREP -qFx 'gpg --detach-sign --armor test_1.tar.gz' <$<
 
 dist-darwin.log: ZMK.makeOverrides += OS.Kernel=Darwin
 dist-darwin.log: ZMK.makeOverrides += Tarball.isGNU=
@@ -53,7 +49,24 @@ dist-darwin: dist-darwin.log
 	# Darwin meta-data is excluded.
 	GREP -qF 'tar -zcf test_1.tar.gz$(if $(ZMK.test.IsOutOfTreeBuild), -C $(ZMK.test.SrcDir)) --no-mac-metadata ' <$<
 
+# XXX: we reuse Alice's HOME directory for this test.
 dist-CI.log: ZMK.makeOverrides += CI=fake
+dist-CI.log: ZMK.makeOverrides += HOME=$(ZMK.test.SrcDir)/home/alice
 dist-CI: dist-CI.log
-	# When CI is set release archives are not signed
-	GREP -vqFx 'gpg --detach-sign --armor test_1.tar.gz' <$<
+	# When CI is set release archives are not signed, even if we have keys
+	! GREP -qFx 'gpg --detach-sign --armor test_1.tar.gz' <$<
+
+dist-as-bob.log: ZMK.makeOverrides += HOME=$(ZMK.test.SrcDir)/home/bob zmk.haveGPG=yes
+dist-as-bob: dist-as-bob.log
+	# Bob does not have a gpg key, so his releases are not signed
+	! GREP -qFx 'gpg --detach-sign --armor test_1.tar.gz' <$<
+
+dist-as-alice.log: ZMK.makeOverrides += HOME=$(ZMK.test.SrcDir)/home/alice zmk.haveGPG=yes
+dist-as-alice: dist-as-alice.log
+	# Alice has a gpg key, so her releases are signed
+	GREP -qFx 'gpg --detach-sign --armor test_1.tar.gz' <$<
+
+dist-as-eve.log: ZMK.makeOverrides += HOME=$(ZMK.test.SrcDir)/home/eve zmk.haveGPG=
+dist-as-eve: dist-as-eve.log
+	# Eve has a gpg key but lacks gpg itself, so her releases are not signed
+	! GREP -qFx 'gpg --detach-sign --armor test_1.tar.gz' <$<
