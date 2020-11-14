@@ -14,13 +14,14 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
+Directory.debug ?= $(findstring directory,$(DEBUG))
+
 # List of directories that need to be created and have corresponding rules.
 # Those are automatically handled, on demand, by expanding the Directory
 # template. That template handles order-only dependencies on the parent
 # directory, so, for example, creating /usr/share/man/man5 automatically
 # depends on /usr/share/man, and so on.
 Directory.known =
-Directory.debug ?= $(findstring directory,$(DEBUG))
 
 # Define DESTDIR to an empty value so that make --warn-undefined-variables
 # does not complain about it.
