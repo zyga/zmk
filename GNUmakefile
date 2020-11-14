@@ -82,18 +82,19 @@ tests = $(patsubst -%-,%,$(subst /,-,$(subst $(ZMK.SrcDir)/,/,$(dir $(shell find
 check-unit: $(addprefix check-,$(tests))
 .PHONY: $(addprefix check-,$(tests))
 
-check-%: TESTDIR=$(patsubst examples/libhello/%,examples/libhello-%,$(patsubst examples/hello/%,examples/hello-%,$(subst -,/,$*)))
+check-%: ZMK.testDir=$(patsubst examples/libhello/%,examples/libhello-%,$(patsubst examples/hello/%,examples/hello-%,$(subst -,/,$*)))
 $(addprefix check-,$(tests)): check-%:
 ifeq ($(ZMK.IsOutOfTreeBuild),yes)
-	mkdir -p $(TESTDIR)
-	$(strip $(MAKE)	--warn-undefined-variables \
-		ZMK.test.SrcDir=$(ZMK.SrcDir)/$(TESTDIR) \
+	mkdir -p $(ZMK.testDir)
+	$(strip $(MAKE) \
+		--warn-undefined-variables \
+		ZMK.test.SrcDir=$(ZMK.SrcDir)/$(ZMK.testDir) \
 		-I $(abspath $(ZMK.Path)) \
-		-C $(TESTDIR) \
-		-f $(ZMK.SrcDir)/$(TESTDIR)/Test.mk)
+		-C $(ZMK.testDir) \
+		-f $(ZMK.SrcDir)/$(ZMK.testDir)/Test.mk)
 else
 	$(strip $(MAKE)	--warn-undefined-variables \
 		-I $(abspath $(ZMK.Path)) \
-		-C $(TESTDIR) \
+		-C $(ZMK.testDir) \
 		-f Test.mk)
 endif
