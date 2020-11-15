@@ -6,7 +6,7 @@ zmk_*.tar.gz.asc
 .version-from-git
 
 # Generated configure script and settings
-^configure$
+configure
 GNUmakefile.zmk.configure.mk
 
 # Editor swap files
