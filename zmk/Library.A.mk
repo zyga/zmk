@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
+$(eval $(call ZMK.Import,Silent))
 $(eval $(call ZMK.Import,Directories))
 $(eval $(call ZMK.Import,Toolchain))
 
@@ -28,7 +29,8 @@ $$(eval $$(call ZMK.Expand,ObjectGroup,$1))
 
 # Create library archive.
 $1: $$($1.Objects)
-	$$(AR) $$(ARFLAGS) $$@ $$^
+	$$(call Silent.Say,AR,$$@)
+	$$(Silent.Command)$$(AR) $$(ARFLAGS) $$@ $$^
 
 # Install library archive.
 $1.InstallDir ?= $$(libdir)

@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
+$(eval $(call ZMK.Import,Silent))
+
 # Craft a better version if we have Git.
 
 GitVersion.debug ?= $(findstring version,$(DEBUG))
@@ -51,7 +53,8 @@ endif # !version from version file
 # for git information anymore, as it may no longer be the "same" git history.
 ifneq (,$(GitVersion.versionFromGit))
 $(ZMK.SrcDir)/.version-from-git: $(ZMK.SrcDir)/.git
-	echo $(GitVersion.versionFromGit) >$@
+	$(Silent.Say,GIT-VERSION,$@)
+	$(Silent.Command)echo $(GitVersion.versionFromGit) >$@
 endif
 
 # Set the new effective VERSION.

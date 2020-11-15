@@ -14,12 +14,16 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
-$(eval $(call ZMK.Import,Silent))
-
-AllClean.Variables=
-define AllClean.Template
-all:: $1
-clean::
-	$$(call Silent.Say,RM,$1)
-	$$(Silent.Command)rm -f $1
-endef
+# Is zmk debugging enabled for this module?
+Silent.Active?=
+ifeq (,$(value ZMK.testing))
+Silent.Command=$(if $(Silent.Active),@)
+else
+# ZMK is being tested, mainly, by running make -n and measuring the output.
+# Make ignores the non-echo rule when -n is in effect. As such, to improve
+# testing of silent rules, when zmk is being tested pretend all silent rules
+# are commented-out shell commands. This can be readily verified by simple grep
+# patterns.
+Silent.Command=$(if $(Silent.Active),\#)
+endif
+Silent.Say=$(if $(Silent.Active),@printf "  %-16s %s\n" "$1" "$2")

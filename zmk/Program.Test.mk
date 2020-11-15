@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
+$(eval $(call ZMK.Import,Silent))
 $(eval $(call ZMK.Import,Directories))
 $(eval $(call ZMK.Import,Toolchain))
 $(eval $(call ZMK.Import,OS))
@@ -29,7 +30,8 @@ endif
 
 
 clean::
-	rm -f *.profdata *.profraw
+	$(call Silent.Say,RM,*.profdata *.profraw)
+	$(Silent.Command)rm -f *.profdata *.profraw
 
 Program.Test.Variables=Sources SourcesCoverage InstallDir InstallMode
 define Program.Test.Template
@@ -44,9 +46,10 @@ endif
 # If we are not cross-compiling, run the test program on "make check"
 check:: $1$$(exe)
 ifneq (,$$(Toolchain.IsCross))
-	echo "not executing test program $$<$$(exe) when cross-compiling"
+	@echo "not executing test program $$<$$(exe) when cross-compiling"
 else
-	./$$<
+	$$(call Silent.Say,EXEC,$$<)
+	$$(Silent.Command)./$$<
 endif
 
 
@@ -60,19 +63,24 @@ $1$$(exe): CFLAGS += -fcoverage-mapping -fprofile-instr-generate
 $1$$(exe): LDFLAGS += -fcoverage-mapping -fprofile-instr-generate
 
 $1.profraw: %.profraw: %
-	LLVM_PROFILE_FILE=$$@ ./$$^
+	$$(Silent.Say),EXEC-TEST,$$^)
+	$$(Silent.Command)LLVM_PROFILE_FILE=$$@ ./$$^
 $1.profdata: %.profdata: %.profraw
-	$$(strip $$(xcrun) llvm-profdata merge -sparse $$< -o $$@)
+	$$(call Silent.Say,LLVM-PROFDATA,$$@)
+	$$(Silent.Command)$$(strip $$(xcrun) llvm-profdata merge -sparse $$< -o $$@)
 coverage:: $1.profdata
-	$$(strip $$(xcrun) llvm-cov show ./$1$$(exe) -instr-profile=$$< $$(addprefix $$(ZMK.SrcDir)/,$$($1.SourcesCoverage)))
+	$$(call Silent.Say,LLVM-COV,$$<)
+	$$(Silent.Command)$$(strip $$(xcrun) llvm-cov show ./$1$$(exe) -instr-profile=$$< $$(addprefix $$(ZMK.SrcDir)/,$$($1.SourcesCoverage)))
 
 .PHONY: coverage-todo
 coverage-todo:: $1.profdata
-	$$(strip $$(xcrun) llvm-cov show ./$1$$(exe) -instr-profile=$$< -region-coverage-lt=100 $$(addprefix $$(ZMK.SrcDir)/,$$($1.SourcesCoverage)))
+	$$(call Silent.Say,LLVM-COV,$$<)
+	$$(Silent.Command)$$(strip $$(xcrun) llvm-cov show ./$1$$(exe) -instr-profile=$$< -region-coverage-lt=100 $$(addprefix $$(ZMK.SrcDir)/,$$($1.SourcesCoverage)))
 
 .PHONY: coverage-report
 coverage-report:: $1.profdata
-	$$(strip $$(xcrun) llvm-cov report ./$1$$(exe) -instr-profile=$$< $$(addprefix $$(ZMK.SrcDir)/,$$($1.SourcesCoverage)))
+	$$(call Silent.Say,LLVM-COV,$$<)
+	$$(Silent.Command)$$(strip $$(xcrun) llvm-cov report ./$1$$(exe) -instr-profile=$$< $$(addprefix $$(ZMK.SrcDir)/,$$($1.SourcesCoverage)))
 endif # can use llvm-cov
 endif # not-cross-compiling
 endef

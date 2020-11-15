@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
+$(eval $(call ZMK.Import,Silent))
 $(eval $(call ZMK.Import,Directories))
 
 # A file that gets installed to a desired location. The location can be set
@@ -31,10 +32,12 @@ ifneq ($$($1.InstallDir),noinst)
 
 install:: $$(DESTDIR)$$($1.InstallDir)/$$($1.InstallName)
 uninstall::
-	rm -f $$(DESTDIR)$$($1.InstallDir)/$$($1.InstallName)
+	$$(call Silent.Say,RM,$$($1.InstallDir)/$$($1.InstallName))
+	$$(Silent.Command)rm -f $$(DESTDIR)$$($1.InstallDir)/$$($1.InstallName)
 
 $$(eval $$(call ZMK.Expand,Directory,$$($1.InstallDir)))
 $$(DESTDIR)$$($1.InstallDir)/$$($1.InstallName): $1 | $$(DESTDIR)$$($1.InstallDir)
-	$$(strip install -m $$($1.InstallMode) $$^ $$@)
+	$$(call Silent.Say,INSTALL,$$@)
+	$$(Silent.Command)$$(strip install -m $$($1.InstallMode) $$^ $$@)
 endif # noinst
 endef

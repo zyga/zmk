@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
+$(eval $(call ZMK.Import,Silent))
+
 Directory.debug ?= $(findstring directory,$(DEBUG))
 
 # List of directories that need to be created and have corresponding rules.
@@ -29,7 +31,8 @@ ifeq ($(origin DESTDIR),undefined)
 DESTDIR ?=
 else
 $(DESTDIR):
-	mkdir -p $@
+	$(call Silent.Say,MKDIR,$@)
+	$(Silent.Command)mkdir -p $@
 # Warn if DESTDIR is defined in a makefile. This is probably a mistake.
 ifeq ($(origin DESTDIR),file)
 $(warning DESTDIR should be set only through environment variable, not in a makefile)
@@ -58,11 +61,13 @@ Directory.known += $$($1.cleaned)
 ifeq (/,$$(patsubst /%,/,$$($1.cleaned)))
 # Absolute directories respect DESTDIR
 $$(DESTDIR)$$($1.cleaned): | $$(DESTDIR)$$($1.parentDir)
-	install -d $$@
+	$$(call Silent.Say,MKDIR,$$@)
+	$$(Silent.Command)install -d $$@
 else
 # Relative directories do not observe DESTDIR
 $$($1.cleaned): | $$($1.parentDir)
-	install -d $$@
+	$$(call Silent.Say,MKDIR,$$@)
+	$$(Silent.Command)install -d $$@
 endif # !absolute
 endif # !known
 endif # !.

@@ -1,0 +1,66 @@
+.Dd October 21, 2020
+.Os zmk @VERSION@
+.Dt zmk.Silent 5 PRM
+.Sh NAME
+.Nm Silent
+.Nd module for supporting silent rules
+.Sh SYNOPSIS
+.Bd -literal
+include z.mk
+$(eval $(call ZMK.Import,Silent))
+.Ed
+.Sh DESCRIPTION
+The
+.Nm Silent
+module, once
+.Em imported ,
+provides functions and variables for supporting
+.Em silent rules .
+Silent rules are a configuration option, trading precision of the exact
+commands used by the build system, for better visibility of warnings and other
+output. When enabled, actual commands executed by Make are hidden and a
+symbolic representation replaced with a symbolic representation devoid of
+details.
+.Pp
+Silent rules are usually a configuration option of a specific build workspace.
+To enable, execute the
+.Em configure
+script with the option
+.Em --enable-silent-rules .
+.Sh TARGETS
+This module does not provide any targets.
+.Sh VARIABLES
+This module provides the following variables.
+.Ss Silent.Active
+The global silent mode toggle. Any non-empty value enables silent rules.
+This is automatically configured by the
+.Nm Configure
+module.
+.Ss Silent.Command
+Expands to
+.Em @
+when silent rules are active. Can be placed in front of commands of a make rule
+to cause make not to echo the command itself. It should be paired with
+.Nm Silent.Say
+for the complete experience.
+.Ss Silent.Say
+Function expanding to a shell command printing the 1st and 2nd argument.
+The first argument should be the symbolic name of the tool, such as CC
+or LD. The second argument should be the resulting file, i.e. $@.
+.Sh EXAMPLES
+A hypothetical rule for compiling .foo files to .fooobj files, supporting silent
+rules, might look like this.
+.Bd -literal -offset indent
+include z.mk
+$(eval $(call ZMK.Import,Silent))
+
+%.fooobj: %.foo
+    $(eval $(call Silent.Say,FOOCC,$@))
+    $(Silent.Command)foocc -c $^ -o $@
+.Ed
+.Sh HISTORY
+The
+.Nm
+module first appeared in zmk 0.4
+.Sh AUTHORS
+.An "Zygmunt Krynicki" Aq Mt me@zygoon.pl

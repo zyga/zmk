@@ -14,8 +14,11 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
+$(eval $(call ZMK.Import,Silent))
+
 %.asc: %
-		gpg --detach-sign --armor $<
+	$(call Silent.Say,GPG-SIGN,$@)
+	$(Silent.Command)gpg --detach-sign --armor $<
 
 # Allow preventing ZMK from ever being bundled.
 ZMK.DoNotBundle ?= $(if $(value ZMK_DO_NOT_BUNDLE),yes)

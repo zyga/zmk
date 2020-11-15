@@ -14,14 +14,20 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
+$(eval $(call ZMK.Import,Silent))
+
 Coverity.Sources ?= $(error define Coverity.Sources - the list of source files to analyze with Coverity)
 
 clean::
-	rm -rf cov-int
-	rm -f $(NAME)-$(VERSION)-coverity.tar.gz
+	$(call Silent.Say,RM,cov-int)
+	$(Silent.Command)rm -rf cov-int
+	$(call Silent.Say,RM,$(NAME)-$(VERSION)-coverity.tar.gz)
+	$(Silent.Command)rm -f $(NAME)-$(VERSION)-coverity.tar.gz
 
 cov-int: $(Coverity.Sources) $(MAKEFILE_LIST)
-	cov-build --dir $@ $(MAKE)
+	$(call Silent.Say,COV-BUILD,$@)
+	$(Silent.Command)cov-build --dir $@ $(MAKE)
 
 $(NAME)-$(VERSION)-coverity.tar.gz: cov-int
-	tar zcf $@ $<
+	$(call Silent.Say,TAR,$@)
+	$(Silent.Command)tar zcf $@ $<

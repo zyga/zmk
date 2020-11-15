@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
+$(eval $(call ZMK.Import,Silent))
 
 # Symbolic link. Gets installed to the desired location. The location can be
 # set using the .InstallDir instance variable. The special value of noinst
@@ -30,7 +31,8 @@ $1.sourceDir = $$(patsubst %/,%,$$(dir $1))
 $$(eval $$(call ZMK.Expand,Directory,$$($1.sourceDir)))
 # Create the symbolic link in the build directory.
 $1: | $$($1.sourceDir)
-	$$(strip ln -s $$($1.SymlinkTarget) $$@)
+	$$(call Silent.Say,SYMLINK,$$@)
+	$$(Silent.Command)$$(strip ln -s $$($1.SymlinkTarget) $$@)
 # React to "all" and "clean" targets.
 $$(eval $$(call ZMK.Expand,AllClean,$1))
 
@@ -42,11 +44,13 @@ $1.targetDir = $$(patsubst %/,%,$$(dir $$($1.InstallDir)/$1))
 $$(eval $$(call ZMK.Expand,Directory,$$($1.targetDir)))
 # Create the symbolic link in the install directory.
 $$(DESTDIR)$$($1.targetDir)/$$($1.InstallName):| $$(DESTDIR)$$($1.targetDir)
-	$$(strip ln -s $$($1.SymlinkTarget) $$@)
+	$$(call Silent.Say,SYMLINK,$$@)
+	$$(Silent.Command)$$(strip ln -s $$($1.SymlinkTarget) $$@)
 # React to "install" and "uninstall" targets.
 install:: $$(DESTDIR)$$($1.targetDir)/$$($1.InstallName)
 uninstall::
-	rm -f $$(DESTDIR)$$($1.targetDir)/$$($1.InstallName)
+	$$(call Silent.Say,RM,$$($1.targetDir)/$$($1.InstallName))
+	$$(Silent.Command)rm -f $$(DESTDIR)$$($1.targetDir)/$$($1.InstallName)
 else # noinst
 $1.targetDir = noinst
 endif # !noinst
