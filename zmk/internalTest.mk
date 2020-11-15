@@ -40,6 +40,10 @@ export PATH := $(ZMK.test.Path)/tests/bin:$(PATH)
 # Make overrides can be used in order to test specific behavior
 ZMK.makeOverrides ?=
 
+# Indicate that we are testing ZMK.
+# In specific cases, we may want to know this.
+ZMK.makeOverrides += ZMK.testing=yes
+
 # Make target can be customized for each log file.
 # For default logic, see the rule below.
 ZMK.makeTarget ?=
@@ -52,6 +56,8 @@ ZMK.makeTarget ?=
 # Tests warn about undefined variables
 %.log: MAKEFLAGS=
 %.log: Test.mk Makefile $(ZMK.test.Path)/z.mk $(wildcard $(ZMK.test.Path)/zmk/*.mk)
+	@printf '\n### Log file %s ###\n\n' "$@"
+	# Log creation: run make with appropriate options for the test case
 	$(strip LANG=C $(MAKE) -Bn $(ZMK.makeOverrides) \
 		-I $(ZMK.test.Path) \
 		ZMK.SrcDir=$(ZMK.test.SrcDir) \
@@ -60,9 +66,9 @@ ZMK.makeTarget ?=
 		--dry-run \
 		-f $(ZMK.test.SrcDir)/Makefile \
 		$(or $(ZMK.makeTarget),$(firstword $(subst -, ,$*))) >$@ 2>&1 || true)
-	# Detect references to undefined variables
+	# Log analysis: detect references to undefined variables
 	if grep -F 'warning: undefined variable' $@; then exit 1; fi
-	# Detect attempted usage of missing programs
+	# Log analysis: detect attempted usage of missing programs
 	if grep -F 'Command not found' $@; then exit 1; fi
 
 $(CURDIR)/configure configure: $(ZMK.test.Path)/zmk/internalTest.mk

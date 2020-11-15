@@ -1,7 +1,8 @@
 {
     "cSpell.enableFiletypes": [
         "makefile",
-        "shellscript"
+        "shellscript",
+        "troff"
     ],
     "cSpell.words": [
         "CURDIR",
@@ -16,11 +17,13 @@
         "automake",
         "autotools",
         "bindir",
+        "ccld",
         "cflags",
         "chmod",
         "coverity",
         "cppflags",
         "cxxflags",
+        "cxxld",
         "datadir",
         "datarootdir",
         "destdir",
@@ -37,6 +40,8 @@
         "fcoverage",
         "findstring",
         "firstword",
+        "foocc",
+        "fooobj",
         "forkstat",
         "fpic",
         "fprofile",
@@ -79,6 +84,7 @@
         "notdir",
         "objc",
         "objcflags",
+        "objcld",
         "openbsd",
         "owcc",
         "patsubst",
