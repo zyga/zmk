@@ -71,7 +71,7 @@ $(ZMK.releaseArchive).Files += $(addprefix tests/ManPage/,Makefile Test.mk foo.1
 $(ZMK.releaseArchive).Files += $(addprefix tests/OS/,Makefile Test.mk)
 $(ZMK.releaseArchive).Files += $(addprefix tests/Program/,Makefile Test.mk foo.c bar.cpp froz.m)
 $(ZMK.releaseArchive).Files += $(addprefix tests/Symlink/,Makefile Test.mk)
-$(ZMK.releaseArchive).Files += $(addprefix tests/Tarball.Src/,Makefile Test.mk foo.txt)
+$(ZMK.releaseArchive).Files += $(addprefix tests/Tarball.Src/,Makefile Test.mk foo.txt home/alice/.gnupg/fake-gpg-data home/bob/.gitkeep home/eve/.gnupg/fake-gpg-data)
 $(ZMK.releaseArchive).Files += $(addprefix tests/Toolchain/,Makefile Test.mk)
 $(ZMK.releaseArchive).Files += tests/bin/GREP
 $(eval $(call ZMK.Expand,Tarball.Src,$(ZMK.releaseArchive)))

@@ -16,6 +16,15 @@
 
 $(eval $(call ZMK.Import,Silent))
 
+# XXX: those belong in other places but that's fine for now.
+zmk.haveGPG?=$(if $(shell sh -c "command -v gpg"),yes)
+zmk.haveGPGKeys?=$(if $(wildcard $(HOME)/.gnupg/*),yes)
+zmk.isCI?=$(if $(value CI),yes)
+zmk.isGitSnapshot?=$(if $(filter GitVersion,$(ZMK.ImportedModules)),$(if $(GitVersion.Active),yes))
+
+# XXX: This belongs in z.mk.
+zmk.not=$(if $1,,yes)
+
 %.asc: %
 	$(call Silent.Say,GPG-SIGN,$@)
 	$(Silent.Command)gpg --detach-sign --armor $<
@@ -34,9 +43,9 @@ ifneq (,$$(filter Configure,$$(ZMK.ImportedModules)))
 $1.Files += $(CURDIR)/configure
 endif
 endif
-# Sign archives that are not git snapshots and if CI is unset
-$1.Sign ?= $$(if $$(or $$(value CI),$$(and $$(filter GitVersion,$$(ZMK.ImportedModules)),$$(GitVersion.Active))),,yes)
 
+# If we have a GPG keys, CI is not set and the tarball is not a snapshot, sign it.
+$1.Sign ?= $$(and $$(zmk.haveGPG),$$(zmk.haveGPGKeys),$$(call zmk.not,$$(zmk.isCI)),$$(call zmk.not,$$(zmk.isCI)))
 
 # If the GitVersion module is imported then attempt to insert version
 # information into the release archive. There are two possible cases.
