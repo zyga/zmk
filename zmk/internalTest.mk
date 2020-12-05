@@ -69,7 +69,7 @@ ZMK.makeTarget ?=
 	# Log analysis: detect references to undefined variables
 	if grep -F 'warning: undefined variable' $@; then exit 1; fi
 	# Log analysis: detect attempted usage of missing programs
-	if grep -F 'Command not found' $@; then exit 1; fi
+	if grep -i 'command not found' $@; then exit 1; fi
 
 $(CURDIR)/configure configure: $(ZMK.test.Path)/zmk/internalTest.mk
 
