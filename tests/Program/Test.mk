@@ -105,6 +105,7 @@ install-program-transform-name: install-program-transform-name.log
 	GREP -qFx 'cc -o foo foo-foo.o' <$<
 	GREP -qFx 'install -m 0755 foo /usr/local/bin/potato' <$<
 
+t:: install-exe
 install-exe.log: ZMK.makeOverrides += exe=.exe
 install-exe: install-exe.log
 	# C/C++ programs respect the .exe suffix (during installation)

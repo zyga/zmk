@@ -19,6 +19,8 @@ Changes in the next release:
   correctly when invoked with -B switch (aka --always-make), by force-creating
   symbolic links that already exist.
 
+* Program template no longer forgets to add the .exe suffix to installed executables.
+
 * The ObjectGroup template used by Program, Program.Test, Library.A, Library.So
   and Library.DyLib is now performing rudimentary detection of a missing compiler.
 
