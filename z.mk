@@ -50,22 +50,22 @@ ZMK.modules = \
 	GitVersion \
 	Header \
 	InstallUninstall \
-	internalTest \
 	Library.A \
 	Library.DyLib \
 	Library.So \
 	ManPage \
-	ObjectGroup \
 	OS \
+	ObjectGroup \
+	PVS \
 	Program \
 	Program.Test \
-	PVS \
 	Script \
 	Silent \
 	Symlink \
 	Tarball \
 	Tarball.Src \
 	Toolchain \
+	internalTest \
 	toolchain.Clang \
 	toolchain.GCC \
 	toolchain.Tcc \
