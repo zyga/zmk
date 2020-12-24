@@ -103,26 +103,26 @@ endif
 	$$(strip $$(MAKE) all \
 		ZMK.Path=$$(ZMK.distCheckBase)/tree \
 		ZMK.SrcDir=$$(ZMK.distCheckBase)/tree \
-		-f $$(ZMK.distCheckBase)/tree/GNUmakefile \
+		-f $$(ZMK.distCheckBase)/tree/$$(notdir $$(ZMK.srcDirMakefile)) \
 		-C $$(ZMK.distCheckBase)/build)
 	# $1, when out-of-tree, checks out.
 	$$(strip $$(MAKE) check \
 		ZMK.Path=$$(ZMK.distCheckBase)/tree \
 		ZMK.SrcDir=$$(ZMK.distCheckBase)/tree \
-		-f $$(ZMK.distCheckBase)/tree/GNUmakefile \
+		-f $$(ZMK.distCheckBase)/tree/$$(notdir $$(ZMK.srcDirMakefile)) \
 		-C $$(ZMK.distCheckBase)/build)
 	# $1, when out-of-tree, installs via DESTDIR.
 	$$(strip $$(MAKE) install \
 		ZMK.Path=$$(ZMK.distCheckBase)/tree \
 		ZMK.SrcDir=$$(ZMK.distCheckBase)/tree \
-		-f $$(ZMK.distCheckBase)/tree/GNUmakefile \
+		-f $$(ZMK.distCheckBase)/tree/$$(notdir $$(ZMK.srcDirMakefile)) \
 		-C $$(ZMK.distCheckBase)/build \
 		DESTDIR=$$(ZMK.distCheckBase)/installcheck)
 	# $(NAME), when out-of-tree, uninstalls via DESTDIR.
 	$$(strip $$(MAKE) uninstall \
 		ZMK.Path=$$(ZMK.distCheckBase)/tree \
 		ZMK.SrcDir=$$(ZMK.distCheckBase)/tree \
-		-f $$(ZMK.distCheckBase)/tree/GNUmakefile \
+		-f $$(ZMK.distCheckBase)/tree/$$(notdir $$(ZMK.srcDirMakefile)) \
 		-C $$(ZMK.distCheckBase)/build \
 		DESTDIR=$$(ZMK.distCheckBase)/installcheck)
 	# Uninstalled $1 does not leave files or symbolic links.
@@ -132,7 +132,7 @@ endif
 	$$(strip $$(MAKE) dist \
 		ZMK.Path=$$(ZMK.distCheckBase)/tree \
 		ZMK.SrcDir=$$(ZMK.distCheckBase)/tree \
-		-f $$(ZMK.distCheckBase)/tree/GNUmakefile \
+		-f $$(ZMK.distCheckBase)/tree/$$(notdir $$(ZMK.srcDirMakefile)) \
 		-C $$(ZMK.distCheckBase)/build)
 	# Make the source tree read-write for in-tree checks.
 	chmod -R +w $$(ZMK.distCheckBase)/tree
