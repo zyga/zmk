@@ -19,7 +19,7 @@ all: all.log
 	# Links objects together
 	GREP -qFx 'cc -shared -Wl,-soname=libfoo.so.1 -o libfoo.so.1 libfoo.so.1-foo.o' <$<
 	# And provides the .so alias
-	GREP -qFx 'ln -s libfoo.so.1 libfoo.so' <$<
+	GREP -qFx 'ln -sf libfoo.so.1 libfoo.so' <$<
 install: install.log
 	# Installing shared libraries creates parent directories.
 	GREP -qFx 'install -d /usr' <$<
@@ -28,7 +28,7 @@ install: install.log
 	# Installing shared libraries copies the shared library.
 	GREP -qFx 'install -m 0644 libfoo.so.1 /usr/local/lib/libfoo.so.1' <$<
 	# Installing shared libraries creates the alias.
-	GREP -qFx 'ln -s libfoo.so.1 /usr/local/lib/libfoo.so' <$<
+	GREP -qFx 'ln -sf libfoo.so.1 /usr/local/lib/libfoo.so' <$<
 uninstall: uninstall.log
 	# Uninstalling shared libraries removes the shared library and the alias.
 	GREP -qFx 'rm -f /usr/local/lib/libfoo.so.1' <$<
@@ -47,7 +47,7 @@ all-destdir: all-destdir.log
 	# Links objects together
 	GREP -qFx 'cc -shared -Wl,-soname=libfoo.so.1 -o libfoo.so.1 libfoo.so.1-foo.o' <$<
 	# And provides the .so alias
-	GREP -qFx 'ln -s libfoo.so.1 libfoo.so' <$<
+	GREP -qFx 'ln -sf libfoo.so.1 libfoo.so' <$<
 install-destdir: install-destdir.log
 	# Installing shared libraries creates parent directories.
 	GREP -qFx 'mkdir -p /destdir' <$<
@@ -57,7 +57,7 @@ install-destdir: install-destdir.log
 	# Installing shared libraries copies the shared library.
 	GREP -qFx 'install -m 0644 libfoo.so.1 /destdir/usr/local/lib/libfoo.so.1' <$<
 	# Installing shared libraries creates the alias.
-	GREP -qFx 'ln -s libfoo.so.1 /destdir/usr/local/lib/libfoo.so' <$<
+	GREP -qFx 'ln -sf libfoo.so.1 /destdir/usr/local/lib/libfoo.so' <$<
 uninstall-destdir: uninstall-destdir.log
 	# Uninstalling shared libraries removes the shared library and the alias.
 	GREP -qFx 'rm -f /destdir/usr/local/lib/libfoo.so.1' <$<

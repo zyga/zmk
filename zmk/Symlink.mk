@@ -32,7 +32,7 @@ $$(eval $$(call ZMK.Expand,Directory,$$($1.sourceDir)))
 # Create the symbolic link in the build directory.
 $1: | $$($1.sourceDir)
 	$$(call Silent.Say,SYMLINK,$$@)
-	$$(Silent.Command)$$(strip ln -s $$($1.SymlinkTarget) $$@)
+	$$(Silent.Command)$$(strip ln -sf $$($1.SymlinkTarget) $$@)
 # React to "all" and "clean" targets.
 $$(eval $$(call ZMK.Expand,AllClean,$1))
 
@@ -45,7 +45,7 @@ $$(eval $$(call ZMK.Expand,Directory,$$($1.targetDir)))
 # Create the symbolic link in the install directory.
 $$(DESTDIR)$$($1.targetDir)/$$($1.InstallName):| $$(DESTDIR)$$($1.targetDir)
 	$$(call Silent.Say,SYMLINK,$$@)
-	$$(Silent.Command)$$(strip ln -s $$($1.SymlinkTarget) $$@)
+	$$(Silent.Command)$$(strip ln -sf $$($1.SymlinkTarget) $$@)
 # React to "install" and "uninstall" targets.
 install:: $$(DESTDIR)$$($1.targetDir)/$$($1.InstallName)
 uninstall::

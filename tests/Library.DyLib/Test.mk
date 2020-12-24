@@ -19,7 +19,7 @@ all: all.log
 	# Links objects together
 	GREP -qFx 'cc -dynamiclib -compatibility_version 1.0 -current_version 1.0 -o libfoo.1.dylib libfoo.1.dylib-foo.o' <$<
 	# And provides the .so alias
-	GREP -qFx 'ln -s libfoo.1.dylib libfoo.dylib' <$<
+	GREP -qFx 'ln -sf libfoo.1.dylib libfoo.dylib' <$<
 install: install.log
 	# Installing dynamic libraries creates parent directories.
 	GREP -qFx 'install -d /usr' <$<
@@ -28,7 +28,7 @@ install: install.log
 	# Installing dynamic libraries copies the dynamic library.
 	GREP -qFx 'install -m 0644 libfoo.1.dylib /usr/local/lib/libfoo.1.dylib' <$<
 	# Installing dynamic libraries creates the alias.
-	GREP -qFx 'ln -s libfoo.1.dylib /usr/local/lib/libfoo.dylib' <$<
+	GREP -qFx 'ln -sf libfoo.1.dylib /usr/local/lib/libfoo.dylib' <$<
 uninstall: uninstall.log
 	# Uninstalling dynamic libraries removes the dynamic library and the alias.
 	GREP -qFx 'rm -f /usr/local/lib/libfoo.1.dylib' <$<
@@ -47,7 +47,7 @@ all-destdir: all-destdir.log
 	# Links objects together
 	GREP -qFx 'cc -dynamiclib -compatibility_version 1.0 -current_version 1.0 -o libfoo.1.dylib libfoo.1.dylib-foo.o' <$<
 	# And provides the .so alias
-	GREP -qFx 'ln -s libfoo.1.dylib libfoo.dylib' <$<
+	GREP -qFx 'ln -sf libfoo.1.dylib libfoo.dylib' <$<
 install-destdir: install-destdir.log
 	# Installing dynamic libraries creates parent directories.
 	GREP -qFx 'mkdir -p /destdir' <$<
@@ -57,7 +57,7 @@ install-destdir: install-destdir.log
 	# Installing dynamic libraries copies the dynamic library.
 	GREP -qFx 'install -m 0644 libfoo.1.dylib /destdir/usr/local/lib/libfoo.1.dylib' <$<
 	# Installing dynamic libraries creates the alias.
-	GREP -qFx 'ln -s libfoo.1.dylib /destdir/usr/local/lib/libfoo.dylib' <$<
+	GREP -qFx 'ln -sf libfoo.1.dylib /destdir/usr/local/lib/libfoo.dylib' <$<
 uninstall-destdir: uninstall-destdir.log
 	# Uninstalling dynamic libraries removes the dynamic library and the alias.
 	GREP -qFx 'rm -f /destdir/usr/local/lib/libfoo.1.dylib' <$<

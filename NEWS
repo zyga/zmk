@@ -15,6 +15,10 @@ Backwards incompatible changes in the next release:
 
 Changes in the next release:
 
+* The Symlink template used by Library.So and Library.DyLib will now work
+  correctly when invoked with -B switch (aka --always-make), by force-creating
+  symbolic links that already exist.
+
 * The ObjectGroup template used by Program, Program.Test, Library.A, Library.So
   and Library.DyLib is now performing rudimentary detection of a missing compiler.
 
