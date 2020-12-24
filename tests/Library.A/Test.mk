@@ -36,9 +36,9 @@ clean: clean.log
 	# Cleaning removes the library
 	GREP -qFx 'rm -f libfoo.a' <$<
 	# Cleaning removes the object files belonging to the library
-	GREP -qFx 'rm -f libfoo.a-foo.o' <$<
+	GREP -qFx 'rm -f ./libfoo.a-foo.o' <$<
 	# Cleaning removes the dependency files
-	GREP -qFx 'rm -f libfoo.a-foo.d' <$<
+	GREP -qFx 'rm -f ./libfoo.a-foo.d' <$<
 
 all-silent-rules: all-silent-rules.log
 	# Default target compiles source to object files belonging to the library.
@@ -65,9 +65,9 @@ clean-silent-rules: clean-silent-rules.log
 	# Cleaning removes the library
 	GREP -qFx '#rm -f libfoo.a' <$<
 	# Cleaning removes the object files belonging to the library
-	GREP -qFx '#rm -f libfoo.a-foo.o' <$<
+	GREP -qFx '#rm -f ./libfoo.a-foo.o' <$<
 	# Cleaning removes the dependency files
-	GREP -qFx '#rm -f libfoo.a-foo.d' <$<
+	GREP -qFx '#rm -f ./libfoo.a-foo.d' <$<
 
 all-destdir: all-destdir.log
 	# Default target compiles source to object files belonging to the library.
@@ -90,6 +90,6 @@ clean-destdir: clean-destdir.log
 	# Cleaning removes the library
 	GREP -qFx 'rm -f libfoo.a' <$<
 	# Cleaning removes the object files belonging to the library
-	GREP -qFx 'rm -f libfoo.a-foo.o' <$<
+	GREP -qFx 'rm -f ./libfoo.a-foo.o' <$<
 	# Cleaning removes the dependency files
-	GREP -qFx 'rm -f libfoo.a-foo.d' <$<
+	GREP -qFx 'rm -f ./libfoo.a-foo.d' <$<

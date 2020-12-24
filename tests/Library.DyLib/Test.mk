@@ -38,8 +38,8 @@ clean: clean.log
 	GREP -qFx 'rm -f libfoo.1.dylib' <$<
 	GREP -qFx 'rm -f libfoo.dylib' <$<
 	# Cleaning dynamic libraries removes the object files and dependency files.
-	GREP -qFx 'rm -f libfoo.1.dylib-foo.o' <$<
-	GREP -qFx 'rm -f libfoo.1.dylib-foo.d' <$<
+	GREP -qFx 'rm -f ./libfoo.1.dylib-foo.o' <$<
+	GREP -qFx 'rm -f ./libfoo.1.dylib-foo.d' <$<
 
 all-destdir: all-destdir.log
 	# Building a dynamic library compiles objects
@@ -67,5 +67,5 @@ clean-destdir: clean-destdir.log
 	GREP -qFx 'rm -f libfoo.1.dylib' <$<
 	GREP -qFx 'rm -f libfoo.dylib' <$<
 	# Cleaning dynamic libraries removes the object files and dependency files.
-	GREP -qFx 'rm -f libfoo.1.dylib-foo.o' <$<
-	GREP -qFx 'rm -f libfoo.1.dylib-foo.d' <$<
+	GREP -qFx 'rm -f ./libfoo.1.dylib-foo.o' <$<
+	GREP -qFx 'rm -f ./libfoo.1.dylib-foo.d' <$<

@@ -20,5 +20,5 @@ uninstall: uninstall.log
 	GREP -qFx 'rm -f /usr/local/bin/hello' <$<
 clean: clean.log
 	GREP -qFx 'rm -f hello' <$<
-	GREP -qFx 'rm -f hello-hello.o'  <$<
+	GREP -qFx 'rm -f ./hello-hello.o'  <$<
 

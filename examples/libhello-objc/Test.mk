@@ -29,7 +29,7 @@ uninstall-other: uninstall-other.log
 	GREP -qFx 'rm -f /usr/local/lib/libhello.a' <$<
 clean-other: clean-other.log
 	GREP -qFx 'rm -f libhello.a' <$<
-	GREP -qFx 'rm -f libhello.a-hello.o' <$<
+	GREP -qFx 'rm -f ./libhello.a-hello.o' <$<
 
 all-linux: all-linux.log
 	GREP -qFx 'cc -MMD -c -o libhello.a-hello.o $(ZMK.test.OutOfTreeSourcePath)hello.m' <$<
@@ -51,8 +51,8 @@ uninstall-linux: uninstall-linux.log
 	GREP -qFx 'rm -f /usr/local/lib/libhello.so' <$<
 clean-linux: clean-linux.log
 	GREP -qFx 'rm -f libhello.a' <$<
-	GREP -qFx 'rm -f libhello.a-hello.o' <$<
-	GREP -qFx 'rm -f libhello.so.1-hello.o' <$<
+	GREP -qFx 'rm -f ./libhello.a-hello.o' <$<
+	GREP -qFx 'rm -f ./libhello.so.1-hello.o' <$<
 	GREP -qFx 'rm -f libhello.so.1' <$<
 	GREP -qFx 'rm -f libhello.so' <$<
 
@@ -77,7 +77,7 @@ uninstall-macos: uninstall-macos.log
 	GREP -qFx 'rm -f /usr/local/lib/libhello.dylib' <$<
 clean-macos: clean-macos.log
 	GREP -qFx 'rm -f libhello.a' <$<
-	GREP -qFx 'rm -f libhello.a-hello.o' <$<
-	GREP -qFx 'rm -f libhello.1.dylib-hello.o' <$<
+	GREP -qFx 'rm -f ./libhello.a-hello.o' <$<
+	GREP -qFx 'rm -f ./libhello.1.dylib-hello.o' <$<
 	GREP -qFx 'rm -f libhello.1.dylib' <$<
 	GREP -qFx 'rm -f libhello.dylib' <$<

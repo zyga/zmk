@@ -22,6 +22,14 @@ Changes in the next release:
 * Program template no longer forgets to add the .exe suffix to installed executables.
 
 * The ObjectGroup template used by Program, Program.Test, Library.A, Library.So
+  and Library.Dylib now supports sub-directories in source file names. Object files
+  created by the object group are now created in directories corresponding to the source
+  files.
+
+* The ObjectGroup template now supports additional C++ extensions: .cxx and .cc.
+  This is in addition to the .cpp extension that was supported before.
+
+* The ObjectGroup template used by Program, Program.Test, Library.A, Library.So
   and Library.DyLib is now performing rudimentary detection of a missing compiler.
 
 * The GitVersion module now provides GitVersion.Origin attribute
