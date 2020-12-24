@@ -67,8 +67,10 @@ $$(eval $$(call ZMK.Expand,InstallUninstall,$1))
 $$(eval $$(call ZMK.Expand,AllClean,$1))
 
 # Create symlink (alias) to the versioned library.
+ifneq (,$$(patsubst %.so,,$1))
 $1.alias = $$(basename $1)
 $$($1.alias).InstallDir ?= $$($1.InstallDir)
 $$($1.alias).SymlinkTarget = $1
 $$(eval $$(call ZMK.Expand,Symlink,$$($1.alias)))
+endif
 endef
