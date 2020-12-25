@@ -102,3 +102,7 @@ else
 		-C $(ZMK.testDir) \
 		-f Test.mk)
 endif
+
+hack:
+	sudo ln -s $(abspath $(ZMK.OutOfTreeSourcePath)z.mk) $(includedir)/z.mk
+	sudo ln -s $(abspath $(ZMK.OutOfTreeSourcePath)zmk) $(includedir)/zmk
