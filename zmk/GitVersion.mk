@@ -53,7 +53,7 @@ endif # !version from version file
 # for git information anymore, as it may no longer be the "same" git history.
 ifneq (,$(GitVersion.versionFromGit))
 $(ZMK.SrcDir)/.version-from-git: $(ZMK.SrcDir)/.git
-	$(Silent.Say,GIT-VERSION,$@)
+	$(call Silent.Say,GIT-VERSION,$@)
 	$(Silent.Command)echo $(GitVersion.versionFromGit) >$@
 endif
 

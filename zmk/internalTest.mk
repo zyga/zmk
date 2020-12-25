@@ -74,5 +74,5 @@ ZMK.makeTarget ?=
 $(CURDIR)/configure configure: $(ZMK.test.Path)/zmk/internalTest.mk
 
 c::
-	$(Silent.Say,RM,*.log)
+	$(call Silent.Say,RM,*.log)
 	$(Silent.Command)rm -f *.log
