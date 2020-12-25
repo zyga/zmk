@@ -9,7 +9,7 @@ t:: all install uninstall clean \
 $(eval $(ZMK.isolateHostToolchain))
 # Test logs will contain debugging messages
 %.log: ZMK.makeOverrides += DEBUG=library.a
-# Some logs have slent rules enabled
+# Some logs have silent rules enabled
 %-silent-rules.log: ZMK.makeOverrides += Silent.Active=yes
 # Some logs have DESTDIR set to /destdir
 %-destdir.log: ZMK.makeOverrides += DESTDIR=/destdir
