@@ -86,7 +86,7 @@ check-unit: $(addprefix check-,$(tests))
 
 check-%: ZMK.testDir=$(patsubst examples/libhello/%,examples/libhello-%,$(patsubst examples/hello/%,examples/hello-%,$(subst -,/,$*)))
 $(addprefix check-,$(tests)): check-%:
-	$(call Silent.Say,MAKE-TEST,$(TESTDIR))
+	$(call Silent.Say,MAKE-TEST,$(ZMK.testDir))
 ifeq ($(ZMK.IsOutOfTreeBuild),yes)
 	$(Silent.Command)mkdir -p $(ZMK.testDir)
 	$(Silent.Command)$(strip $(MAKE) \
