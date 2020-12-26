@@ -81,7 +81,7 @@ distcheck-$1: ZMK.absSrcdir ?= $$(abspath $$(ZMK.SrcDir))
 distcheck-$1: ZMK.srcDirMakefile ?= $$(or $$(wildcard $$(abspath $$(ZMK.SrcDir)/GNUmakefile)),$$(wildcard $$(abspath $$(ZMK.SrcDir)/Makefile)))
 distcheck-$1: | $$(TMPDIR)
 	# Prepare scratch space for distcheck.
-	-test -d $$(ZMK.distCheckBase) && chmod -R +w $$(ZMK.distCheckBase)
+	if [ -d $$(ZMK.distCheckBase) ]; then chmod -R +w $$(ZMK.distCheckBase); fi
 	rm -rf $$(ZMK.distCheckBase)
 	mkdir -p $$(ZMK.distCheckBase)/tree
 	mkdir -p $$(ZMK.distCheckBase)/build
