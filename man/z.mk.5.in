@@ -219,6 +219,12 @@ find the source code without modification.
 .Sh INTERNAL VARIABLES
 .Ss ZMK.z.mk
 Path of the entry point of the zmk library.
+.Ss ZMK.comma
+Variable expanding to a comma.
+.Ss ZMK.newline
+Variable expanding to a newline.
+.Ss ZMK.hash
+Variable expanding to a hash-or-pound symbol.
 .Sh HISTORY
 The primary interface of zmk was first documented zmk 0.4
 .Sh AUTHORS

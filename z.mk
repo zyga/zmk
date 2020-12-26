@@ -119,13 +119,18 @@ check:: static-check
 # Default goal is to build everything, regardless of declaration order
 .DEFAULT_GOAL = all
 
-# Display diagnostic messages when DEBUG has specific items.
+# Some weird Make quirks. Depending on MAKE version, it's hard to use literal
+# hash but it's possible to expand ZMK.hash to it reliably.
+ZMK.hash=\#
+# Comma is also hard to use directly.
 ZMK.comma=,
+# Newline is just hard to define.
 define ZMK.newline
 
 
 endef
 DEBUG ?=
+# Display diagnostic messages when DEBUG has specific items.
 DEBUG := $(subst $(ZMK.comma), ,$(DEBUG))
 
 # Define the module and template system.
