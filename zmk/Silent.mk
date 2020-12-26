@@ -24,6 +24,6 @@ else
 # testing of silent rules, when zmk is being tested pretend all silent rules
 # are commented-out shell commands. This can be readily verified by simple grep
 # patterns.
-Silent.Command=$(if $(Silent.Active),\#)
+Silent.Command=$(if $(Silent.Active),$(ZMK.hash))
 endif
 Silent.Say=$(if $(Silent.Active),@printf "  %-16s %s\n" "$1" "$2")
