@@ -83,7 +83,6 @@ Not all modules contain literal make rules. As another example, the
 module knows how to detect and interrogate the compiler toolchain, offering
 information useful for other modules. For a full listing of modules built into
 zmk see MODULES below.
-
 .Sh MODULES
 ZMK provides the following importable modules.
 .Ss AllClean
