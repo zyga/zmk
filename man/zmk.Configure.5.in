@@ -42,7 +42,7 @@ target removes the configuration file
 .Nm GNUmakefile.$(NAME).configure.mk .
 In
 .Em maintainer mode ,
-the cofiguration file is also removed.
+the configuration file is also removed.
 .Sh VARIABLES
 This module provides the following variables.
 .Ss Configure.HostArchTriplet
@@ -200,9 +200,9 @@ to embed the information about build-time configuration into the application
 or library binary.
 .Sh FILES
 .Ss configure
-Automatically generated POSIX shell script mimicking the appearence and
+Automatically generated POSIX shell script mimicking the appearance and
 behavior of a similar file provided by GNU autoconf. This script should not be
-commited to version control systems. This script is added to release archives,
+committed to version control systems. This script is added to release archives,
 as it allows one to compile a project from source without additionally
 depending on zmk libraries.
 .Ss GNUmakefile.$(NAME).configure.mk
