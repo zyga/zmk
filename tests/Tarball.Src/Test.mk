@@ -61,12 +61,12 @@ dist-as-bob: dist-as-bob.log
 	# Bob does not have a gpg key, so his releases are not signed
 	! GREP -qFx 'gpg --detach-sign --armor test_1.tar.gz' <$<
 
-dist-as-alice.log: ZMK.makeOverrides += HOME=$(ZMK.test.SrcDir)/home/alice zmk.haveGPG=yes
+dist-as-alice.log: ZMK.makeOverrides += HOME=$(ZMK.test.SrcDir)/home/alice zmk.haveGPG=yes zmk.haveGPGKeys=yes
 dist-as-alice: dist-as-alice.log
 	# Alice has a gpg key, so her releases are signed
 	GREP -qFx 'gpg --detach-sign --armor test_1.tar.gz' <$<
 
-dist-as-eve.log: ZMK.makeOverrides += HOME=$(ZMK.test.SrcDir)/home/eve zmk.haveGPG=
+dist-as-eve.log: ZMK.makeOverrides += HOME=$(ZMK.test.SrcDir)/home/eve zmk.haveGPG= zmk.haveGPGKeys=yes
 dist-as-eve: dist-as-eve.log
 	# Eve has a gpg key but lacks gpg itself, so her releases are not signed
 	! GREP -qFx 'gpg --detach-sign --armor test_1.tar.gz' <$<
