@@ -1,4 +1,4 @@
-.Dd Oct 26, 2020
+.Dd Dec 28, 2020
 .Os zmk @VERSION@
 .Dt zmk.Configure.5 PRM
 .Sh NAME
@@ -29,7 +29,7 @@ automatically placed inside the source archive, so that the recipient
 does not need to have a local installation of
 .Em zmk
 to build a project from source.
-.Ss GNUmakefile.$(NAME).configure.mk
+.Ss config.$(NAME).mk
 This target is named after the configuration file created by the
 .Nm configure
 script. The rules are such, that if the configure script is newer than the
@@ -226,5 +226,15 @@ module provides the configure script and configuration persistence only to
 projects which define their
 .Nm
 NAME .
+.Sh BUGS
+Versions prior to 0.4 used a fixed name for the configuration file created by
+running the
+.Em configure
+script, namely
+.Em GNUmakefile.configured.mk .
+This caused issues with make's PATH traversal when searching for include
+candidates that was resolved by using configuration files specific to a given
+project, called
+.Em config.$(NAME).mk .
 .Sh AUTHORS
 .An "Zygmunt Krynicki" Aq Mt me@zygoon.pl

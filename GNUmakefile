@@ -18,7 +18,7 @@ NAME = zmk
 VERSION = 0.3.8  # This needs to match ZMK.Version
 
 ZMK.SrcDir ?= .
--include GNUmakefile.zmk.configure.mk
+-include config.zmk.mk
 ZMK.Path = $(ZMK.SrcDir)
 include $(ZMK.Path)/z.mk
 

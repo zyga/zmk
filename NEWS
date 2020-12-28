@@ -3,12 +3,12 @@ Backwards incompatible changes in the next release:
 * The Configure module introduces a backwards incompatible change in the
   name of the generated configuration file. In older releases the file was
   called GNUmakefile.configure.mk, starting with this release the name is
-  GNUmakefile.$(NAME).configure.mk. NAME is the name of the project, also
-  available as Project.Name . This also restricts the configuration system to
-  projects that define a name. The background of this change is a realization
-  that prior approach caused confusing an buggy behavior, where Make would
-  search the include path, which also contains all of PATH, for *any* file
-  named GNUmakefile.configure.mk and include the first one it found.
+  config.$(NAME).mk. $(NAME) is the name of the project, also available as
+  $(Project.Name). This also restricts the configuration system to projects
+  that define a name. The background of this change is a realization that prior
+  approach caused confusing an buggy behavior, where Make would search the
+  include path, which also contains all of PATH, for *any* file named
+  GNUmakefile.configure.mk and include the first one it found.
 
   Projects using zmk are advised to change their manually included
   configuration file to one that contains their project name.

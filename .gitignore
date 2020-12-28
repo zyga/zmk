@@ -7,7 +7,7 @@ zmk_*.tar.gz.asc
 
 # Generated configure script and settings
 configure
-GNUmakefile.zmk.configure.mk
+config.zmk.mk
 
 # Editor swap files
 *.swp
