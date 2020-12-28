@@ -1,0 +1,36 @@
+#!/usr/bin/make -f
+# This file is a part of zmk test system.
+include zmk/internalTest.mk
+
+t:: build clean
+
+$(eval $(ZMK.isolateHostToolchain))
+# MacOS uses c++, GNU uses g++ by default.
+# Pick one for test consistency.
+%.log: ZMK.makeOverrides += CXX=c++
+# Test depends on source files
+%.log: main.c main.cc main.cpp main.cxx main.m src/main.c
+
+build: build.log
+	# C/C++/ObjC object files can be built.
+	GREP -qFx 'cc -MMD -c -o group1-main.o $(ZMK.test.OutOfTreeSourcePath)main.c' <$<
+	GREP -qFx 'c++ -MMD -c -o group2-main.o $(ZMK.test.OutOfTreeSourcePath)main.cpp' <$<
+	GREP -qFx 'cc -MMD -c -o group3-main.o $(ZMK.test.OutOfTreeSourcePath)main.m' <$<
+	GREP -qFx 'c++ -MMD -c -o group4-main.o $(ZMK.test.OutOfTreeSourcePath)main.cxx' <$<
+	GREP -qFx 'c++ -MMD -c -o group5-main.o $(ZMK.test.OutOfTreeSourcePath)main.cc' <$<
+	GREP -qFx 'cc -MMD -c -o src/group6-main.o $(ZMK.test.OutOfTreeSourcePath)src/main.c' <$<
+
+clean: clean.log
+	# C/C++/ObjC object files can be cleaned.
+	GREP -qFx 'rm -f ./group1-main.o'  <$<
+	GREP -qFx 'rm -f ./group1-main.d'  <$<
+	GREP -qFx 'rm -f ./group2-main.o'  <$<
+	GREP -qFx 'rm -f ./group2-main.d'  <$<
+	GREP -qFx 'rm -f ./group3-main.o'  <$<
+	GREP -qFx 'rm -f ./group3-main.d'  <$<
+	GREP -qFx 'rm -f ./group4-main.o'  <$<
+	GREP -qFx 'rm -f ./group4-main.d'  <$<
+	GREP -qFx 'rm -f ./group5-main.o'  <$<
+	GREP -qFx 'rm -f ./group5-main.d'  <$<
+	GREP -qFx 'rm -f src/group6-main.o'  <$<
+	GREP -qFx 'rm -f src/group6-main.d'  <$<

@@ -19,7 +19,7 @@ define ZMK.isolateHostToolchain
 endef
 
 # Find the path of the zmk installation
-ZMK.test.Path := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/..)
+ZMK.test.Path := $(or $(wildcard /usr/local/share/zmk),$(abspath $(dir $(lastword $(MAKEFILE_LIST)))/..))
 
 # Location of the source tree, for out-of-tree testing.
 ZMK.test.SrcDir ?= .

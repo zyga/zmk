@@ -38,8 +38,8 @@ clean: clean.log
 	GREP -qFx 'rm -f libfoo.so.1' <$<
 	GREP -qFx 'rm -f libfoo.so' <$<
 	# Cleaning shared libraries removes the object files and dependency files.
-	GREP -qFx 'rm -f libfoo.so.1-foo.o' <$<
-	GREP -qFx 'rm -f libfoo.so.1-foo.d' <$<
+	GREP -qFx 'rm -f ./libfoo.so.1-foo.o' <$<
+	GREP -qFx 'rm -f ./libfoo.so.1-foo.d' <$<
 
 all-destdir: all-destdir.log
 	# Building a shared library compiles objects
@@ -67,5 +67,5 @@ clean-destdir: clean-destdir.log
 	GREP -qFx 'rm -f libfoo.so.1' <$<
 	GREP -qFx 'rm -f libfoo.so' <$<
 	# Cleaning shared libraries removes the object files and dependency files.
-	GREP -qFx 'rm -f libfoo.so.1-foo.o' <$<
-	GREP -qFx 'rm -f libfoo.so.1-foo.d' <$<
+	GREP -qFx 'rm -f ./libfoo.so.1-foo.o' <$<
+	GREP -qFx 'rm -f ./libfoo.so.1-foo.d' <$<
