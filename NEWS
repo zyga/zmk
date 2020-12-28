@@ -1,4 +1,4 @@
-Backwards incompatible changes in the next release:
+Backwards incompatible changes in 0.4:
 
 * The Configure module introduces a backwards incompatible change in the
   name of the generated configuration file. In older releases the file was
@@ -13,7 +13,7 @@ Backwards incompatible changes in the next release:
   Projects using zmk are advised to change their manually included
   configuration file to one that contains their project name.
 
-Changes in the next release:
+Changes in 0.4:
 
 * The Symlink template used by Library.So and Library.DyLib will now work
   correctly when invoked with -B switch (aka --always-make), by force-creating
