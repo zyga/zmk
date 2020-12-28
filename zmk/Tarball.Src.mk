@@ -18,7 +18,7 @@ $(eval $(call ZMK.Import,Silent))
 
 # XXX: those belong in other places but that's fine for now.
 zmk.haveGPG?=$(if $(shell sh -c "command -v gpg"),yes)
-zmk.haveGPGKeys?=$(if $(and $(zmk.haveGPG),$(shell test -n `gpg --list-secret-keys`)),yes)
+zmk.haveGPGKeys?=$(if $(and $(zmk.haveGPG),$(shell test -n "`gpg --list-secret-keys`")),yes)
 zmk.isCI?=$(if $(value CI),yes)
 zmk.isGitSnapshot?=$(if $(filter GitVersion,$(ZMK.ImportedModules)),$(if $(GitVersion.Active),yes))
 
