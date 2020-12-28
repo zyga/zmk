@@ -1,9 +1,3 @@
-# The configure script
-configure
-
-# The configuration file it generates
-GNUmakefile.configure.mk
-
 # Locally bundled installation of zmk
 z.mk
 zmk
