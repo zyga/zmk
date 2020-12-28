@@ -39,7 +39,7 @@ updated configuration file.
 This
 .Em phony
 target removes the configuration file
-.Nm GNUmakefile.$(NAME).configure.mk .
+.Nm config.$(NAME).mk .
 In
 .Em maintainer mode ,
 the configuration file is also removed.
