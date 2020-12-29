@@ -15,7 +15,7 @@ $(eval $(ZMK.isolateHostToolchain))
 
 all: all.log
 	# Building a dynamic library compiles objects
-	GREP -qFx 'cc -fpic -MMD -c -o libfoo.1.dylib-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
+	GREP -qFx 'cc -fpic -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF libfoo.1.dylib-foo.d) -c -o libfoo.1.dylib-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
 	# Links objects together
 	GREP -qFx 'cc -dynamiclib -compatibility_version 1.0 -current_version 1.0 -o libfoo.1.dylib libfoo.1.dylib-foo.o' <$<
 	# And provides the .so alias
@@ -43,7 +43,7 @@ clean: clean.log
 
 all-destdir: all-destdir.log
 	# Building a dynamic library compiles objects
-	GREP -qFx 'cc -fpic -MMD -c -o libfoo.1.dylib-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
+	GREP -qFx 'cc -fpic -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF libfoo.1.dylib-foo.d) -c -o libfoo.1.dylib-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
 	# Links objects together
 	GREP -qFx 'cc -dynamiclib -compatibility_version 1.0 -current_version 1.0 -o libfoo.1.dylib libfoo.1.dylib-foo.o' <$<
 	# And provides the .so alias
