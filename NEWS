@@ -1,4 +1,4 @@
-Changes in the next release:
+Changes in the upcoming release:
 
 * The Library.So template will no longer create symlink foo -> foo.so when the
   library is not versioned.
@@ -9,6 +9,8 @@ Changes in the next release:
 
 * Out-of-tree builds when the original project uses $(ZMK.OutOfTreeSourcePath),
   explicitly, for example to use the $(wildcard) function, no longer fail.
+
+* The PVS module now handles sub-directories, similar to ObjectGroup.
 
 Backwards incompatible changes in 0.4:
 
