@@ -13,17 +13,17 @@ $(eval $(ZMK.isolateHostToolchain))
 
 all: all.log
 	# C/C++/ObjC programs can be built.
-	GREP -qFx 'cc -MMD -c -o prog1-main.o $(ZMK.test.OutOfTreeSourcePath)main.c' <$<
+	GREP -qFx 'cc -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF prog1-main.d) -c -o prog1-main.o $(ZMK.test.OutOfTreeSourcePath)main.c' <$<
 	GREP -qFx 'cc -o prog1 prog1-main.o' <$<
-	GREP -qFx 'c++ -MMD -c -o prog2-main.o $(ZMK.test.OutOfTreeSourcePath)main.cpp' <$<
-	GREP -qFx 'c++ -MMD -o prog2 prog2-main.o' <$<
-	GREP -qFx 'cc -MMD -c -o prog3-main.o $(ZMK.test.OutOfTreeSourcePath)main.m' <$<
-	GREP -qFx 'cc -MMD -o prog3 prog3-main.o -lobjc' <$<
-	GREP -qFx 'c++ -MMD -c -o prog4-main.o $(ZMK.test.OutOfTreeSourcePath)main.cxx' <$<
-	GREP -qFx 'c++ -MMD -o prog4 prog4-main.o' <$<
-	GREP -qFx 'c++ -MMD -c -o prog5-main.o $(ZMK.test.OutOfTreeSourcePath)main.cc' <$<
-	GREP -qFx 'c++ -MMD -o prog5 prog5-main.o' <$<
-	GREP -qFx 'cc -MMD -c -o src/prog6-main.o $(ZMK.test.OutOfTreeSourcePath)src/main.c' <$<
+	GREP -qFx 'c++ -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF prog2-main.d) -c -o prog2-main.o $(ZMK.test.OutOfTreeSourcePath)main.cpp' <$<
+	GREP -qFx 'c++ -o prog2 prog2-main.o' <$<
+	GREP -qFx 'cc -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF prog3-main.d) -c -o prog3-main.o $(ZMK.test.OutOfTreeSourcePath)main.m' <$<
+	GREP -qFx 'cc -o prog3 prog3-main.o -lobjc' <$<
+	GREP -qFx 'c++ -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF prog4-main.d) -c -o prog4-main.o $(ZMK.test.OutOfTreeSourcePath)main.cxx' <$<
+	GREP -qFx 'c++ -o prog4 prog4-main.o' <$<
+	GREP -qFx 'c++ -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF prog5-main.d) -c -o prog5-main.o $(ZMK.test.OutOfTreeSourcePath)main.cc' <$<
+	GREP -qFx 'c++ -o prog5 prog5-main.o' <$<
+	GREP -qFx 'cc -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF src/prog6-main.d) -c -o src/prog6-main.o $(ZMK.test.OutOfTreeSourcePath)src/main.c' <$<
 	GREP -qFx 'cc -o prog6 src/prog6-main.o' <$<
 install: install.log
 	# C/C++/ObjC programs can be installed.
@@ -68,10 +68,10 @@ t:: all-exe
 all-exe.log: ZMK.makeOverrides += exe=.exe
 all-exe: all-exe.log
 	# C/C++ programs respect the .exe suffix (during building)
-	GREP -qFx 'cc -MMD -c -o prog1-main.o $(ZMK.test.OutOfTreeSourcePath)main.c' <$<
+	GREP -qFx 'cc -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF prog1-main.d) -c -o prog1-main.o $(ZMK.test.OutOfTreeSourcePath)main.c' <$<
 	GREP -qFx 'cc -o prog1.exe prog1-main.o' <$<
-	GREP -qFx 'c++ -MMD -c -o prog2-main.o $(ZMK.test.OutOfTreeSourcePath)main.cpp' <$<
-	GREP -qFx 'c++ -MMD -o prog2.exe prog2-main.o' <$<
+	GREP -qFx 'c++ -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF prog2-main.d) -c -o prog2-main.o $(ZMK.test.OutOfTreeSourcePath)main.cpp' <$<
+	GREP -qFx 'c++ -o prog2.exe prog2-main.o' <$<
 
 
 t:: install-custom-install-name
@@ -106,7 +106,7 @@ t:: install-program-prefix
 install-program-prefix.log: ZMK.makeOverrides += Configure.ProgramPrefix=prefix-
 install-program-prefix: install-program-prefix.log
 	# Configured program prefix is used during the install phase.
-	GREP -qFx 'cc -MMD -c -o prog1-main.o $(ZMK.test.OutOfTreeSourcePath)main.c' <$<
+	GREP -qFx 'cc -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF prog1-main.d) -c -o prog1-main.o $(ZMK.test.OutOfTreeSourcePath)main.c' <$<
 	GREP -qFx 'cc -o prog1 prog1-main.o' <$<
 	GREP -qFx 'install -m 0755 prog1 /usr/local/bin/prefix-prog1' <$<
 
@@ -114,7 +114,7 @@ t:: install-program-suffix
 install-program-suffix.log: ZMK.makeOverrides += Configure.ProgramSuffix=-suffix
 install-program-suffix: install-program-suffix.log
 	# Configured program suffix is used during the install phase.
-	GREP -qFx 'cc -MMD -c -o prog1-main.o $(ZMK.test.OutOfTreeSourcePath)main.c' <$<
+	GREP -qFx 'cc -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF prog1-main.d) -c -o prog1-main.o $(ZMK.test.OutOfTreeSourcePath)main.c' <$<
 	GREP -qFx 'cc -o prog1 prog1-main.o' <$<
 	GREP -qFx 'install -m 0755 prog1 /usr/local/bin/prog1-suffix' <$<
 
@@ -122,7 +122,7 @@ t:: install-program-transform-name
 install-program-transform-name.log: ZMK.makeOverrides += Configure.ProgramTransformName=s/prog1/potato/g
 install-program-transform-name: install-program-transform-name.log
 	# Configured program transform expression is applied during the install phase.
-	GREP -qFx 'cc -MMD -c -o prog1-main.o $(ZMK.test.OutOfTreeSourcePath)main.c' <$<
+	GREP -qFx 'cc -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF prog1-main.d) -c -o prog1-main.o $(ZMK.test.OutOfTreeSourcePath)main.c' <$<
 	GREP -qFx 'cc -o prog1 prog1-main.o' <$<
 	GREP -qFx 'install -m 0755 prog1 /usr/local/bin/potato' <$<
 

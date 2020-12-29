@@ -21,7 +21,7 @@ uninstall: uninstall-other uninstall-linux uninstall-macos
 clean: clean-other clean-linux clean-macos
 
 all-other: all-other.log
-	GREP -qFx 'c++ -MMD -c -o libhello.a-hello.o $(ZMK.test.OutOfTreeSourcePath)hello.cpp' <$<
+	GREP -qFx 'c++ -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF libhello.a-hello.d) -c -o libhello.a-hello.o $(ZMK.test.OutOfTreeSourcePath)hello.cpp' <$<
 	GREP -qFx 'ar -cr libhello.a libhello.a-hello.o' <$<
 install-other: install-other.log
 	GREP -qFx 'install -d /usr/local/include' <$<
@@ -36,10 +36,10 @@ clean-other: clean-other.log
 	GREP -qFx 'rm -f ./libhello.a-hello.o' <$<
 
 all-linux: all-linux.log
-	GREP -qFx 'c++ -MMD -c -o libhello.a-hello.o $(ZMK.test.OutOfTreeSourcePath)hello.cpp' <$<
+	GREP -qFx 'c++ -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF libhello.a-hello.d) -c -o libhello.a-hello.o $(ZMK.test.OutOfTreeSourcePath)hello.cpp' <$<
 	GREP -qFx 'ar -cr libhello.a libhello.a-hello.o' <$<
-	GREP -qFx 'c++ -fpic -MMD -c -o libhello.so.1-hello.o $(ZMK.test.OutOfTreeSourcePath)hello.cpp' <$<
-	GREP -qFx 'c++ -fpic -MMD -shared -Wl,-soname=libhello.so.1 -o libhello.so.1 libhello.so.1-hello.o' <$<
+	GREP -qFx 'c++ -fpic -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF libhello.so.1-hello.d) -c -o libhello.so.1-hello.o $(ZMK.test.OutOfTreeSourcePath)hello.cpp' <$<
+	GREP -qFx 'c++ -fpic -shared -Wl,-soname=libhello.so.1 -o libhello.so.1 libhello.so.1-hello.o' <$<
 	GREP -qFx 'ln -sf libhello.so.1 libhello.so' <$<
 install-linux: install-linux.log
 	GREP -qFx 'install -d /usr/local/include' <$<
@@ -61,10 +61,10 @@ clean-linux: clean-linux.log
 	GREP -qFx 'rm -f libhello.so' <$<
 
 all-macos: all-macos.log
-	GREP -qFx 'c++ -MMD -c -o libhello.a-hello.o $(ZMK.test.OutOfTreeSourcePath)hello.cpp' <$<
+	GREP -qFx 'c++ -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF libhello.a-hello.d) -c -o libhello.a-hello.o $(ZMK.test.OutOfTreeSourcePath)hello.cpp' <$<
 	GREP -qFx 'ar -cr libhello.a libhello.a-hello.o' <$<
-	GREP -qFx 'c++ -fpic -MMD -c -o libhello.1.dylib-hello.o $(ZMK.test.OutOfTreeSourcePath)hello.cpp' <$<
-	GREP -qFx 'c++ -fpic -MMD -dynamiclib -compatibility_version 1.0 -current_version 1.0 -o libhello.1.dylib libhello.1.dylib-hello.o' <$<
+	GREP -qFx 'c++ -fpic -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF libhello.1.dylib-hello.d) -c -o libhello.1.dylib-hello.o $(ZMK.test.OutOfTreeSourcePath)hello.cpp' <$<
+	GREP -qFx 'c++ -fpic -dynamiclib -compatibility_version 1.0 -current_version 1.0 -o libhello.1.dylib libhello.1.dylib-hello.o' <$<
 	GREP -qFx 'ln -sf libhello.1.dylib libhello.dylib' <$<
 install-macos: install-macos.log
 	GREP -qFx 'install -d /usr/local/include' <$<

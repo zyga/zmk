@@ -11,8 +11,8 @@ $(eval $(ZMK.isolateHostToolchain))
 %.log: ZMK.makeOverrides += CXX=c++
 
 all: all.log
-	GREP -qFx 'c++ -MMD -c -o hello-hello.o $(ZMK.test.OutOfTreeSourcePath)hello.cpp' <$<
-	GREP -qFx 'c++ -MMD -o hello hello-hello.o' <$<
+	GREP -qFx 'c++ -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF hello-hello.d) -c -o hello-hello.o $(ZMK.test.OutOfTreeSourcePath)hello.cpp' <$<
+	GREP -qFx 'c++ -o hello hello-hello.o' <$<
 install: install.log
 	GREP -qFx 'install -d /usr/local/bin' <$<
 	GREP -qFx 'install -m 0755 hello /usr/local/bin/hello' <$<

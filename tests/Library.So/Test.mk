@@ -15,8 +15,8 @@ $(eval $(ZMK.isolateHostToolchain))
 
 all: all.log
 	# Building a shared library compiles objects
-	GREP -qFx 'cc -fpic -MMD -c -o libfoo.so.1-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
-	GREP -qFx 'cc -fpic -MMD -c -o libbar.so-bar.o $(ZMK.test.OutOfTreeSourcePath)bar.c' <$<
+	GREP -qFx 'cc -fpic -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF libfoo.so.1-foo.d) -c -o libfoo.so.1-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
+	GREP -qFx 'cc -fpic -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF libbar.so-bar.d) -c -o libbar.so-bar.o $(ZMK.test.OutOfTreeSourcePath)bar.c' <$<
 	# Links objects together
 	GREP -qFx 'cc -shared -Wl,-soname=libfoo.so.1 -o libfoo.so.1 libfoo.so.1-foo.o' <$<
 	GREP -qFx 'cc -shared -Wl,-soname=libbar.so -o libbar.so libbar.so-bar.o' <$<
@@ -54,10 +54,11 @@ clean: clean.log
 
 all-destdir: all-destdir.log
 	# Building a shared library compiles objects
-	GREP -qFx 'cc -fpic -MMD -c -o libfoo.so.1-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
-	GREP -qFx 'cc -fpic -MMD -c -o libbar.so-bar.o $(ZMK.test.OutOfTreeSourcePath)bar.c' <$<
+	GREP -qFx 'cc -fpic -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF libfoo.so.1-foo.d) -c -o libfoo.so.1-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
+	GREP -qFx 'cc -fpic -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF libbar.so-bar.d) -c -o libbar.so-bar.o $(ZMK.test.OutOfTreeSourcePath)bar.c' <$<
 	# Links objects together
 	GREP -qFx 'cc -shared -Wl,-soname=libfoo.so.1 -o libfoo.so.1 libfoo.so.1-foo.o' <$<
+	GREP -qFx 'cc -shared -Wl,-soname=libbar.so -o libbar.so libbar.so-bar.o' <$<
 	# And provides the .so alias
 	GREP -qFx 'ln -sf libfoo.so.1 libfoo.so' <$<
 install-destdir: install-destdir.log
