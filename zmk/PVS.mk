@@ -20,6 +20,22 @@ PVS.Sources ?= $(error define PVS.Sources - the list of source files to analyze 
 
 PLOG_CONVERTER_FLAGS ?=
 
+define PVS.Preprocess
+$1.i: $$(ZMK.OutOfTreeSourcePath)$1 | $$(CURDIR)/$$(dir $1)
+	$$(call Silent.Say,CPP,$$@)
+	$$(Silent.Command)$$(strip $$(CPP) $$(filter-out -MMD,$$(CPPFLAGS)) $$< -E -o $$@)
+endef
+
+define PVS.Analyze
+$1.PVS-Studio.log: $1.i ~/.config/PVS-Studio/PVS-Studio.lic | $1 $$(CURDIR)/$$(dir $1)
+	$$(call Silent.Say,PVS-STUDIO,$$@)
+	$$(Silent.Command)$$(strip pvs-studio \
+		--cfg $$(ZMK.SrcDir)/.pvs-studio.cfg \
+		--i-file $$< \
+		--source-file $$(firstword $$|) \
+		--output-file $$@)
+endef
+
 # If we have pvs-studio then run it during static checks.
 ifneq (,$(shell command -v pvs-studio 2>/dev/null))
 static-check:: static-check-pvs
@@ -34,6 +50,9 @@ static-check-pvs: $(addsuffix .PVS-Studio.log,$(PVS.Sources))
 		--srcRoot $(ZMK.SrcDir) \
 		--renderTypes errorfile $^ | srcdir=$(ZMK.SrcDir) abssrcdir=$(abspath $(ZMK.SrcDir)) awk -f $(ZMK.Path)/zmk/pvs-filter.awk)
 
+$(foreach src,$(PVS.Sources),$(eval $(call PVS.Preprocess,$(src))))
+$(foreach src,$(PVS.Sources),$(eval $(call PVS.Analyze,$(src))))
+
 pvs-report: $(addsuffix .PVS-Studio.log,$(PVS.Sources))
 	$(call Silent.Say,PLOG-CONVERTER,$@)
 	$(Silent.Command)$(strip plog-converter \
@@ -46,28 +65,10 @@ pvs-report: $(addsuffix .PVS-Studio.log,$(PVS.Sources))
 		--output $@ \
 		$^)
 
-%.c.PVS-Studio.log: %.c.i ~/.config/PVS-Studio/PVS-Studio.lic | %.c
-	$(call Silent.Say,PVS-STUDIO,$@)
-	$(Silent.Command)$(strip pvs-studio \
-		--cfg $(ZMK.SrcDir)/.pvs-studio.cfg \
-		--i-file $< \
-		--source-file $(firstword $|) \
-		--output-file $@)
-
-%.c.i: %.c
-	$(call Silent.Say,CPP,$@)
-	$(Silent.Command)$(strip $(CC) $(CPPFLAGS) $< -E -o $@)
-%.cpp.i: %.cpp
-	$(call Silent.Say,CPP,$@)
-	$(Silent.Command)$(strip $(CXX) $(CPPFLAGS) $< -E -o $@)
-%.m.i: %.m
-	$(call Silent.Say,CPP,$@)
-	$(Silent.Command)$(strip $(CC) $(CPPFLAGS) $< -E -o $@)
-
 clean::
 	$(call Silent.Say,RM,*.i)
-	$(Silent.Command)rm -f *.i
+	$(Silent.Command)rm -f $(addsuffix .i,$(PVS.Sources))
 	$(call Silent.Say,RM,*.PVS-Studio.log)
-	$(Silent.Command)rm -f *.PVS-Studio.log
+	$(Silent.Command)rm -f $(addsuffix .PVS-Studio.log,$(PVS.Sources))
 	$(call Silent.Say,RM,pvs-report)
 	$(Silent.Command)rm -rf pvs-report

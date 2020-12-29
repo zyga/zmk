@@ -1,3 +1,7 @@
+Changes in the upcoming release:
+
+* The PVS module now handles sub-directories, similar to ObjectGroup.
+
 Backwards incompatible changes in 0.4:
 
 * The Configure module introduces a backwards incompatible change in the
