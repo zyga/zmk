@@ -21,17 +21,17 @@ $(eval $(call ZMK.Import,OS))
 # $1 is the object group name
 # $2 is the source file (path)name
 define ObjectGroup.COMPILE.c
-$$(dir $2)$1-$$(basename $$(notdir $2)).o: $$(ZMK.OutOfTreeSourcePath)$2 | $(CURDIR)/$$(dir $2)
+$$(dir $2)$1-$$(basename $$(notdir $2)).o: $$(ZMK.OutOfTreeSourcePath)$2 | $$(CURDIR)/$$(dir $2)
 	$$(call Silent.Say,CC,$$@)
 	$$(Silent.Command)$$(strip $$(COMPILE.c) -o $$@ $$<)
 endef
 define ObjectGroup.COMPILE.cc
-$$(dir $2)$1-$$(basename $$(notdir $2)).o: $$(ZMK.OutOfTreeSourcePath)$2 | $(CURDIR)/$$(dir $2)
+$$(dir $2)$1-$$(basename $$(notdir $2)).o: $$(ZMK.OutOfTreeSourcePath)$2 | $$(CURDIR)/$$(dir $2)
 	$$(call Silent.Say,CXX,$$@)
 	$$(Silent.Command)$$(strip $$(COMPILE.cc) -o $$@ $$<)
 endef
 define ObjectGroup.COMPILE.m
-$$(dir $2)$1-$$(basename $$(notdir $2)).o: $$(ZMK.OutOfTreeSourcePath)$2 | $(CURDIR)/$$(dir $2)
+$$(dir $2)$1-$$(basename $$(notdir $2)).o: $$(ZMK.OutOfTreeSourcePath)$2 | $$(CURDIR)/$$(dir $2)
 	$$(call Silent.Say,OBJC,$$@)
 	$$(Silent.Command)$$(strip $$(COMPILE.m) -o $$@ $$<)
 endef
