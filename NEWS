@@ -10,7 +10,7 @@ Changes in 0.4.1:
 * The ObjectGroup template no longer fails during out-of-tree builds when
   the original project explicitly uses $(ZMK.OutOfTreeSourcePath).
 
-* The PVS module will no longer fails when the original project uses
+* The PVS module no longer fails when the original project uses
   sub-directories to organize the source tree.
 
 Backwards incompatible changes in 0.4:
