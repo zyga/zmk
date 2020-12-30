@@ -1,3 +1,8 @@
+Changes in the next release:
+
+* The Library.So template will no longer create symlink foo -> foo.so when the
+  library is not versioned.
+
 Backwards incompatible changes in 0.4:
 
 * The Configure module introduces a backwards incompatible change in the

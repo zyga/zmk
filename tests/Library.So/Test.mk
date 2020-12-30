@@ -16,10 +16,13 @@ $(eval $(ZMK.isolateHostToolchain))
 all: all.log
 	# Building a shared library compiles objects
 	GREP -qFx 'cc -fpic -MMD -c -o libfoo.so.1-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
+	GREP -qFx 'cc -fpic -MMD -c -o libbar.so-bar.o $(ZMK.test.OutOfTreeSourcePath)bar.c' <$<
 	# Links objects together
 	GREP -qFx 'cc -shared -Wl,-soname=libfoo.so.1 -o libfoo.so.1 libfoo.so.1-foo.o' <$<
-	# And provides the .so alias
+	GREP -qFx 'cc -shared -Wl,-soname=libbar.so -o libbar.so libbar.so-bar.o' <$<
+	# And provides the .so alias, when the library is versioned
 	GREP -qFx 'ln -sf libfoo.so.1 libfoo.so' <$<
+	GREP -v -qFx 'ln -sf libbar.so libbar' <$<
 install: install.log
 	# Installing shared libraries creates parent directories.
 	GREP -qFx 'install -d /usr' <$<
@@ -27,23 +30,32 @@ install: install.log
 	GREP -qFx 'install -d /usr/local/lib' <$<
 	# Installing shared libraries copies the shared library.
 	GREP -qFx 'install -m 0644 libfoo.so.1 /usr/local/lib/libfoo.so.1' <$<
-	# Installing shared libraries creates the alias.
+	GREP -qFx 'install -m 0644 libbar.so /usr/local/lib/libbar.so' <$<
+	# Installing shared libraries creates the alias, when the library is versioned.
 	GREP -qFx 'ln -sf libfoo.so.1 /usr/local/lib/libfoo.so' <$<
+	GREP -v -qFx 'ln -sf libbar.so /usr/local/lib/libbar' <$<
 uninstall: uninstall.log
-	# Uninstalling shared libraries removes the shared library and the alias.
+	# Uninstalling shared libraries removes the shared library.
 	GREP -qFx 'rm -f /usr/local/lib/libfoo.so.1' <$<
+	GREP -qFx 'rm -f /usr/local/lib/libbar.so' <$<
+	# If the library is versioned, the alias is removed as well.>>
 	GREP -qFx 'rm -f /usr/local/lib/libfoo.so' <$<
+	# Libraries without versions do not emit incorrect bare filename.
+	GREP -v -qFx 'rm -f /usr/local/lib/libbar' <$<
 clean: clean.log
-	# Cleaning shared libraries removes the shared library and the alias.
+	# Cleaning shared libraries removes the shared library and the alias.>
 	GREP -qFx 'rm -f libfoo.so.1' <$<
 	GREP -qFx 'rm -f libfoo.so' <$<
+	GREP -qFx 'rm -f libbar.so' <$<
 	# Cleaning shared libraries removes the object files and dependency files.
+	GREP -v -qFx 'rm -f /usr/local/lib/libbar' <$<
 	GREP -qFx 'rm -f ./libfoo.so.1-foo.o' <$<
-	GREP -qFx 'rm -f ./libfoo.so.1-foo.d' <$<
+	GREP -qFx 'rm -f ./libbar.so-bar.d' <$<
 
 all-destdir: all-destdir.log
 	# Building a shared library compiles objects
 	GREP -qFx 'cc -fpic -MMD -c -o libfoo.so.1-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
+	GREP -qFx 'cc -fpic -MMD -c -o libbar.so-bar.o $(ZMK.test.OutOfTreeSourcePath)bar.c' <$<
 	# Links objects together
 	GREP -qFx 'cc -shared -Wl,-soname=libfoo.so.1 -o libfoo.so.1 libfoo.so.1-foo.o' <$<
 	# And provides the .so alias
@@ -62,10 +74,15 @@ uninstall-destdir: uninstall-destdir.log
 	# Uninstalling shared libraries removes the shared library and the alias.
 	GREP -qFx 'rm -f /destdir/usr/local/lib/libfoo.so.1' <$<
 	GREP -qFx 'rm -f /destdir/usr/local/lib/libfoo.so' <$<
+	GREP -qFx 'rm -f /destdir/usr/local/lib/libbar.so' <$<
+	GREP -v -qFx 'rm -f /usr/local/lib/libbar' <$<
 clean-destdir: clean-destdir.log
 	# Cleaning shared libraries removes the shared library and the alias.
 	GREP -qFx 'rm -f libfoo.so.1' <$<
 	GREP -qFx 'rm -f libfoo.so' <$<
+	GREP -qFx 'rm -f libbar.so' <$<
 	# Cleaning shared libraries removes the object files and dependency files.
 	GREP -qFx 'rm -f ./libfoo.so.1-foo.o' <$<
 	GREP -qFx 'rm -f ./libfoo.so.1-foo.d' <$<
+	GREP -qFx 'rm -f ./libbar.so-bar.o' <$<
+	GREP -qFx 'rm -f ./libbar.so-bar.d' <$<
