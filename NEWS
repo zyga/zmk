@@ -4,6 +4,10 @@ Changes in the next release:
 
 * The Header module no longer clobbers custom InstallDir.
 
+* The Library.DyLib template no longer creates symlink foo -> foo.dylib when
+  the library is not versioned. In addition the amount of code shared between
+  Library.So and Library.DyLib has increased.
+
 Changes in 0.4.1:
 
 * The Library.So template no longer creates symlink foo -> foo.so when the

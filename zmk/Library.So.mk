@@ -26,33 +26,31 @@ $1: CFLAGS += -fpic
 $1: CXXFLAGS += -fpic
 $1: OBJCFLAGS += -fpic
 $$(eval $$(call ZMK.Expand,ObjectGroup,$1))
+$1.alias ?= $$(word 1,$$(subst ., ,$1)).so
+$1.SoName ?= $1
+$1.VersionScript ?= $$(warning define $1.VersionScript - the name of a ELF symbol map)
+
+# Common dynamic/shared library meta-data.
+# We are building a shared library.
+$1: LDFLAGS += -shared
+# Pass -soname to the linker, if we have a version handy.
+$1: LDFLAGS += $(if $$($1.SoName),-Wl$$(ZMK.comma)-soname=$$($1.SoName))
 
 # Watcom doesn't build dynamic libraries.
 ifneq (,$$(Toolchain.$$(if $$($1.ObjectsObjC),CC,$$(if $$($1.ObjectsCxx),CXX,CC)).IsWatcom))
 $$(error Watcom does not support shared libraries))
 endif # watcom
 
-# We are building a shared library.
-$1: LDFLAGS += -shared
-
-# If we have a soname then store it in the shared library.
-$1.SoName ?= $1
-ifneq (,$$($1.SoName))
-$1: LDFLAGS += -Wl,-soname=$$($1.SoName)
-endif # soname
-#
-# If we have a version script switch symbol visibility to hidden
-# and use the version script to define precise version mapping.
-$1.VersionScript ?= $$(warning define $1.VersionScript - the name of a ELF symbol map)
+# Symbol export control
 ifneq (,$$($1.VersionScript))
 # Tcc does not support version scripts.
-#
 ifeq (,$$(Toolchain.$$(if $$($1.ObjectsObjC),CC,$$(if $$($1.ObjectsCxx),CXX,CC)).IsTcc))
+# If we have precise information about symbol export then switch default symbol
+# visibility to hidden and use the explicit list to control public symbols.
 $1: $$($1.VersionScript)
-$1: LDFLAGS += -fvisibility=hidden
-$1: LDFLAGS += -Wl,--version-script=$$($1.VersionScript)
+$1: LDFLAGS += -fvisibility=hidden -Wl,--version-script=$$($1.VersionScript)
 endif # !tcc
-endif # VersionScript
+endif # !symbol export control
 
 # Link library objects.
 $1: $$($1.Objects)
@@ -67,10 +65,10 @@ $$(eval $$(call ZMK.Expand,InstallUninstall,$1))
 $$(eval $$(call ZMK.Expand,AllClean,$1))
 
 # Create symlink (alias) to the versioned library.
-ifneq (,$$(patsubst %.so,,$1))
-$1.alias = $$(basename $1)
+ifneq ($1,$$($1.alias))
 $$($1.alias).InstallDir ?= $$($1.InstallDir)
 $$($1.alias).SymlinkTarget = $1
 $$(eval $$(call ZMK.Expand,Symlink,$$($1.alias)))
 endif
+
 endef

@@ -20,27 +20,30 @@ $(eval $(call ZMK.Import,Toolchain))
 
 Library.DyLib.Variables=Sources ExportList
 define Library.DyLib.Template
+
 # Compile library objects.
 $1: CFLAGS += -fpic
 $1: CXXFLAGS += -fpic
 $1: OBJCFLAGS += -fpic
 $$(eval $$(call ZMK.Expand,ObjectGroup,$1))
+$1.alias ?= $$(word 1,$$(subst ., ,$1)).dylib
+# $1.SoName does not exist for Mach-O
+$1.ExportList ?= $$(warning should define $1.ExportList)
 
+# Common dynamic/shared library meta-data.
 # We are building a dynamic library.
 $1: LDFLAGS += -dynamiclib
-
 # Provide current and compatibility version
 # TODO: this is preliminary, implement the real thing
 $1: LDFLAGS += -compatibility_version 1.0 -current_version 1.0
 
-# If we have a list of exported symbols then switch symbol
-# visibility to hidden and pass the list to the linker.
-$1.ExportList ?= $$(warning should define $1.ExportList)
+# Symbol export control
 ifneq (,$$($1.ExportList))
+# If we have precise information about symbol export then switch default symbol
+# visibility to hidden and use the explicit list to control public symbols.
 $1: $$($1.ExportList)
-$1: LDFLAGS += -fvisibility=hidden
-$1: LDFLAGS += -exported_symbols_list=$$($1.ExportList)
-endif
+$1: LDFLAGS += -fvisibility=hidden -exported_symbols_list=$$($1.ExportList)
+endif # !symbol export control
 
 # Link library objects.
 $1: $$($1.Objects)
@@ -55,9 +58,10 @@ $$(eval $$(call ZMK.Expand,InstallUninstall,$1))
 $$(eval $$(call ZMK.Expand,AllClean,$1))
 
 # Create symlink (alias) to the versioned library.
-$1.alias ?= $$(basename $$(basename $1)).dylib
+ifneq ($1,$$($1.alias))
 $$($1.alias).InstallDir ?= $$($1.InstallDir)
 $$($1.alias).SymlinkTarget = $1
 $$(eval $$(call ZMK.Expand,Symlink,$$($1.alias)))
+endif
 
 endef

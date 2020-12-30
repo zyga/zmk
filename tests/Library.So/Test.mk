@@ -50,6 +50,7 @@ clean: clean.log
 	# Cleaning shared libraries removes the object files and dependency files.
 	GREP -v -qFx 'rm -f /usr/local/lib/libbar' <$<
 	GREP -qFx 'rm -f ./libfoo.so.1-foo.o' <$<
+	GREP -qFx 'rm -f ./libbar.so-bar.o' <$<
 	GREP -qFx 'rm -f ./libbar.so-bar.d' <$<
 
 all-destdir: all-destdir.log

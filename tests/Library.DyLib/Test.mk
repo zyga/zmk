@@ -16,10 +16,13 @@ $(eval $(ZMK.isolateHostToolchain))
 all: all.log
 	# Building a dynamic library compiles objects
 	GREP -qFx 'cc -fpic -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF libfoo.1.dylib-foo.d) -c -o libfoo.1.dylib-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
+	GREP -qFx 'cc -fpic -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF libbar.dylib-bar.d) -c -o libbar.dylib-bar.o $(ZMK.test.OutOfTreeSourcePath)bar.c' <$<
 	# Links objects together
 	GREP -qFx 'cc -dynamiclib -compatibility_version 1.0 -current_version 1.0 -o libfoo.1.dylib libfoo.1.dylib-foo.o' <$<
-	# And provides the .so alias
+	GREP -qFx 'cc -dynamiclib -compatibility_version 1.0 -current_version 1.0 -o libbar.dylib libbar.dylib-bar.o' <$<
+	# And provides the .dylib alias, when the library is versioned
 	GREP -qFx 'ln -sf libfoo.1.dylib libfoo.dylib' <$<
+	GREP -v -qFx 'ln -sf libbar.dylib libbar' <$<
 install: install.log
 	# Installing dynamic libraries creates parent directories.
 	GREP -qFx 'install -d /usr' <$<
@@ -27,26 +30,37 @@ install: install.log
 	GREP -qFx 'install -d /usr/local/lib' <$<
 	# Installing dynamic libraries copies the dynamic library.
 	GREP -qFx 'install -m 0644 libfoo.1.dylib /usr/local/lib/libfoo.1.dylib' <$<
-	# Installing dynamic libraries creates the alias.
+	GREP -qFx 'install -m 0644 libbar.dylib /usr/local/lib/libbar.dylib' <$<
+	# Installing dynamic libraries creates the alias, when the library is versioned.
 	GREP -qFx 'ln -sf libfoo.1.dylib /usr/local/lib/libfoo.dylib' <$<
+	GREP -v -qFx 'ln -sf libbar.dylib /usr/local/lib/libbar' <$<
 uninstall: uninstall.log
 	# Uninstalling dynamic libraries removes the dynamic library and the alias.
 	GREP -qFx 'rm -f /usr/local/lib/libfoo.1.dylib' <$<
 	GREP -qFx 'rm -f /usr/local/lib/libfoo.dylib' <$<
+	# If the library is versioned, the alias is removed as well.>>
+	GREP -qFx 'rm -f /usr/local/lib/libbar.dylib' <$<
+	# Libraries without versions do not emit incorrect bare filename.
+	GREP -v -qFx 'rm -f /usr/local/lib/libbar' <$<
 clean: clean.log
 	# Cleaning dynamic libraries removes the dynamic library and the alias.
 	GREP -qFx 'rm -f libfoo.1.dylib' <$<
 	GREP -qFx 'rm -f libfoo.dylib' <$<
+	GREP -qFx 'rm -f libbar.dylib' <$<
 	# Cleaning dynamic libraries removes the object files and dependency files.
 	GREP -qFx 'rm -f ./libfoo.1.dylib-foo.o' <$<
 	GREP -qFx 'rm -f ./libfoo.1.dylib-foo.d' <$<
+	GREP -qFx 'rm -f ./libbar.dylib-bar.o' <$<
+	GREP -qFx 'rm -f ./libbar.dylib-bar.d' <$<
 
 all-destdir: all-destdir.log
 	# Building a dynamic library compiles objects
 	GREP -qFx 'cc -fpic -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF libfoo.1.dylib-foo.d) -c -o libfoo.1.dylib-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
+	GREP -qFx 'cc -fpic -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF libbar.dylib-bar.d) -c -o libbar.dylib-bar.o $(ZMK.test.OutOfTreeSourcePath)bar.c' <$<
 	# Links objects together
 	GREP -qFx 'cc -dynamiclib -compatibility_version 1.0 -current_version 1.0 -o libfoo.1.dylib libfoo.1.dylib-foo.o' <$<
-	# And provides the .so alias
+	GREP -qFx 'cc -dynamiclib -compatibility_version 1.0 -current_version 1.0 -o libbar.dylib libbar.dylib-bar.o' <$<
+	# And provides the .dylib alias
 	GREP -qFx 'ln -sf libfoo.1.dylib libfoo.dylib' <$<
 install-destdir: install-destdir.log
 	# Installing dynamic libraries creates parent directories.
@@ -62,10 +76,15 @@ uninstall-destdir: uninstall-destdir.log
 	# Uninstalling dynamic libraries removes the dynamic library and the alias.
 	GREP -qFx 'rm -f /destdir/usr/local/lib/libfoo.1.dylib' <$<
 	GREP -qFx 'rm -f /destdir/usr/local/lib/libfoo.dylib' <$<
+	GREP -qFx 'rm -f /destdir/usr/local/lib/libbar.dylib' <$<
+	GREP -v -qFx 'rm -f /usr/local/lib/libbar' <$<
 clean-destdir: clean-destdir.log
 	# Cleaning dynamic libraries removes the dynamic library and the alias.
 	GREP -qFx 'rm -f libfoo.1.dylib' <$<
 	GREP -qFx 'rm -f libfoo.dylib' <$<
+	GREP -qFx 'rm -f libbar.dylib' <$<
 	# Cleaning dynamic libraries removes the object files and dependency files.
 	GREP -qFx 'rm -f ./libfoo.1.dylib-foo.o' <$<
 	GREP -qFx 'rm -f ./libfoo.1.dylib-foo.d' <$<
+	GREP -qFx 'rm -f ./libbar.dylib-bar.o' <$<
+	GREP -qFx 'rm -f ./libbar.dylib-bar.d' <$<
