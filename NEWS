@@ -3,6 +3,10 @@ Changes in the next release:
 * The Library.So template will no longer create symlink foo -> foo.so when the
   library is not versioned.
 
+* Out-of-tree builds with dependency generation and sub-directories in source
+  file paths no longer fail by attempting to put the generated dependency
+  information alongside the source code.
+
 Backwards incompatible changes in 0.4:
 
 * The Configure module introduces a backwards incompatible change in the
@@ -27,7 +31,7 @@ Changes in 0.4:
 * Program template no longer forgets to add the .exe suffix to installed executables.
 
 * The ObjectGroup template used by Program, Program.Test, Library.A, Library.So
-  and Library.Dylib now supports sub-directories in source file names. Object files
+  and Library.DyLib now supports sub-directories in source file names. Object files
   created by the object group are now created in directories corresponding to the source
   files.
 

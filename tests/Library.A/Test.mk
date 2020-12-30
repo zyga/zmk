@@ -18,7 +18,7 @@ $(eval $(ZMK.isolateHostToolchain))
 
 all: all.log
 	# Default target compiles source to object files belonging to the library.
-	GREP -qFx 'cc -MMD -c -o libfoo.a-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
+	GREP -qFx 'cc -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF libfoo.a-foo.d) -c -o libfoo.a-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
 	# Default target combines object files into an archive
 	GREP -qFx 'ar -cr libfoo.a libfoo.a-foo.o' <$<
 install: install.log
@@ -43,7 +43,7 @@ clean: clean.log
 all-silent-rules: all-silent-rules.log
 	# Default target compiles source to object files belonging to the library.
 	GREP -qFx 'printf "  %-16s %s\n" "CC" "libfoo.a-foo.o"' <$<
-	GREP -qFx '#cc -MMD -c -o libfoo.a-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
+	GREP -qFx '#cc -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF libfoo.a-foo.d) -c -o libfoo.a-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
 	# Default target combines object files into an archive
 	GREP -qFx 'printf "  %-16s %s\n" "AR" "libfoo.a"' <$<
 	GREP -qFx '#ar -cr libfoo.a libfoo.a-foo.o' <$<
@@ -71,7 +71,7 @@ clean-silent-rules: clean-silent-rules.log
 
 all-destdir: all-destdir.log
 	# Default target compiles source to object files belonging to the library.
-	GREP -qFx 'cc -MMD -c -o libfoo.a-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
+	GREP -qFx 'cc -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF libfoo.a-foo.d) -c -o libfoo.a-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
 	# Default target combines object files into an archive
 	GREP -qFx 'ar -cr libfoo.a libfoo.a-foo.o' <$<
 install-destdir: install-destdir.log

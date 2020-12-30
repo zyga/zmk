@@ -89,7 +89,7 @@ endif
 # If dependency tracking is enabled, pass extra options to the compiler, to
 # generate dependency data at the same time as compiling object files.
 ifneq (,$(and $(Toolchain.DependencyTracking),$(or $(Toolchain.IsGcc),$(Toolchain.IsClang))))
-CPPFLAGS += -MMD
+%.o: CPPFLAGS += -MMD$(if $(ZMK.IsOutOfTreeBuild), -MF $(@:.o=.d))
 $(if $(Toolchain.debug),$(info DEBUG: compiling object files will generate make dependency information))
 endif
 

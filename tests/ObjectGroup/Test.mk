@@ -13,12 +13,12 @@ $(eval $(ZMK.isolateHostToolchain))
 
 build: build.log
 	# C/C++/ObjC object files can be built.
-	GREP -qFx 'cc -MMD -c -o group1-main.o $(ZMK.test.OutOfTreeSourcePath)main.c' <$<
-	GREP -qFx 'c++ -MMD -c -o group2-main.o $(ZMK.test.OutOfTreeSourcePath)main.cpp' <$<
-	GREP -qFx 'cc -MMD -c -o group3-main.o $(ZMK.test.OutOfTreeSourcePath)main.m' <$<
-	GREP -qFx 'c++ -MMD -c -o group4-main.o $(ZMK.test.OutOfTreeSourcePath)main.cxx' <$<
-	GREP -qFx 'c++ -MMD -c -o group5-main.o $(ZMK.test.OutOfTreeSourcePath)main.cc' <$<
-	GREP -qFx 'cc -MMD -c -o src/group6-main.o $(ZMK.test.OutOfTreeSourcePath)src/main.c' <$<
+	GREP -qFx 'cc -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF group1-main.d) -c -o group1-main.o $(ZMK.test.OutOfTreeSourcePath)main.c' <$<
+	GREP -qFx 'c++ -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF group2-main.d) -c -o group2-main.o $(ZMK.test.OutOfTreeSourcePath)main.cpp' <$<
+	GREP -qFx 'cc -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF group3-main.d) -c -o group3-main.o $(ZMK.test.OutOfTreeSourcePath)main.m' <$<
+	GREP -qFx 'c++ -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF group4-main.d) -c -o group4-main.o $(ZMK.test.OutOfTreeSourcePath)main.cxx' <$<
+	GREP -qFx 'c++ -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF group5-main.d) -c -o group5-main.o $(ZMK.test.OutOfTreeSourcePath)main.cc' <$<
+	GREP -qFx 'cc -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF src/group6-main.d) -c -o src/group6-main.o $(ZMK.test.OutOfTreeSourcePath)src/main.c' <$<
 
 clean: clean.log
 	# C/C++/ObjC object files can be cleaned.
