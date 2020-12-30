@@ -7,6 +7,9 @@ Changes in the next release:
   file paths no longer fail by attempting to put the generated dependency
   information alongside the source code.
 
+* Out-of-tree builds when the original project uses $(ZMK.OutOfTreeSourcePath),
+  explicitly, for example to use the $(wildcard) function, no longer fail.
+
 Backwards incompatible changes in 0.4:
 
 * The Configure module introduces a backwards incompatible change in the
