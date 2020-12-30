@@ -1,6 +1,8 @@
 Changes in the next release:
 
-* The PVS module no longer fails when running the pvs-report target
+* The PVS module no longer fails when running the pvs-report target.
+
+* The Header module no longer clobbers custom InstallDir.
 
 Changes in 0.4.1:
 

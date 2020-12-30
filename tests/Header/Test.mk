@@ -21,11 +21,14 @@ install: install.log
 	GREP -qFx 'install -d /usr' <$<
 	GREP -qFx 'install -d /usr/local' <$<
 	GREP -qFx 'install -d /usr/local/include' <$<
+	GREP -qFx 'install -d /usr/local/include/froz' <$<
 	GREP -qFx 'install -m 0644 $(ZMK.test.OutOfTreeSourcePath)foo.h /usr/local/include/foo.h' <$<
 	GREP -qFx 'install -m 0644 $(ZMK.test.OutOfTreeSourcePath)include/bar.h /usr/local/include/bar.h' <$<
+	GREP -qFx 'install -m 0644 $(ZMK.test.OutOfTreeSourcePath)froz.h /usr/local/include/froz/froz.h' <$<
 uninstall: uninstall.log
 	GREP -qFx 'rm -f /usr/local/include/foo.h' <$<
 	GREP -qFx 'rm -f /usr/local/include/bar.h' <$<
+	GREP -qFx 'rm -f /usr/local/include/froz/froz.h' <$<
 clean: clean.log
 	GREP -qF 'Nothing to be done for' <$<
 
@@ -38,15 +41,21 @@ install-silent-rules: install-silent-rules.log
 	GREP -qFx '#install -d /usr/local' <$<
 	GREP -qFx 'printf "  %-16s %s\n" "MKDIR" "/usr/local/include"' <$<
 	GREP -qFx '#install -d /usr/local/include' <$<
+	GREP -qFx 'printf "  %-16s %s\n" "MKDIR" "/usr/local/include/froz"' <$<
+	GREP -qFx '#install -d /usr/local/include/froz' <$<
 	GREP -qFx 'printf "  %-16s %s\n" "INSTALL" "/usr/local/include/foo.h"' <$<
 	GREP -qFx '#install -m 0644 $(ZMK.test.OutOfTreeSourcePath)foo.h /usr/local/include/foo.h' <$<
 	GREP -qFx 'printf "  %-16s %s\n" "INSTALL" "/usr/local/include/bar.h"' <$<
 	GREP -qFx '#install -m 0644 $(ZMK.test.OutOfTreeSourcePath)include/bar.h /usr/local/include/bar.h' <$<
+	GREP -qFx 'printf "  %-16s %s\n" "INSTALL" "/usr/local/include/froz/froz.h"' <$<
+	GREP -qFx '#install -m 0644 $(ZMK.test.OutOfTreeSourcePath)froz.h /usr/local/include/froz/froz.h' <$<
 uninstall-silent-rules: uninstall-silent-rules.log
 	GREP -qFx 'printf "  %-16s %s\n" "RM" "/usr/local/include/foo.h"' <$<
 	GREP -qFx '#rm -f /usr/local/include/foo.h' <$<
 	GREP -qFx 'printf "  %-16s %s\n" "RM" "/usr/local/include/bar.h"' <$<
 	GREP -qFx '#rm -f /usr/local/include/bar.h' <$<
+	GREP -qFx 'printf "  %-16s %s\n" "RM" "/usr/local/include/froz/froz.h"' <$<
+	GREP -qFx '#rm -f /usr/local/include/froz/froz.h' <$<
 clean-silent-rules: clean-silent-rules.log
 	GREP -qF 'Nothing to be done for' <$<
 
@@ -57,8 +66,10 @@ install-destdir: install-destdir.log
 	GREP -qFx 'install -d /destdir/usr/local/include' <$<
 	GREP -qFx 'install -m 0644 $(ZMK.test.OutOfTreeSourcePath)foo.h /destdir/usr/local/include/foo.h' <$<
 	GREP -qFx 'install -m 0644 $(ZMK.test.OutOfTreeSourcePath)include/bar.h /destdir/usr/local/include/bar.h' <$<
+	GREP -qFx 'install -m 0644 $(ZMK.test.OutOfTreeSourcePath)froz.h /destdir/usr/local/include/froz/froz.h' <$<
 uninstall-destdir: uninstall-destdir.log
 	GREP -qFx 'rm -f /destdir/usr/local/include/foo.h' <$<
 	GREP -qFx 'rm -f /destdir/usr/local/include/bar.h' <$<
+	GREP -qFx 'rm -f /destdir/usr/local/include/froz/froz.h' <$<
 clean-destdir: clean-destdir.log
 	GREP -qF 'Nothing to be done for' <$<
