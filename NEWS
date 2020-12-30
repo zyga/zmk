@@ -1,4 +1,4 @@
-Changes in the next release:
+Changes in 0.4.2:
 
 * The PVS module no longer fails when running the pvs-report target.
 
