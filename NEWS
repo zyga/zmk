@@ -1,4 +1,4 @@
-Changes in the upcoming release:
+Changes in 0.4.1:
 
 * The Library.So template no longer creates symlink foo -> foo.so when the
   library is not versioned.

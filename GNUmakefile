@@ -15,7 +15,7 @@
 # along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
 
 NAME = zmk
-VERSION = 0.4  # This needs to match ZMK.Version
+VERSION = 0.4.1  # This needs to match ZMK.Version
 
 ZMK.SrcDir ?= .
 -include config.zmk.mk
