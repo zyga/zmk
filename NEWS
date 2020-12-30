@@ -1,3 +1,7 @@
+Changes in the next release:
+
+* The PVS module no longer fails when running the pvs-report target
+
 Changes in 0.4.1:
 
 * The Library.So template no longer creates symlink foo -> foo.so when the

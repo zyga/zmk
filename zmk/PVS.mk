@@ -63,7 +63,7 @@ $(foreach src,$(PVS.sources),$(eval $(call PVS.Analyze,$(src))))
 pvs-report: $(addsuffix .PVS-Studio.log,$(PVS.sources))
 	$(call Silent.Say,PLOG-CONVERTER,$@)
 	$(Silent.Command)$(strip plog-converter \
-		--settings $(ZMK.OutOfTreeSourcePath)/.pvs-studio.cfg \
+		--settings $(ZMK.OutOfTreeSourcePath).pvs-studio.cfg \
 		$(PLOG_CONVERTER_FLAGS) \
 		--srcRoot $(ZMK.SrcDir) \
 		--projectName $(NAME) \
