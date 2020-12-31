@@ -1,0 +1,96 @@
+.Dd Jan 8 2021
+.Os zmk @VERSION@
+.Dt zmk.Coverity 5 PRM
+.Sh NAME
+.Nm Coverity
+.Nd Module for interacting with Coverity static analysis tool
+.Sh SYNOPSIS
+.Bd -literal
+include z.mk
+# additional definitions required
+$(eval $(call ZMK.Import,Coverity))
+.Ed
+.Sh DESCRIPTION
+The module
+.Nm Coverity
+allows preparing and uploading scan artifacts to a hosted coverity instance.
+.Sh TARGETS
+This module provides the following targets.
+.Ss upload-coverity-scan
+This
+.Em phony
+target uses
+.Nm curl
+to upload the archived scan artifacts to the coverity scanning service.
+.Ss clean
+This
+.Em phony
+target removes the
+.Nm cov-int
+directory as well as the
+.Nm cov-int.$(NAME)-$(VERSION).tar.gz
+archive.
+.Ss cov-int
+This target invokes the
+.Nm cov-build
+program to forcibly re-build the whole project and collect information for analysis.
+.Ss cov-int.$(NAME)-$(VERSION).tar.gz
+This target archives the
+.Nm cov-int
+directory.
+.Sh VARIABLES
+This module provides the following variables.
+.Ss Coverity.Sources
+List of source files to consider as analysis dependency.
+.Pp
+There is no default value. This variable must be set before importing the
+module.
+.Ss Coverity.ProjectName
+Name of the project registered on the Coverity instance
+.Pp
+There is no default value. This variable must be set before importing the
+module.
+.Ss Coverity.Email
+E-mail address of the project maintainer, as registered on the Coverity
+instance.
+.Pp
+There is no default value. This variable must be set before importing the
+module.
+.Ss Coverity.Token
+The token used to authorize uploads of scan artifacts.
+.Pp
+There is no default value. This variable must be set before importing the
+module.
+.Ss Coverity.ScanURL
+The URL used for submitting scan artifacts.
+.Pp
+The default value is
+.Em https://scan.coverity.com/builds
+.Sh BUGS
+This module uses recursive make invocation and is therefore not safe to execute
+concurrently with other scanners that use this strategy.
+.Sh EXAMPLES
+The following example shows how Coverity can be used to scan a sample project.
+The code assumes that local installation of coverity scanner is in
+.Em /opt/cov-analysis-linux64-2019.03 .
+The project name, maintainer email are provided in-line but the authentication
+token is expected to be provided through the environment variable
+.Nm COVERITY_TOKEN .
+.Bd -literal
+include z.mk
+COVERITY_TOKEN ?=
+ifneq (,$(COVERITY_TOKEN))  # enable coverity if secret token is available
+Coverity.Sources=foo.c
+Coverity.ProjectName=foo
+Coverity.Email=maintainer@example.com
+Coverity.Token=$(COVERITY_TOKEN)
+cov-int: PATH := $(PATH):/opt/cov-analysis-linux64-2019.03/bin
+$(eval $(call ZMK.Import,Coverity))
+endif
+.Ed
+.Sh HISTORY
+The
+.Nm
+module first appeared in zmk 0.1
+.Sh AUTHORS
+.An "Zygmunt Krynicki" Aq Mt me@zygoon.pl

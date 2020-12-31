@@ -9,6 +9,11 @@ Changes in the next release:
   interaction with the host system. The integration test suite has reference
   data for FreeBSD and MacOS.
 
+* The Coverity module gained support for checking if scan result is viable for
+  submission and an ability to submit the scan automatically, using the new
+  `upload-coverity-scan` target. See the manual page for additional information
+  about project configuration.
+
 Changes in 0.4.2:
 
 * The PVS module no longer fails when running the pvs-report target.

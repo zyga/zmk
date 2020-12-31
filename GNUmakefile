@@ -27,6 +27,7 @@ ZMK.manPages = \
 	z.mk.5 \
 	zmk.AllClean.5 \
 	zmk.Configure.5 \
+	zmk.Coverity.5 \
 	zmk.Directories.5 \
 	zmk.OS.5 \
 	zmk.Program.5 \
