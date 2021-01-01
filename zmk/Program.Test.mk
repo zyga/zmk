@@ -63,7 +63,7 @@ $1$$(exe): CFLAGS += -fcoverage-mapping -fprofile-instr-generate
 $1$$(exe): LDFLAGS += -fcoverage-mapping -fprofile-instr-generate
 
 $1.profraw: %.profraw: %
-	$$(Silent.Say),EXEC-TEST,$$^)
+	$$(call Silent.Say,EXEC-TEST,$$^)
 	$$(Silent.Command)LLVM_PROFILE_FILE=$$@ ./$$^
 $1.profdata: %.profdata: %.profraw
 	$$(call Silent.Say,LLVM-PROFDATA,$$@)
