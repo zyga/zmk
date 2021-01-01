@@ -21,6 +21,8 @@ t:: debug-defaults debug-dependency-tracking \
 %.log: ZMK.makeOverrides += Toolchain.cxx=/usr/bin/host-linux-gnu-g++
 %.log: ZMK.makeOverrides += Toolchain.cxx.dumpmachine=host-linux-gnu
 %.log: ZMK.makeOverrides += Toolchain.g++.dumpmachine=build-linux-gnu
+%.log: ZMK.makeOverrides += Toolchain.cc.version=
+%.log: ZMK.makeOverrides += Toolchain.cxx.version=
 
 debug-defaults: debug-defaults.log
 	# By default CC=cc and CXX is either c++ or g++.
