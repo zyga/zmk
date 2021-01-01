@@ -5,6 +5,9 @@ Changes in the next release:
 
 * The Toolchain module no longer misidentifies clang on FreeBSD.
 
+* The Toolchain module has initial integration test suite that checks the real
+  interaction with the host system.
+
 Changes in 0.4.2:
 
 * The PVS module no longer fails when running the pvs-report target.

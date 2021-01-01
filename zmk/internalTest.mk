@@ -53,6 +53,35 @@ ZMK.makeOverrides += ZMK.testing=yes
 # For default logic, see the rule below.
 ZMK.makeTarget ?=
 
+ifeq ($(origin OS),environment)
+OS.test.Kernel = $(findstring $(OS),Windows_NT)
+else
+OS.test.Kernel := $(shell uname -s)
+endif
+
+# Read a file from disk. Ideally we'd use $(file <) but it doens't have a
+# feature flag to check for and widely used systems do not support reading.
+ZMK.test.readFile=$(shell cat "$1")
+# Pick a key from a string with key=value pairs
+ZMK.test.valueOfKey=$(strip $(patsubst $2=%,%,$(filter $2=%,$1)))
+
+# Use real os-release(5) information if available or synthesize minimal placeholder.
+ifneq (,$(findstring $(OS.test.Kernel),Linux FreeBSD NetBSD OpenBSD GNU GNU/kFreeBSD SunOS Haiku))
+ZMK.test.OSRelease=$(or $(call ZMK.test.readFile,/etc/os-release),$(error zmk integration tests depends on /etc/os-release))
+endif
+ifeq ($(OS.test.Kernel),Darwin)
+ZMK.test.OSRelease=ID=macos VERSION_ID=$(word 2,$(shell sysctl kern.osproductversion))
+endif
+ifeq ($(OS.test.Kernel),Windows_NT)
+ZMK.test.OSRelease=ID=windows VERSION_ID=zmk-unimplemented
+endif
+
+# The full text of os-release(5) file.
+# The ID field from the os-release(5) file.
+ZMK.test.OSRelease.ID=$(call ZMK.test.valueOfKey,$(ZMK.test.OSRelease),ID)
+# The VERSION_ID field from the os-release(5) file.
+ZMK.test.OSRelease.VERSION_ID=$(call ZMK.test.valueOfKey,$(ZMK.test.OSRelease),VERSION_ID)
+
 # Tests print a header, unless silent mode is used
 # Tests do not use localization
 # Tests always remake targets
