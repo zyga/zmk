@@ -3,6 +3,8 @@ Changes in the next release:
 * The Program.Test template no longer fails with syntax error when computing
   test coverage.
 
+* The Toolchain module no longer misidentifies clang on FreeBSD.
+
 Changes in 0.4.2:
 
 * The PVS module no longer fails when running the pvs-report target.

@@ -66,15 +66,19 @@ Toolchain.cxx ?= $(shell command -v $(CXX) 2>/dev/null)
 Toolchain.cc := $(if $(findstring $(Toolchain.cc),/usr/bin/cc),$(realpath $(Toolchain.cc)),$(Toolchain.cc))
 Toolchain.cxx := $(if $(findstring $(Toolchain.cxx),/usr/bin/c++ /usr/bin/g++),$(realpath $(Toolchain.cxx)),$(Toolchain.cxx))
 
+# Is the C and C++ compiler really available?
+Toolchain.CC.IsAvailable ?= $(if $(wildcard $(realpath $(Toolchain.cc))),yes)
+Toolchain.CXX.IsAvailable ?= $(if $(wildcard $(realpath $(Toolchain.cxx))),yes)
+
+# What is the version string of the C and the C++ compilers?
+Toolchain.cc.version ?= $(if $(Toolchain.CC.IsAvailable),$(shell $(Toolchain.cc) --version))
+Toolchain.cxx.version ?= $(if $(Toolchain.CXX.IsAvailable),$(shell $(Toolchain.cxx) --version))
+
 # Import toolchain-specific knowledge.
 $(eval $(call ZMK.Import,toolchain.GCC))
 $(eval $(call ZMK.Import,toolchain.Clang))
 $(eval $(call ZMK.Import,toolchain.Watcom))
 $(eval $(call ZMK.Import,toolchain.Tcc))
-
-# Is the C and C++ compiler really available?
-Toolchain.CC.IsAvailable ?= $(if $(wildcard $(realpath $(Toolchain.cc))),yes)
-Toolchain.CXX.IsAvailable ?= $(if $(wildcard $(realpath $(Toolchain.cxx))),yes)
 
 # Is either the C or C++ compiler a cross compiler?
 Toolchain.IsCross ?= $(or $(Toolchain.CC.IsCross),$(Toolchain.CXX.IsCross))
