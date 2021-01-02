@@ -60,18 +60,18 @@ endif # !parent empty
 Directory.known += $$($1.cleaned)
 ifeq (/,$$(patsubst /%,/,$$($1.cleaned)))
 # Absolute directories respect DESTDIR
-$(if $(Directory.debug),$(info DEBUG: absolute directory $$($1.cleaned)$$(if $$(DESTDIR), with prefixed DESTDIR=$$(DESTDIR))))
+$$(if $$(Directory.debug),$$(info DEBUG: absolute directory $$($1.cleaned)$$(if $$(DESTDIR), with prefixed DESTDIR=$$(DESTDIR))))
 $$(DESTDIR)$$($1.cleaned): | $$(DESTDIR)$$($1.parentDir)
 	$$(call Silent.Say,MKDIR,$$@)
 	$$(Silent.Command)install -d $$@
 ifneq ($1,$$($1.cleaned))
 # Unclean directory path (with trailing slash) order-depends on the clean directory path
-$(if $(Directory.debug),$(info DEBUG: absolute unclean directory $1 corresponding to $$($1.cleaned)$$(if $$(DESTDIR), with prefixed DESTDIR=$$(DESTDIR))))
+$$(if $$(Directory.debug),$$(info DEBUG: absolute unclean directory $1 corresponding to $$($1.cleaned)$$(if $$(DESTDIR), with prefixed DESTDIR=$$(DESTDIR))))
 $$(DESTDIR)$1: | $$(DESTDIR)$$($1.cleaned)
 endif
 else
 # Relative directories do not observe DESTDIR
-$(if $(Directory.debug),$(info DEBUG: relative directory $$($1.cleaned)))
+$$(if $$(Directory.debug),$$(info DEBUG: relative directory $$($1.cleaned)))
 $$($1.cleaned): | $$($1.parentDir)
 	$$(call Silent.Say,MKDIR,$$@)
 	$$(Silent.Command)install -d $$@
