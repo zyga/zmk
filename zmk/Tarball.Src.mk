@@ -22,9 +22,6 @@ zmk.haveGPGKeys?=$(if $(and $(zmk.haveGPG),$(wildcard $(HOME)/.gnupg/*),$(shell 
 zmk.isCI?=$(if $(value CI),yes)
 zmk.isGitSnapshot?=$(if $(filter GitVersion,$(ZMK.ImportedModules)),$(if $(GitVersion.Active),yes))
 
-# XXX: This belongs in z.mk.
-zmk.not=$(if $1,,yes)
-
 %.asc: %
 	$(call Silent.Say,GPG-SIGN,$@)
 	$(Silent.Command)gpg --detach-sign --armor $<
