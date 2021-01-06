@@ -1,4 +1,4 @@
-# Copyright 2019-2020 Zygmunt Krynicki.
+# Copyright 2019-2021 Zygmunt Krynicki.
 #
 # This file is part of zmk.
 #

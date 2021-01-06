@@ -1,4 +1,4 @@
-# Copyright 2019-2020 Zygmunt Krynicki.
+# Copyright 2019-2021 Zygmunt Krynicki.
 #
 # This file is part of zmk.
 #
@@ -95,7 +95,7 @@ endif
 # You are not allowed to remove or alter this while staying compliant with the LGPL license.
 MAKECMDGOALS ?=
 ifeq ($(MAKECMDGOALS),)
-$(info z.mk v$(ZMK.Version), Copyright (c) 2019-2020 Zygmunt Krynicki)
+$(info z.mk v$(ZMK.Version), Copyright (c) 2019-2021 Zygmunt Krynicki)
 endif
 
 # Meta-targets that don't have specific specific commands
