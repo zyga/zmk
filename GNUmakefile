@@ -22,6 +22,18 @@ ZMK.SrcDir ?= .
 ZMK.Path = $(ZMK.SrcDir)
 include $(ZMK.Path)/z.mk
 
+# Manual pages present in the package.
+ZMK.manPages = \
+	z.mk.5 \
+	zmk.AllClean.5 \
+	zmk.Configure.5 \
+	zmk.Directories.5 \
+	zmk.OS.5 \
+	zmk.Program.5 \
+	zmk.Script.5 \
+	zmk.Silent.5 \
+	zmk.Toolchain.5
+
 # Use git to augment version.
 $(eval $(call ZMK.Import,GitVersion))
 $(eval $(call ZMK.Import,Directories))
