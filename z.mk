@@ -118,7 +118,7 @@ define ZMK.newline
 
 endef
 # Boolean negation function
-zmk.not=$(if $1,,yes)
+ZMK.not=$(if $1,,yes)
 DEBUG ?=
 # Display diagnostic messages when DEBUG has specific items.
 DEBUG := $(subst $(ZMK.comma), ,$(DEBUG))

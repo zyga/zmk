@@ -42,7 +42,7 @@ endif
 endif
 
 # If we have a GPG keys, CI is not set and the tarball is not a snapshot, sign it.
-$1.Sign ?= $$(and $$(zmk.haveGPG),$$(zmk.haveGPGKeys),$$(call zmk.not,$$(zmk.isCI)),$$(call zmk.not,$$(zmk.isCI)))
+$1.Sign ?= $$(and $$(zmk.haveGPG),$$(zmk.haveGPGKeys),$$(call ZMK.not,$$(zmk.isCI)),$$(call ZMK.not,$$(zmk.isCI)))
 
 # If the GitVersion module is imported then attempt to insert version
 # information into the release archive. There are two possible cases.
