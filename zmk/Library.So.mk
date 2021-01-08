@@ -28,7 +28,11 @@ $1: OBJCFLAGS += -fpic
 $$(eval $$(call ZMK.Expand,ObjectGroup,$1))
 $1.alias ?= $$(word 1,$$(subst ., ,$1)).so
 $1.SoName ?= $1
+ifneq ($1,$$($1.alias))
 $1.VersionScript ?= $$(warning define $1.VersionScript - the name of a ELF symbol map)
+else
+$1.VersionScript ?=
+endif
 
 # Common dynamic/shared library meta-data.
 # We are building a shared library.
