@@ -14,6 +14,10 @@ Changes in the next release:
   `upload-coverity-scan` target. See the manual page for additional information
   about project configuration.
 
+* ZMK now supports additional static analysis tools: clang-tidy, clang-analyzer
+  (via scan-build), cppcheck and sparse. They each define a CamelCase-named
+  module and a Sources attribute which includes the set of files to scan.
+
 Changes in 0.4.2:
 
 * The PVS module no longer fails when running the pvs-report target.

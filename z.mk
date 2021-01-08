@@ -43,8 +43,11 @@ ZMK.Path ?= $(or $(patsubst %/,%,$(dir $(ZMK.z.mk))),.)
 # Modules and templates present in the package
 ZMK.modules = \
 	AllClean \
+	ClangAnalyzer \
+	ClangTidy \
 	Configure \
 	Coverity \
+	CppCheck \
 	Directories \
 	Directory \
 	GitVersion \
@@ -61,6 +64,7 @@ ZMK.modules = \
 	Program.Test \
 	Script \
 	Silent \
+	Sparse \
 	Symlink \
 	Tarball \
 	Tarball.Src \
