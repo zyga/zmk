@@ -93,8 +93,10 @@ endif
 
 # ZMK Copyright Banner. Do not remove.
 # You are not allowed to remove or alter this while staying compliant with the LGPL license.
+# You can disable it by setting ZMK.NoBanner=1 on command line.
 MAKECMDGOALS ?=
-ifeq ($(MAKECMDGOALS),)
+ZMK.NoBanner ?=
+ifeq ($(or $(ZMK.NoBanner),$(MAKECMDGOALS)),)
 $(info z.mk v$(ZMK.Version), Copyright (c) 2019-2021 Zygmunt Krynicki)
 endif
 
