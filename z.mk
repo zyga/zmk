@@ -107,6 +107,9 @@ endif
 # Meta-targets that don't have specific specific commands
 .PHONY: $(sort all clean coverage fmt static-check check install uninstall dist distclean distcheck)
 
+# Dist-clean is a super-set of clean.
+distclean:: clean
+
 # Run static checks when checking
 check:: static-check
 

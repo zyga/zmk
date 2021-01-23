@@ -18,6 +18,8 @@ Changes in the next release:
   (via scan-build), cppcheck and sparse. They each define a CamelCase-named
   module and a Sources attribute which includes the set of files to scan.
 
+* The distclean no longer forgets to run clean target.
+
 Changes in 0.4.2:
 
 * The PVS module no longer fails when running the pvs-report target.
