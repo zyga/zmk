@@ -59,7 +59,7 @@ else
 OS.test.Kernel := $(shell uname -s)
 endif
 
-# Read a file from disk. Ideally we'd use $(file <) but it doens't have a
+# Read a file from disk. Ideally we'd use $(file <) but it doesn't have a
 # feature flag to check for and widely used systems do not support reading.
 ZMK.test.readFile=$(shell cat "$1")
 # Pick a key from a string with key=value pairs
