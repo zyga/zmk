@@ -31,7 +31,7 @@ debug-defaults: debug-defaults.log
 
 debug-dependency-tracking.log: ZMK.makeOverrides += Configure.DependencyTracking=yes
 debug-dependency-tracking: debug-dependency-tracking.log
-	# By defualt dependency tracking is enabled.
+	# By default dependency tracking is enabled.
 	GREP -qFx 'DEBUG: Toolchain.DependencyTracking=yes' <$<
 
 debug-mingw-cc-detection.log: ZMK.makeOverrides += CC=fake-fake-mingw32-gcc
@@ -65,7 +65,7 @@ debug-mingw-cxx-detection: debug-mingw-cxx-detection.log
 debug-watcom-dos-cc-detection.log: ZMK.makeOverrides += CC=open-watcom.owcc-dos
 debug-watcom-dos-cc-detection.log: ZMK.makeOverrides += Toolchain.cc=/snap/open-watcom.owcc-dos
 debug-watcom-dos-cc-detection: debug-watcom-dos-cc-detection.log
-	# When CC is set to a OpenWatcom C compiler targetting DOS,
+	# When CC is set to a OpenWatcom C compiler targeting DOS,
 	# then the image format is MZ and the toolchain is assumed to be a
 	# cross toolchain.
 	GREP -qFx 'DEBUG: .exe suffix enabled because open-watcom.owcc-dos name' <$<
@@ -78,7 +78,7 @@ debug-watcom-dos-cc-detection: debug-watcom-dos-cc-detection.log
 debug-watcom-dos-cxx-detection.log: ZMK.makeOverrides += CXX=open-watcom.owcc-dos
 debug-watcom-dos-cxx-detection.log: ZMK.makeOverrides += Toolchain.cxx=/snap/open-watcom.owcc-dos
 debug-watcom-dos-cxx-detection: debug-watcom-dos-cxx-detection.log
-	# When CXX is set to a OpenWatcom C++ compiler targetting DOS,
+	# When CXX is set to a OpenWatcom C++ compiler targeting DOS,
 	# then the image format is MZ and the toolchain is assumed to be a
 	# cross toolchain.
 	GREP -qFx 'DEBUG: .exe suffix enabled because open-watcom.owcc-dos name' <$<
@@ -91,7 +91,7 @@ debug-watcom-dos-cxx-detection: debug-watcom-dos-cxx-detection.log
 debug-watcom-win16-cc-detection.log: ZMK.makeOverrides += CC=open-watcom.owcc-win16
 debug-watcom-win16-cc-detection.log: ZMK.makeOverrides += Toolchain.cc=/snap/open-watcom.owcc-win16
 debug-watcom-win16-cc-detection: debug-watcom-win16-cc-detection.log
-	# When CC is set to a OpenWatcom C compiler targetting Windows 3.x,
+	# When CC is set to a OpenWatcom C compiler targeting Windows 3.x,
 	# then the image format is MZ and the toolchain is assumed to be a
 	# cross toolchain.
 	GREP -qFx 'DEBUG: .exe suffix enabled because open-watcom.owcc-win16 name' <$<
@@ -104,7 +104,7 @@ debug-watcom-win16-cc-detection: debug-watcom-win16-cc-detection.log
 debug-watcom-win16-cxx-detection.log: ZMK.makeOverrides += CXX=open-watcom.owcc-win16
 debug-watcom-win16-cxx-detection.log: ZMK.makeOverrides += Toolchain.cxx=/snap/open-watcom.owcc-win16
 debug-watcom-win16-cxx-detection: debug-watcom-win16-cxx-detection.log
-	# When CXX is set to a OpenWatcom C++ compiler targetting Windows 3.x,
+	# When CXX is set to a OpenWatcom C++ compiler targeting Windows 3.x,
 	# then the image format is MZ and the toolchain is assumed to be a
 	# cross toolchain.
 	GREP -qFx 'DEBUG: .exe suffix enabled because open-watcom.owcc-win16 name' <$<
@@ -117,7 +117,7 @@ debug-watcom-win16-cxx-detection: debug-watcom-win16-cxx-detection.log
 debug-watcom-win32-cc-detection.log: ZMK.makeOverrides += CC=open-watcom.owcc-win32
 debug-watcom-win32-cc-detection.log: ZMK.makeOverrides += Toolchain.cc=/snap/open-watcom.owcc-win32
 debug-watcom-win32-cc-detection: debug-watcom-win32-cc-detection.log
-	# When CC is set to a OpenWatcom C compiler targetting Windows NT,
+	# When CC is set to a OpenWatcom C compiler targeting Windows NT,
 	# then the image format is PE and the toolchain is assumed to be a
 	# cross toolchain.
 	GREP -qFx 'DEBUG: .exe suffix enabled because open-watcom.owcc-win32 name' <$<
@@ -130,7 +130,7 @@ debug-watcom-win32-cc-detection: debug-watcom-win32-cc-detection.log
 debug-watcom-win32-cxx-detection.log: ZMK.makeOverrides += CXX=open-watcom.owcc-win32
 debug-watcom-win32-cxx-detection.log: ZMK.makeOverrides += Toolchain.cxx=/snap/open-watcom.owcc-win32
 debug-watcom-win32-cxx-detection: debug-watcom-win32-cxx-detection.log
-	# When CXX is set to a OpenWatcom C++ compiler targetting Windows NT,
+	# When CXX is set to a OpenWatcom C++ compiler targeting Windows NT,
 	# then the image format is PE and the toolchain is assumed to be a
 	# cross toolchain.
 	GREP -qFx 'DEBUG: .exe suffix enabled because open-watcom.owcc-win32 name' <$<
@@ -150,7 +150,7 @@ debug-gcc-configured-cross.log: ZMK.makeOverrides += Toolchain.cxx=/usr/bin/host
 debug-gcc-configured-cross.log: ZMK.makeOverrides += Toolchain.cxx.dumpmachine=host-linux-gnu
 debug-gcc-configured-cross.log: ZMK.makeOverrides += Toolchain.g++.dumpmachine=build-linux-gnu
 debug-gcc-configured-cross: debug-gcc-configured-cross.log
-	# When the configue script selects different linux build and host
+	# When the configure script selects different linux build and host
 	# machines, then both the C and C++ compilers are set to the
 	# appropriate GCC binary, then image format is ELF and the toolchain is
 	# assumed to be a cross toolchain.
@@ -171,7 +171,7 @@ debug-g++-configured-cross.log: ZMK.makeOverrides += Toolchain.cxx.dumpmachine=h
 debug-g++-configured-cross.log: ZMK.makeOverrides += Toolchain.gcc.dumpmachine=build-linux-gnu
 debug-g++-configured-cross.log: ZMK.makeOverrides += Toolchain.g++.dumpmachine=build-linux-gnu
 debug-g++-configured-cross: debug-g++-configured-cross.log
-	# When the configue script selects different linux build and host
+	# When the configure script selects different linux build and host
 	# machines, then both the C and C++ compilers are set to the
 	# appropriate GCC binary, the image format is ELF and the toolchain is
 	# assumed to be a cross toolchain.
