@@ -49,6 +49,7 @@ ZMK.modules = \
 	Directory \
 	GitVersion \
 	Header \
+	HeaderGroup \
 	InstallUninstall \
 	Library.A \
 	Library.DyLib \

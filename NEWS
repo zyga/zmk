@@ -16,6 +16,11 @@ Changes in the next release:
   Both library types are enabled by default. The values are stored
   and inhibit expansion of appropriate templates.
 
+* ZMK now allows installing multiple headers simultaneously with the
+  use of the HeaderGroup template. HeaderGroup supports group customization of
+  InstallDir and InstallMode and otherwise behaves identical to the Header
+  template used multiple times, manually.
+
 Changes in 0.4.2:
 
 * The PVS module no longer fails when running the pvs-report target.
