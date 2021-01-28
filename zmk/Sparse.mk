@@ -34,4 +34,4 @@ endif
 .PHONY: static-check-sparse
 static-check-sparse: $(src_to_analyze)
 	$(call Silent.Say,MAKE-SPARSE)
-	$(Silent.Command)$(MAKE) ZMK.NoBanner=1 $(Sparse.Options) CC=cgcc -B
+	$(Silent.Command)CFLAGS="$(Sparse.Options)" $(MAKE) ZMK.NoBanner=1 CC=cgcc -B

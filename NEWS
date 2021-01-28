@@ -29,6 +29,11 @@ Changes in the next release:
   CPPFLAGS defined. This can be used to provide include paths and macro
   definitions appropriate for the project.
 
+* The Sparse module now passes $(Sparse.Options) via CFLAGS set at the environment
+  level before invoking recursive $(MAKE). This avoids clobbering CFLAGS set in
+  the build system (e.g. to pass -fpic) as make treats command line overrides
+  differently from environment values.
+
 Changes in 0.4.2:
 
 * The PVS module no longer fails when running the pvs-report target.
