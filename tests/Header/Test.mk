@@ -13,7 +13,7 @@ t:: all install uninstall clean \
 # Some logs have DESTDIR set to /destdir
 %-destdir.log: ZMK.makeOverrides += DESTDIR=/destdir
 # Test depends on source files
-%.log: foo.h
+%.log: foo.h include/bar.h froz.h
 
 all: all.log
 	GREP -qF 'Nothing to be done for' <$<
