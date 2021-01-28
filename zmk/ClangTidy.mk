@@ -35,4 +35,4 @@ static-check:: static-check-clang-tidy
 .PHONY: static-check-clang-tidy
 static-check-clang-tidy: $(ClangTidy.sources)
 	$(call Silent.Say,CLANG-TIDY)
-	$(Silent.Command)clang-tidy $(ClangTidy.Options) $^
+	$(Silent.Command)clang-tidy $(ClangTidy.Options) $^$(if $(CPPFLAGS), -- $(CPPFLAGS))

@@ -25,6 +25,10 @@ Changes in the next release:
   InstallDir and InstallMode and otherwise behaves identical to the Header
   template used multiple times, manually.
 
+* The ClangTidy template now passes `-- $(CPPFLAGS)` if there are non-empty
+  CPPFLAGS defined. This can be used to provide include paths and macro
+  definitions appropriate for the project.
+
 Changes in 0.4.2:
 
 * The PVS module no longer fails when running the pvs-report target.
