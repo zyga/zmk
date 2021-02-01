@@ -23,6 +23,7 @@ define Library.A.Template
 ifneq ($$(suffix $1),.a)
 $$(error library name $1 must end with ".a")
 endif
+ifeq ($(Configure.StaticLibraries),yes)
 
 # Compile library objects.
 $$(eval $$(call ZMK.Expand,ObjectGroup,$1))
@@ -38,4 +39,5 @@ $$(eval $$(call ZMK.Expand,InstallUninstall,$1))
 
 # React to "all" and "clean".
 $$(eval $$(call ZMK.Expand,AllClean,$1))
+endif # Configure.StaticLibraries
 endef
