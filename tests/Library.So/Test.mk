@@ -3,13 +3,18 @@
 include zmk/internalTest.mk
 
 t:: all install uninstall clean \
-    all-destdir install-destdir uninstall-destdir clean-destdir
+    all-destdir install-destdir uninstall-destdir clean-destdir \
+    all-enable-dynamic-libs all-disable-dynamic-libs
 
 $(eval $(ZMK.isolateHostToolchain))
 # Test logs will contain debugging messages
 %.log: ZMK.makeOverrides += DEBUG=library.so
 # Some logs have DESTDIR set to /destdir
 %-destdir.log: ZMK.makeOverrides += DESTDIR=/destdir
+# Some logs behave as if configure --enable-static was used
+%-enable-dynamic-libs.log: ZMK.makeOverrides += Configure.DynamicLibraries=yes
+# Some logs behave as if configure --disable -static was used
+%-disable-dynamic-libs.log: ZMK.makeOverrides += Configure.DynamicLibraries=
 # Test depends on source files
 %.log: foo.c
 
@@ -88,3 +93,10 @@ clean-destdir: clean-destdir.log
 	GREP -qFx 'rm -f ./libfoo.so.1-foo.d' <$<
 	GREP -qFx 'rm -f ./libbar.so-bar.o' <$<
 	GREP -qFx 'rm -f ./libbar.so-bar.d' <$<
+
+all-enable-dynamic-libs: all-enable-dynamic-libs.log
+    # Configuring --enable-dynamic enables compliation of dynamic libraries.
+	GREP -qFx 'cc -shared -Wl,-soname=libfoo.so.1 -o libfoo.so.1 libfoo.so.1-foo.o' <$<
+all-disable-dynamic-libs: all-disable-dynamic-libs.log
+    # Configuring --disable-dynamic disables compliation of dynamic libraries.
+	GREP -v -qFx 'cc -shared -Wl,-soname=libfoo.so.1 -o libfoo.so.1 libfoo.so.1-foo.o' <$<

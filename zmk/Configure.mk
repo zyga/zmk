@@ -26,6 +26,8 @@ Configure.TargetArchTriplet ?=
 Configure.DependencyTracking ?= yes
 Configure.MaintainerMode ?= yes
 Configure.SilentRules ?=
+Configure.StaticLibraries ?= yes
+Configure.DynamicLibraries ?= yes
 Configure.ProgramPrefix ?=
 Configure.ProgramSuffix ?=
 Configure.ProgramTransformName ?=
@@ -88,6 +90,10 @@ while [ "$$#" -ge 1 ]; do
             echo "                              Do not generate or use dependency data during builds"
             echo "  --enable-maintainer-mode    Enable maintainer mode (implicit)"
             echo "  --disable-maintainer-mode   Disable maintainer mode"
+            echo "  --enable-static             Enable static libraries"
+            echo "  --disable-static            Disable static libraries"
+            echo "  --enable-dynamic            Enable dynamic or shared libraries"
+            echo "  --disable-dynamic           Disable dynamic or shared libraries"
             echo
             echo "Build-time directory selection:"
             echo "  --prefix=PREFIX             Set prefix for all directories to PREFIX"
@@ -163,6 +169,11 @@ while [ "$$#" -ge 1 ]; do
 
         --enable-option-checking)       disableOptionChecking=no && shift ;;
         --disable-option-checking)      disableOptionChecking=yes && shift ;;
+
+        --enable-static)                staticLibraries=yes && shift ;;
+        --disable-static)               staticLibraries=no && shift ;;
+        --enable-dynamic)               dynamicLibraries=yes && shift ;;
+        --disable-dynamic)              dynamicLibraries=no && shift ;;
 
         --program-prefix=*)             programPrefix="$$(rhs "$$1")" && shift ;;
         --program-suffix=*)             programSuffix="$$(rhs "$$1")" && shift ;;
@@ -283,6 +294,33 @@ done
         implicit)
             echo "#   Configure.SilentRules was not specified."
             echo "#   This feature is disabled by default."
+            ;;
+    esac
+    echo "# Support for static libraries."
+    case "$${staticLibraries:-implicit}" in
+        yes)
+            echo "Configure.StaticLibraries=yes"
+            ;;
+        no)
+            echo "Configure.StaticLibraries="
+            ;;
+        implicit)
+            echo "#   Configure.StaticLibraries was not specified."
+            echo "#   This feature is enabled by default."
+            ;;
+    esac
+    echo
+    echo "# Support for dynamic or shared libraries."
+    case "$${dynamicLibraries:-implicit}" in
+        yes)
+            echo "Configure.DynamicLibraries=yes"
+            ;;
+        no)
+            echo "Configure.DynamicLibraries="
+            ;;
+        implicit)
+            echo "#   Configure.DynamicLibraries was not specified."
+            echo "#   This feature is enabled by default, if supported."
             ;;
     esac
     echo

@@ -29,6 +29,9 @@ ZMK.manPages = \
 	zmk.Configure.5 \
 	zmk.Coverity.5 \
 	zmk.Directories.5 \
+	zmk.Library.A.5 \
+	zmk.Library.DyLib.5 \
+	zmk.Library.So.5 \
 	zmk.OS.5 \
 	zmk.Program.5 \
 	zmk.Script.5 \

@@ -4,7 +4,8 @@ include zmk/internalTest.mk
 
 t:: all install uninstall clean \
     all-silent-rules install-silent-rules uninstall-silent-rules clean-silent-rules \
-    all-destdir install-destdir uninstall-destdir clean-destdir
+    all-destdir install-destdir uninstall-destdir clean-destdir \
+    all-enable-static-libs all-disable-static-libs
 
 $(eval $(ZMK.isolateHostToolchain))
 # Test logs will contain debugging messages
@@ -13,6 +14,10 @@ $(eval $(ZMK.isolateHostToolchain))
 %-silent-rules.log: ZMK.makeOverrides += Silent.Active=yes
 # Some logs have DESTDIR set to /destdir
 %-destdir.log: ZMK.makeOverrides += DESTDIR=/destdir
+# Some logs behave as if configure --enable-static was used
+%-enable-static-libs.log: ZMK.makeOverrides += Configure.StaticLibraries=yes
+# Some logs behave as if configure --disable -static was used
+%-disable-static-libs.log: ZMK.makeOverrides += Configure.StaticLibraries=
 # Test depends on source files
 %.log: foo.c
 
@@ -93,3 +98,10 @@ clean-destdir: clean-destdir.log
 	GREP -qFx 'rm -f ./libfoo.a-foo.o' <$<
 	# Cleaning removes the dependency files
 	GREP -qFx 'rm -f ./libfoo.a-foo.d' <$<
+
+all-enable-static-libs: all-enable-static-libs.log
+    # Configuring --enable-static enables compliation of static libraries.
+	GREP -qFx 'ar -cr libfoo.a libfoo.a-foo.o' <$<
+all-disable-static-libs: all-disable-static-libs.log
+    # Configuring --disable-static disables compliation of static libraries.
+	GREP -v -qFx 'ar -cr libfoo.a libfoo.a-foo.o' <$<

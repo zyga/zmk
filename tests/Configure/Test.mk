@@ -17,6 +17,10 @@ t:: \
 	config-disable-maintainer-mode \
 	config-enable-silent-rules \
 	config-disable-silent-rules \
+	config-enable-static \
+	config-disable-static \
+	config-enable-dynamic \
+	config-disable-dynamic \
 	config-program-prefix \
 	config-program-suffix \
 	config-program-transform-name \
@@ -76,6 +80,8 @@ debug-defaults: debug-defaults.log
 	GREP -qFx 'DEBUG: Configure.DependencyTracking=yes' <$<
 	GREP -qFx 'DEBUG: Configure.MaintainerMode=yes' <$<
 	GREP -qFx 'DEBUG: Configure.SilentRules=' <$<
+	GREP -qFx 'DEBUG: Configure.StaticLibraries=yes' <$<
+	GREP -qFx 'DEBUG: Configure.DynamicLibraries=yes' <$<
 	GREP -qFx 'DEBUG: Configure.ProgramPrefix=' <$<
 	GREP -qFx 'DEBUG: Configure.ProgramSuffix=' <$<
 	GREP -qFx 'DEBUG: Configure.ProgramTransformName=' <$<
@@ -100,6 +106,8 @@ config-defaults: config.defaults.mk
 	GREP -v -qF 'Configure.DependencyTracking=' <$<
 	GREP -v -qF 'Configure.MaintainerMode=' <$<
 	GREP -v -qF 'Configure.SilentRules=' <$<
+	GREP -v -qF 'Configure.StaticLibraries=' <$<
+	GREP -v -qF 'Configure.DynamicLibraries=' <$<
 	GREP -v -qF 'Configure.ProgramPrefix=' <$<
 	GREP -v -qF 'Configure.ProgramSuffix=' <$<
 	GREP -v -qF 'Configure.ProgramTransformName=' <$<
@@ -151,6 +159,26 @@ config.disable-silent-rules.mk: configureOptions += --disable-silent-rules
 config-disable-silent-rules: config.disable-silent-rules.mk
 	# configure --disable-dependency-tracking sets Configure.SilentRules= (empty but set)
 	GREP -qFx 'Configure.SilentRules=' <$<
+
+config.enable-static.mk: configureOptions += --enable-static
+config-enable-static: config.enable-static.mk
+	# configure --enable-static sets Configure.StaticLibraries=yes
+	GREP -qFx 'Configure.StaticLibraries=yes' <$<
+
+config.disable-static.mk: configureOptions += --disable-static
+config-disable-static: config.disable-static.mk
+	# configure --disable-static sets Configure.StaticLibraries= (empty but set)
+	GREP -qFx 'Configure.StaticLibraries=' <$<
+
+config.enable-dynamic.mk: configureOptions += --enable-dynamic
+config-enable-dynamic: config.enable-dynamic.mk
+	# configure --enable-dynamic sets Configure.DynamicLibraries=yes
+	GREP -qFx 'Configure.DynamicLibraries=yes' <$<
+
+config.disable-dynamic.mk: configureOptions += --disable-dynamic
+config-disable-dynamic: config.disable-dynamic.mk
+	# configure --disable-dynamic sets Configure.DynamicLibraries= (empty but set)
+	GREP -qFx 'Configure.DynamicLibraries=' <$<
 
 config.program-prefix.mk: configureOptions += --program-prefix=awesome-
 config-program-prefix: config.program-prefix.mk
