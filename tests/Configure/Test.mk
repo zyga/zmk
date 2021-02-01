@@ -26,6 +26,7 @@ t:: \
 	config-libdir \
 	config-libexecdir \
 	config-includedir \
+	config-oldincludedir \
 	config-mandir \
 	config-infodir \
 	config-sysconfdir \
@@ -182,3 +183,8 @@ $(foreach d,$(dirs),config.$d.mk): configureOptions += --$*=/foo
 $(addprefix config-,$(dirs)): config-%: config.%.mk
 	# configure --$*=/foo sets $*=/foo
 	GREP -qFx '$*=/foo' <$<
+
+config.oldincludedir.mk: configureOptions += --oldincludedir=/unused
+config-oldincludedir: config.oldincludedir.mk
+	# configure --oldincludedir=/unused doesn't do anything
+	GREP -v -qFx '/unused' <$<
