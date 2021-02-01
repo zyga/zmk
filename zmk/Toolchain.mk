@@ -17,7 +17,7 @@
 $(eval $(call ZMK.Import,OS))
 $(eval $(call ZMK.Import,Configure))
 
-# Compiler defaults unless changed by GNUmakefile.configure.mk
+# Compiler defaults unless changed by config.$(Project.Name).mk
 
 ifeq ($(OS.Kernel),SunOS)
 # Solaris doesn't seem to provide any aliases or symlinks for gcc but make wants to call it "cc".
