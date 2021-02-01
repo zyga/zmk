@@ -99,6 +99,7 @@ while [ "$$#" -ge 1 ]; do
             echo "  --libdir=DIR                Install runtime and development libraries to DIR"
             echo "  --libexecdir=DIR            Install library-internal programs to DIR"
             echo "  --includedir=DIR            Install development header files to DIR"
+            echo "  --oldincludedir=DIR         For compatibility with autotools, ignored"
             echo "  --mandir=DIR                Install manual pages to DIR"
             echo "  --infodir=DIR               Install GNU info pages to DIR"
             echo "  --sysconfdir=DIR            Install system configuration files to DIR"
@@ -178,6 +179,7 @@ while [ "$$#" -ge 1 ]; do
         --libexecdir=*)                 libexecdir="$$(rhs "$$1")" && shift ;;
         --datadir=*)                    datadir="$$(rhs "$$1")" && shift ;;
         --includedir=*)                 includedir="$$(rhs "$$1")" && shift ;;
+        --oldincludedir=*)              shift ;; # ignored for compatibility
         --infodir=*)                    infodir="$$(rhs "$$1")" && shift ;;
         --mandir=*)                     mandir="$$(rhs "$$1")" && shift ;;
         --sysconfdir=*)                 sysconfdir="$$(rhs "$$1")" && shift ;;
