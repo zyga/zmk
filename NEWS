@@ -1,3 +1,9 @@
+Changes in the next release:
+
+* The Configure module now supports setting the target triplet. The generated
+  configuration script handles the --target= command line option and the result
+  is available as $(Configure.TargetArchTriplet).
+
 Changes in 0.4.2:
 
 * The PVS module no longer fails when running the pvs-report target.
