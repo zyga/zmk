@@ -92,6 +92,7 @@ while [ "$$#" -ge 1 ]; do
             echo "Build-time directory selection:"
             echo "  --prefix=PREFIX             Set prefix for all directories to PREFIX"
             echo "  --exec-prefix=PREFIX        Set prefix for libraries and programs to PREFIX"
+            echo "  --exec_prefix=PREFIX        Alternate spelling --exec-prefix"
             echo
             echo "  --bindir=DIR                Install user programs to DIR"
             echo "  --sbindir=DIR               Install super-user programs to DIR"
@@ -168,7 +169,7 @@ while [ "$$#" -ge 1 ]; do
         --program-suffix=*)             programSuffix="$$(rhs "$$1")" && shift ;;
         --program-transform-name=*)     programTransformName="$$(rhs "$$1")" && shift ;;
 
-        --exec-prefix=*)                exec_prefix="$$(rhs "$$1")" && shift ;;
+        --exec-prefix=*|--exec_prefix=*)exec_prefix="$$(rhs "$$1")" && shift ;;
         --prefix=*)                     prefix="$$(rhs "$$1")" && shift ;;
 
         --bindir=*)                     bindir="$$(rhs "$$1")" && shift ;;
