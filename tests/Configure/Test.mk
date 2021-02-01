@@ -21,6 +21,8 @@ t:: \
 	config-program-suffix \
 	config-program-transform-name \
 	config-prefix \
+	config-exec-prefix \
+	config-exec_prefix \
 	config-bindir \
 	config-sbindir \
 	config-libdir \
@@ -175,6 +177,11 @@ config-prefix: config.prefix.mk
 config.exec-prefix.mk: configureOptions += --exec-prefix=/foo
 config-exec-prefix: config.exec-prefix.mk
 	# configure --exec-prefix=/foo sets exec_prefix=/foo
+	GREP -qFx 'exec_prefix=/foo' <$<
+
+config.exec_prefix.mk: configureOptions += --exec_prefix=/foo
+config-exec_prefix: config.exec_prefix.mk
+	# configure --exec_prefix=/foo sets exec_prefix=/foo
 	GREP -qFx 'exec_prefix=/foo' <$<
 
 dirs=bindir sbindir libdir libexecdir includedir mandir infodir sysconfdir datadir localstatedir runstatedir sharedstatedir
