@@ -19,7 +19,7 @@ $(eval $(call ZMK.Import,Silent))
 # Is zmk debugging enabled for this module?
 Configure.debug ?= $(findstring configure,$(DEBUG))
 
-# Configuration system defaults, also changed by GNUmakefile.configure.mk
+# Configuration system defaults, also changed by config.$(Project.Name).mk
 Configure.HostArchTriplet ?=
 Configure.BuildArchTriplet ?=
 Configure.TargetArchTriplet ?=

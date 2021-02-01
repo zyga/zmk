@@ -139,7 +139,7 @@ When enabled it expands to
 and impacts the
 .Nm configure
 and
-.Nm GNUmakefile.$(NAME).configure.mk
+.Nm config.$(NAME).mk
 targets as described earlier.
 .Ss Configure.SilentRules
 This variable is controlled by the
