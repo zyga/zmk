@@ -95,6 +95,10 @@ while [ "$$#" -ge 1 ]; do
             echo "  --enable-dynamic            Enable dynamic or shared libraries"
             echo "  --disable-dynamic           Disable dynamic or shared libraries"
             echo
+            echo "Autotools compatibility options"
+            echo "  --with-libtool-sysroot=DIR  Set libtool sysroot to DIR, ignred"
+            echo "  --oldincludedir=DIR         For compatibility with autotools, ignored"
+            echo
             echo "Build-time directory selection:"
             echo "  --prefix=PREFIX             Set prefix for all directories to PREFIX"
             echo "  --exec-prefix=PREFIX        Set prefix for libraries and programs to PREFIX"
@@ -105,7 +109,6 @@ while [ "$$#" -ge 1 ]; do
             echo "  --libdir=DIR                Install runtime and development libraries to DIR"
             echo "  --libexecdir=DIR            Install library-internal programs to DIR"
             echo "  --includedir=DIR            Install development header files to DIR"
-            echo "  --oldincludedir=DIR         For compatibility with autotools, ignored"
             echo "  --mandir=DIR                Install manual pages to DIR"
             echo "  --infodir=DIR               Install GNU info pages to DIR"
             echo "  --sysconfdir=DIR            Install system configuration files to DIR"
@@ -176,6 +179,8 @@ while [ "$$#" -ge 1 ]; do
         --disable-static)               staticLibraries=no && shift ;;
         --enable-dynamic)               dynamicLibraries=yes && shift ;;
         --disable-dynamic)              dynamicLibraries=no && shift ;;
+
+        --with-libtool-sysroot=*)       shift ;; # ignored for compatibility
 
         --program-prefix=*)             programPrefix="$$(rhs "$$1")" && shift ;;
         --program-suffix=*)             programSuffix="$$(rhs "$$1")" && shift ;;

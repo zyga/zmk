@@ -33,6 +33,7 @@ t:: \
 	config-libexecdir \
 	config-includedir \
 	config-oldincludedir \
+	config-with-libtool-sysroot \
 	config-mandir \
 	config-infodir \
 	config-sysconfdir \
@@ -222,4 +223,9 @@ $(addprefix config-,$(dirs)): config-%: config.%.mk
 config.oldincludedir.mk: configureOptions += --oldincludedir=/unused
 config-oldincludedir: config.oldincludedir.mk
 	# configure --oldincludedir=/unused doesn't do anything
+	GREP -v -qFx '/unused' <$<
+
+config.with-libtool-sysroot.mk: configureOptions += --with-libtool-sysroot=/unused
+config-with-libtool-sysroot: config.with-libtool-sysroot.mk
+	# configure --with-libtool-sysroot=/unused doesn't do anything
 	GREP -v -qFx '/unused' <$<
