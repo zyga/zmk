@@ -22,6 +22,7 @@ Configure.debug ?= $(findstring configure,$(DEBUG))
 # Configuration system defaults, also changed by GNUmakefile.configure.mk
 Configure.HostArchTriplet ?=
 Configure.BuildArchTriplet ?=
+Configure.TargetArchTriplet ?=
 Configure.DependencyTracking ?= yes
 Configure.MaintainerMode ?= yes
 Configure.SilentRules ?=
@@ -80,6 +81,7 @@ while [ "$$#" -ge 1 ]; do
             echo "Compilation options:"
             echo "  --build=GNU_TRIPLET         Describe the build machine with the given GNU_TRIPLET"
             echo "  --host=GNU_TRIPLET          Describe the host machine with the given GNU_TRIPLET"
+            echo "  --target=GNU_TRIPLET        Describe the target machine with the given GNU_TRIPLET"
             echo "  --enable-dependency-tracking"
             echo "                              Track dependencies between files (implicit)"
             echo "  --disable-dependency-tracking"
@@ -148,6 +150,7 @@ while [ "$$#" -ge 1 ]; do
     case "$$1" in
         --build=*)                      buildArchTriplet="$$(rhs "$$1")" && shift ;;
         --host=*)                       hostArchTriplet="$$(rhs "$$1")" && shift ;;
+        --target=*)                     targetArchTriplet="$$(rhs "$$1")" && shift ;;
 
         --enable-dependency-tracking)   dependencyTracking=yes && shift ;;
         --disable-dependency-tracking)  dependencyTracking=no && shift ;;
@@ -213,6 +216,7 @@ done
     echo "# Note that those impact compiler selection unless CC and CXX are overridden."
     test -n "$${buildArchTriplet:-}"    && echo "Configure.BuildArchTriplet=$$buildArchTriplet"     || echo "#   Configure.BuildArchTriplet was not specified."
     test -n "$${hostArchTriplet:-}"     && echo "Configure.HostArchTriplet=$$hostArchTriplet"       || echo "#   Configure.HostArchTriplet was not specified."
+    test -n "$${targetArchTriplet:-}"   && echo "Configure.TargetArchTriplet=$$targetArchTriplet"   || echo "#   Configure.TargetArchTriplet was not specified."
     echo
     echo "# Build-time configuration of application directories."
     test -n "$${prefix:-}"          && echo "prefix=$$prefix"                   || echo "#   prefix was not specified."

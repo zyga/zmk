@@ -10,6 +10,7 @@ t:: \
 	config-defaults \
 	config-build \
 	config-host \
+	config-target \
 	config-enable-dependency-tracking \
 	config-disable-dependency-tracking \
 	config-enable-maintainer-mode \
@@ -71,6 +72,7 @@ debug-defaults: debug-defaults.log
 	# Note that here we also measure the default values of an un-configured build.
 	GREP -qFx 'DEBUG: Configure.HostArchTriplet=' <$<
 	GREP -qFx 'DEBUG: Configure.BuildArchTriplet=' <$<
+	GREP -qFx 'DEBUG: Configure.TargetArchTriplet=' <$<
 	GREP -qFx 'DEBUG: Configure.DependencyTracking=yes' <$<
 	GREP -qFx 'DEBUG: Configure.MaintainerMode=yes' <$<
 	GREP -qFx 'DEBUG: Configure.SilentRules=' <$<
@@ -94,6 +96,7 @@ config-defaults: config.defaults.mk
 	# Note the lack of whole-line matching (-x).
 	GREP -v -qF 'Configure.BuildArchTriplet=' <$<
 	GREP -v -qF 'Configure.HostArchTriplet=' <$<
+	GREP -v -qF 'Configure.TargetArchTriplet=' <$<
 	GREP -v -qF 'Configure.DependencyTracking=' <$<
 	GREP -v -qF 'Configure.MaintainerMode=' <$<
 	GREP -v -qF 'Configure.SilentRules=' <$<
@@ -112,6 +115,12 @@ config-host: config.host.mk
 	# configure --host= sets Configure.HostArchTriplet
 	GREP -qFx 'Configure.HostArchTriplet=foo-linux-gnu' <$<
 	GREP -qFx 'Configure.Options=$(if $(ZMK.test.IsOutOfTreeBuild),ZMK.SrcDir=$(ZMK.test.SrcDir) )--host=foo-linux-gnu' <$<
+
+config.target.mk: configureOptions += --target=foo-linux-gnu
+config-target: config.target.mk
+	# configure --target= sets Configure.TargetArchTriplet
+	GREP -qFx 'Configure.TargetArchTriplet=foo-linux-gnu' <$<
+	GREP -qFx 'Configure.Options=$(if $(ZMK.test.IsOutOfTreeBuild),ZMK.SrcDir=$(ZMK.test.SrcDir) )--target=foo-linux-gnu' <$<
 
 config.enable-dependency-tracking.mk: configureOptions += --enable-dependency-tracking
 config-enable-dependency-tracking: config.enable-dependency-tracking.mk

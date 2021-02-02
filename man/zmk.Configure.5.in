@@ -101,6 +101,16 @@ named
 and
 .Em $(Configure.HostArchTriplet)-g++
 for the C and C++ compilers, respectively.
+.Ss Configure.TargetArchTriplet
+This variable is set by the
+.Nm configure
+script when invoked with the
+.Em --target=...
+option. It represents the
+.Em triplet
+describing the system for which any generated code will be made. This variable
+is needed infrequently, usually by tools such as compilers, to prepare them for
+creating binary code for a given architecture.
 .Ss Configure.DependencyTracking
 This variable is controlled by the
 .Nm configure
