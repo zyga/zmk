@@ -44,9 +44,9 @@ configure: Makefile $(ZMK.test.Path)/z.mk $(wildcard $(ZMK.test.Path)/zmk/*.mk)
 c::
 	rm -f configure
 
-# The configure script writes a configuration file.
-# Note that normally the file is GNUmakefile.$(NAME).configure.mk but
-# the test redirects that to a different file to enable parallelism.
+# The configure script writes a configuration file. Note that normally the file
+# is config.$(NAME).mk but the test redirects that to a different file to
+# enable parallelism.
 configureOptions ?=
 configureOptions += $(if $(ZMK.test.IsOutOfTreeBuild),ZMK.SrcDir=$(ZMK.test.SrcDir))
 config.%.mk: configure Test.mk
