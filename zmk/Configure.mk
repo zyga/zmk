@@ -41,6 +41,15 @@ Configure.Options ?=
 # location. One place where this happens is zmk test suite.
 ifneq (,$(Project.Name))
 -include config.$(Project.Name).mk
+# Those are copied from z.mk and need to be in sync.
+ifneq ($(ZMK.SrcDir),.)
+ZMK.IsOutOfTreeBuild = yes
+ZMK.OutOfTreeSourcePath = $(ZMK.SrcDir)/
+VPATH = $(ZMK.SrcDir)
+else
+ZMK.IsOutOfTreeBuild =
+ZMK.OutOfTreeSourcePath =
+endif
 endif
 
 # Enable silent rules if configured.
