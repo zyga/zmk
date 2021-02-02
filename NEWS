@@ -38,6 +38,9 @@ Changes in the next release:
   configuration script handles the --target= command line option and the result
   is available as $(Configure.TargetArchTriplet).
 
+* The Configure module no longer breaks in out-of-tree builds and no special
+  care is required to support that anymore.
+
 Changes in 0.4.2:
 
 * The PVS module no longer fails when running the pvs-report target.
