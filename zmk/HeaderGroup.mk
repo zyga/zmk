@@ -29,6 +29,7 @@ $1.headers = $$(patsubst $$(ZMK.OutOfTreeSourcePath)%,%,$$($1.Headers))
 
 $1.InstallDir ?= $(includedir)
 $1.InstallMode = 0644
+$1.InstallFrom ?= $$(ZMK.OutOfTreeSourcePath)
 
 # This is how to compile each specific source file.
 $$(foreach h,$$($1.headers),$$(eval $$h.InstallDir ?= $$($1.InstallDir)))

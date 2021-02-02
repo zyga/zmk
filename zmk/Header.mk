@@ -20,5 +20,6 @@ Header.Variables=
 define Header.Template
 $1.InstallDir ?= $(includedir)
 $1.InstallMode = 0644
+$1.InstallFrom ?= $$(ZMK.OutOfTreeSourcePath)
 $$(eval $$(call ZMK.Expand,InstallUninstall,$1))
 endef

@@ -26,6 +26,7 @@ define InstallUninstall.Template
 $1.InstallDir ?= $$(error define $1.InstallDir - the destination directory, or noinst to skip installation)
 $1.InstallMode ?= 0644
 $1.InstallName ?= $$(notdir $1)
+$1.InstallFrom ?=
 
 # Unless we don't want to install the file, look below.
 ifneq ($$($1.InstallDir),noinst)
@@ -36,7 +37,7 @@ uninstall::
 	$$(Silent.Command)rm -f $$(DESTDIR)$$($1.InstallDir)/$$($1.InstallName)
 
 $$(eval $$(call ZMK.Expand,Directory,$$($1.InstallDir)))
-$$(DESTDIR)$$($1.InstallDir)/$$($1.InstallName): $1 | $$(DESTDIR)$$($1.InstallDir)
+$$(DESTDIR)$$($1.InstallDir)/$$($1.InstallName): $$($1.InstallFrom)$1 | $$(DESTDIR)$$($1.InstallDir)
 	$$(call Silent.Say,INSTALL,$$@)
 	$$(Silent.Command)$$(strip install -m $$($1.InstallMode) $$^ $$@)
 endif # noinst
