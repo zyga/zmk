@@ -41,6 +41,9 @@ Changes in the next release:
 * The configure script now accepts --exec_prefix= as an alternate spelling of
   --exec-prefix.
 
+* The configure script now accepts but ignores --oldincludedir for compatibility
+  with some build systems.
+
 Changes in 0.4.2:
 
 * The PVS module no longer fails when running the pvs-report target.
