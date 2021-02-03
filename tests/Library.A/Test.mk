@@ -16,7 +16,7 @@ $(eval $(ZMK.isolateHostToolchain))
 %-destdir.log: ZMK.makeOverrides += DESTDIR=/destdir
 # Some logs behave as if configure --enable-static was used
 %-enable-static-libs.log: ZMK.makeOverrides += Configure.StaticLibraries=yes
-# Some logs behave as if configure --disable -static was used
+# Some logs behave as if configure --disable-static was used
 %-disable-static-libs.log: ZMK.makeOverrides += Configure.StaticLibraries=
 # Test depends on source files
 %.log: foo.c
@@ -100,8 +100,8 @@ clean-destdir: clean-destdir.log
 	GREP -qFx 'rm -f ./libfoo.a-foo.d' <$<
 
 all-enable-static-libs: all-enable-static-libs.log
-    # Configuring --enable-static enables compliation of static libraries.
+	# Configuring --enable-static enables compilation of static libraries.
 	GREP -qFx 'ar -cr libfoo.a libfoo.a-foo.o' <$<
 all-disable-static-libs: all-disable-static-libs.log
-    # Configuring --disable-static disables compliation of static libraries.
+	# Configuring --disable-static disables compilation of static libraries.
 	GREP -v -qFx 'ar -cr libfoo.a libfoo.a-foo.o' <$<
