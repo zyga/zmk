@@ -38,6 +38,9 @@ Changes in the next release:
   configuration script handles the --target= command line option and the result
   is available as $(Configure.TargetArchTriplet).
 
+* The configure script now accepts --exec_prefix= as an alternate spelling of
+  --exec-prefix.
+
 * The configure script now accepts but ignores --oldincludedir for compatibility
   with some build systems.
 

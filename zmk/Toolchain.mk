@@ -3,8 +3,8 @@
 # This file is part of zmk.
 #
 # Zmk is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License.
+# it under the terms of the GNU Lesser General Public License version 3 as
+# published by the Free Software Foundation.
 #
 # Zmk is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -17,7 +17,7 @@
 $(eval $(call ZMK.Import,OS))
 $(eval $(call ZMK.Import,Configure))
 
-# Compiler defaults unless changed by GNUmakefile.configure.mk
+# Compiler defaults unless changed by config.$(Project.Name).mk
 
 ifeq ($(OS.Kernel),SunOS)
 # Solaris doesn't seem to provide any aliases or symlinks for gcc but make wants to call it "cc".

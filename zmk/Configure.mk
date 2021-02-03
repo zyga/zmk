@@ -3,8 +3,8 @@
 # This file is part of zmk.
 #
 # Zmk is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License.
+# it under the terms of the GNU Lesser General Public License version 3 as
+# published by the Free Software Foundation.
 #
 # Zmk is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,7 +19,7 @@ $(eval $(call ZMK.Import,Silent))
 # Is zmk debugging enabled for this module?
 Configure.debug ?= $(findstring configure,$(DEBUG))
 
-# Configuration system defaults, also changed by GNUmakefile.configure.mk
+# Configuration system defaults, also changed by config.$(Project.Name).mk
 Configure.HostArchTriplet ?=
 Configure.BuildArchTriplet ?=
 Configure.TargetArchTriplet ?=
@@ -57,8 +57,8 @@ define Configure.script
 # This file is part of zmk.
 #
 # Zmk is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License.
+# it under the terms of the GNU Lesser General Public License version 3 as
+# published by the Free Software Foundation.
 #
 # Zmk is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -92,6 +92,7 @@ while [ "$$#" -ge 1 ]; do
             echo "Build-time directory selection:"
             echo "  --prefix=PREFIX             Set prefix for all directories to PREFIX"
             echo "  --exec-prefix=PREFIX        Set prefix for libraries and programs to PREFIX"
+            echo "  --exec_prefix=PREFIX        Alternate spelling --exec-prefix"
             echo
             echo "  --bindir=DIR                Install user programs to DIR"
             echo "  --sbindir=DIR               Install super-user programs to DIR"
@@ -169,7 +170,7 @@ while [ "$$#" -ge 1 ]; do
         --program-suffix=*)             programSuffix="$$(rhs "$$1")" && shift ;;
         --program-transform-name=*)     programTransformName="$$(rhs "$$1")" && shift ;;
 
-        --exec-prefix=*)                exec_prefix="$$(rhs "$$1")" && shift ;;
+        --exec-prefix=*|--exec_prefix=*)exec_prefix="$$(rhs "$$1")" && shift ;;
         --prefix=*)                     prefix="$$(rhs "$$1")" && shift ;;
 
         --bindir=*)                     bindir="$$(rhs "$$1")" && shift ;;

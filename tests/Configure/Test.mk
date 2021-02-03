@@ -21,6 +21,8 @@ t:: \
 	config-program-suffix \
 	config-program-transform-name \
 	config-prefix \
+	config-exec-prefix \
+	config-exec_prefix \
 	config-bindir \
 	config-sbindir \
 	config-libdir \
@@ -45,9 +47,9 @@ configure: Makefile $(ZMK.test.Path)/z.mk $(wildcard $(ZMK.test.Path)/zmk/*.mk)
 c::
 	rm -f configure
 
-# The configure script writes a configuration file.
-# Note that normally the file is GNUmakefile.$(NAME).configure.mk but
-# the test redirects that to a different file to enable parallelism.
+# The configure script writes a configuration file. Note that normally the file
+# is config.$(NAME).mk but the test redirects that to a different file to
+# enable parallelism.
 configureOptions ?=
 configureOptions += $(if $(ZMK.test.IsOutOfTreeBuild),ZMK.SrcDir=$(ZMK.test.SrcDir))
 config.%.mk: configure Test.mk
@@ -176,6 +178,11 @@ config-prefix: config.prefix.mk
 config.exec-prefix.mk: configureOptions += --exec-prefix=/foo
 config-exec-prefix: config.exec-prefix.mk
 	# configure --exec-prefix=/foo sets exec_prefix=/foo
+	GREP -qFx 'exec_prefix=/foo' <$<
+
+config.exec_prefix.mk: configureOptions += --exec_prefix=/foo
+config-exec_prefix: config.exec_prefix.mk
+	# configure --exec_prefix=/foo sets exec_prefix=/foo
 	GREP -qFx 'exec_prefix=/foo' <$<
 
 dirs=bindir sbindir libdir libexecdir includedir mandir infodir sysconfdir datadir localstatedir runstatedir sharedstatedir
