@@ -130,6 +130,16 @@ This variable is automatically used by zmk when building executables.
 \#
 \# The following variables are specific to zmk.
 \#
+.Ss Toolchain.SysRoot
+Path of the root directory where the compiler looks for
+headers and libraries. A non-empty value causes
+.Em --sysroot=$(Toolchain.SysRoot)
+to be passed to the compiler whenever it is used for
+compiling, linking or pre-processing.
+.Pp
+The default value is
+.Em $(Configure.SysRoot) ,
+namely the preference from the configuration system.
 .Ss Toolchain.DependencyTracking
 Expands to
 .Em yes ,

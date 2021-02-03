@@ -23,6 +23,7 @@ Configure.debug ?= $(findstring configure,$(DEBUG))
 Configure.HostArchTriplet ?=
 Configure.BuildArchTriplet ?=
 Configure.TargetArchTriplet ?=
+Configure.SysRoot ?=
 Configure.DependencyTracking ?= yes
 Configure.MaintainerMode ?= yes
 Configure.SilentRules ?=
@@ -95,6 +96,9 @@ while [ "$$#" -ge 1 ]; do
             echo "  --enable-dynamic            Enable dynamic or shared libraries"
             echo "  --disable-dynamic           Disable dynamic or shared libraries"
             echo
+            echo "Autotools compatibility options"
+            echo "  --with-libtool-sysroot=DIR  Set the compiler sysroot to DIR"
+            echo
             echo "Build-time directory selection:"
             echo "  --prefix=PREFIX             Set prefix for all directories to PREFIX"
             echo "  --exec-prefix=PREFIX        Set prefix for libraries and programs to PREFIX"
@@ -159,6 +163,7 @@ while [ "$$#" -ge 1 ]; do
         --build=*)                      buildArchTriplet="$$(rhs "$$1")" && shift ;;
         --host=*)                       hostArchTriplet="$$(rhs "$$1")" && shift ;;
         --target=*)                     targetArchTriplet="$$(rhs "$$1")" && shift ;;
+        --with-libtool-sysroot=*)       sysRoot="$$(rhs "$$1")" && shift ;;
 
         --enable-dependency-tracking)   dependencyTracking=yes && shift ;;
         --disable-dependency-tracking)  dependencyTracking=no && shift ;;
@@ -231,6 +236,7 @@ done
     test -n "$${buildArchTriplet:-}"    && echo "Configure.BuildArchTriplet=$$buildArchTriplet"     || echo "#   Configure.BuildArchTriplet was not specified."
     test -n "$${hostArchTriplet:-}"     && echo "Configure.HostArchTriplet=$$hostArchTriplet"       || echo "#   Configure.HostArchTriplet was not specified."
     test -n "$${targetArchTriplet:-}"   && echo "Configure.TargetArchTriplet=$$targetArchTriplet"   || echo "#   Configure.TargetArchTriplet was not specified."
+    test -n "$${sysRoot:-}"             && echo "Configure.SysRoot=$$sysRoot"                       || echo "#   Configure.SysRoot was not specified."
     echo
     echo "# Build-time configuration of application directories."
     test -n "$${prefix:-}"          && echo "prefix=$$prefix"                   || echo "#   prefix was not specified."

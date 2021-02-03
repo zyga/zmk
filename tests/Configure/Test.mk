@@ -11,6 +11,7 @@ t:: \
 	config-build \
 	config-host \
 	config-target \
+	config-with-libtool-sysroot \
 	config-enable-dependency-tracking \
 	config-disable-dependency-tracking \
 	config-enable-maintainer-mode \
@@ -80,6 +81,7 @@ debug-defaults: debug-defaults.log
 	GREP -qFx 'DEBUG: Configure.HostArchTriplet=' <$<
 	GREP -qFx 'DEBUG: Configure.BuildArchTriplet=' <$<
 	GREP -qFx 'DEBUG: Configure.TargetArchTriplet=' <$<
+	GREP -qFx 'DEBUG: Configure.SysRoot=' <$<
 	GREP -qFx 'DEBUG: Configure.DependencyTracking=yes' <$<
 	GREP -qFx 'DEBUG: Configure.MaintainerMode=yes' <$<
 	GREP -qFx 'DEBUG: Configure.SilentRules=' <$<
@@ -106,6 +108,7 @@ config-defaults: config.defaults.mk
 	GREP -v -qF 'Configure.BuildArchTriplet=' <$<
 	GREP -v -qF 'Configure.HostArchTriplet=' <$<
 	GREP -v -qF 'Configure.TargetArchTriplet=' <$<
+	GREP -v -qF 'Configure.SysRoot=' <$<
 	GREP -v -qF 'Configure.DependencyTracking=' <$<
 	GREP -v -qF 'Configure.MaintainerMode=' <$<
 	GREP -v -qF 'Configure.SilentRules=' <$<
@@ -132,6 +135,12 @@ config-target: config.target.mk
 	# configure --target= sets Configure.TargetArchTriplet
 	GREP -qFx 'Configure.TargetArchTriplet=foo-linux-gnu' <$<
 	GREP -qFx 'Configure.Options=$(if $(ZMK.test.IsOutOfTreeBuild),ZMK.SrcDir=$(ZMK.test.SrcDir) )--target=foo-linux-gnu' <$<
+
+config.with-libtool-sysroot.mk: configureOptions += --with-libtool-sysroot=/path
+config-with-libtool-sysroot: config.with-libtool-sysroot.mk
+	# configure --with-libtool-sysroot= sets Configure.SysRoot
+	GREP -qFx 'Configure.SysRoot=/path' <$<
+	GREP -qFx 'Configure.Options=$(if $(ZMK.test.IsOutOfTreeBuild),ZMK.SrcDir=$(ZMK.test.SrcDir) )--with-libtool-sysroot=/path' <$<
 
 config.enable-dependency-tracking.mk: configureOptions += --enable-dependency-tracking
 config-enable-dependency-tracking: config.enable-dependency-tracking.mk

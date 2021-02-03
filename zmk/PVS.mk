@@ -30,7 +30,7 @@ PLOG_CONVERTER_FLAGS ?=
 define PVS.PreProcess
 $1.i: $$(ZMK.OutOfTreeSourcePath)$1 | $$(patsubst %/,%,$$(CURDIR)/$$(dir $1))
 	$$(call Silent.Say,CPP,$$@)
-	$$(Silent.Command)$$(strip $$(CPP) $$(CPPFLAGS) $$< -E -o $$@)
+	$$(Silent.Command)$$(strip $$(CPP) $$(CPPFLAGS) $$< -E $$(if $$(Toolchain.SysRoot),--sysroot=$$(Toolchain.SysRoot)) -o $$@)
 endef
 
 define PVS.Analyze
