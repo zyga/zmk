@@ -3,8 +3,8 @@
 # This file is part of zmk.
 #
 # Zmk is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License.
+# it under the terms of the GNU Lesser General Public License version 3 as
+# published by the Free Software Foundation.
 #
 # Zmk is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -59,8 +59,8 @@ define Configure.script
 # This file is part of zmk.
 #
 # Zmk is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License.
+# it under the terms of the GNU Lesser General Public License version 3 as
+# published by the Free Software Foundation.
 #
 # Zmk is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -98,12 +98,14 @@ while [ "$$#" -ge 1 ]; do
             echo "Build-time directory selection:"
             echo "  --prefix=PREFIX             Set prefix for all directories to PREFIX"
             echo "  --exec-prefix=PREFIX        Set prefix for libraries and programs to PREFIX"
+            echo "  --exec_prefix=PREFIX        Alternate spelling --exec-prefix"
             echo
             echo "  --bindir=DIR                Install user programs to DIR"
             echo "  --sbindir=DIR               Install super-user programs to DIR"
             echo "  --libdir=DIR                Install runtime and development libraries to DIR"
             echo "  --libexecdir=DIR            Install library-internal programs to DIR"
             echo "  --includedir=DIR            Install development header files to DIR"
+            echo "  --oldincludedir=DIR         For compatibility with autotools, ignored"
             echo "  --mandir=DIR                Install manual pages to DIR"
             echo "  --infodir=DIR               Install GNU info pages to DIR"
             echo "  --sysconfdir=DIR            Install system configuration files to DIR"
@@ -179,7 +181,7 @@ while [ "$$#" -ge 1 ]; do
         --program-suffix=*)             programSuffix="$$(rhs "$$1")" && shift ;;
         --program-transform-name=*)     programTransformName="$$(rhs "$$1")" && shift ;;
 
-        --exec-prefix=*)                exec_prefix="$$(rhs "$$1")" && shift ;;
+        --exec-prefix=*|--exec_prefix=*)exec_prefix="$$(rhs "$$1")" && shift ;;
         --prefix=*)                     prefix="$$(rhs "$$1")" && shift ;;
 
         --bindir=*)                     bindir="$$(rhs "$$1")" && shift ;;
@@ -188,6 +190,7 @@ while [ "$$#" -ge 1 ]; do
         --libexecdir=*)                 libexecdir="$$(rhs "$$1")" && shift ;;
         --datadir=*)                    datadir="$$(rhs "$$1")" && shift ;;
         --includedir=*)                 includedir="$$(rhs "$$1")" && shift ;;
+        --oldincludedir=*)              shift ;; # ignored for compatibility
         --infodir=*)                    infodir="$$(rhs "$$1")" && shift ;;
         --mandir=*)                     mandir="$$(rhs "$$1")" && shift ;;
         --sysconfdir=*)                 sysconfdir="$$(rhs "$$1")" && shift ;;
