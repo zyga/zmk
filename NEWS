@@ -50,6 +50,9 @@ Changes in the next release:
   are enabled by default. The values are stored and inhibit expansion of
   appropriate templates.
 
+* The Header and HeaderGroup template no longer expand $(includedir) too early,
+  allowing customized includedir to be respected.
+
 Changes in 0.4.2:
 
 * The PVS module no longer fails when running the pvs-report target.
