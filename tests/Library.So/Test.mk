@@ -95,8 +95,8 @@ clean-destdir: clean-destdir.log
 	GREP -qFx 'rm -f ./libbar.so-bar.d' <$<
 
 all-enable-dynamic-libs: all-enable-dynamic-libs.log
-	# Configuring --enable-dynamic enables compliation of dynamic libraries.
+	# Configuring --enable-dynamic enables compilation of dynamic libraries.
 	GREP -qFx 'cc -shared -Wl,-soname=libfoo.so.1 -o libfoo.so.1 libfoo.so.1-foo.o' <$<
 all-disable-dynamic-libs: all-disable-dynamic-libs.log
-	# Configuring --disable-dynamic disables compliation of dynamic libraries.
+	# Configuring --disable-dynamic disables compilation of dynamic libraries.
 	GREP -v -qFx 'cc -shared -Wl,-soname=libfoo.so.1 -o libfoo.so.1 libfoo.so.1-foo.o' <$<
