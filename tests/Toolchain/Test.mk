@@ -31,7 +31,7 @@ debug-defaults: debug-defaults.log
 
 debug-dependency-tracking.log: ZMK.makeOverrides += Configure.DependencyTracking=yes
 debug-dependency-tracking: debug-dependency-tracking.log
-	# By default dependency tracking is enabled.
+	# DependencyTracking setting is inherited from the configuration system.
 	GREP -qFx 'DEBUG: Toolchain.DependencyTracking=yes' <$<
 
 debug-mingw-cc-detection.log: ZMK.makeOverrides += CC=fake-fake-mingw32-gcc

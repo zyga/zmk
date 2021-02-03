@@ -50,6 +50,9 @@ Changes in the next release:
   are enabled by default. The values are stored and inhibit expansion of
   appropriate templates.
 
+* The Header and HeaderGroup template no longer expand $(includedir) too early,
+  allowing customized includedir to be respected.
+
 * The Configure module no longer breaks in out-of-tree builds and no special
   care is required to support that anymore.
 

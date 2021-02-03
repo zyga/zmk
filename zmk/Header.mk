@@ -18,7 +18,7 @@ $(eval $(call ZMK.Import,Directories))
 
 Header.Variables=
 define Header.Template
-$1.InstallDir ?= $(includedir)
+$1.InstallDir ?= $$(includedir)
 $1.InstallMode = 0644
 $$(eval $$(call ZMK.Expand,InstallUninstall,$1))
 endef

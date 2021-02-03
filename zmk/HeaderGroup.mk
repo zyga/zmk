@@ -27,7 +27,7 @@ $1.Headers ?= $$(error define $1.Headers - the list of header files to install)
 # the lower-case) variables use source-relative paths.
 $1.headers = $$(patsubst $$(ZMK.OutOfTreeSourcePath)%,%,$$($1.Headers))
 
-$1.InstallDir ?= $(includedir)
+$1.InstallDir ?= $$(includedir)
 $1.InstallMode = 0644
 
 # This is how to compile each specific source file.
