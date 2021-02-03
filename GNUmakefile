@@ -62,7 +62,7 @@ man/%: man/%.in | $(CURDIR)/man
 $(foreach f,$(ZMK.manPages),$(eval $(call ZMK.Expand,ManPage,man/$f)))
 
 # Build the release tarball.
-ZMK.releaseArchive?=$(NAME)_$(VERSION).tar.gz
+ZMK.releaseArchive?=$(NAME)-$(VERSION).tar.gz
 $(ZMK.releaseArchive).Files = GNUmakefile README.md LICENSE NEWS
 $(ZMK.releaseArchive).Files += $(addsuffix .in,$(addprefix man/,$(ZMK.manPages)))
 $(ZMK.releaseArchive).Files += $(addprefix examples/hello-c/,Makefile Test.mk hello.c)
