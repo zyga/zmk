@@ -3,8 +3,8 @@
 # This file is part of zmk.
 #
 # Zmk is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License.
+# it under the terms of the GNU Lesser General Public License version 3 as
+# published by the Free Software Foundation.
 #
 # Zmk is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -20,6 +20,7 @@ $(eval $(call ZMK.Import,Toolchain))
 
 Library.So.Variables=Sources SoName InstallDir VersionScript
 define Library.So.Template
+ifeq ($(Configure.DynamicLibraries),yes)
 
 # Compile library objects.
 $1: CFLAGS += -fpic
@@ -75,4 +76,5 @@ $$($1.alias).SymlinkTarget = $1
 $$(eval $$(call ZMK.Expand,Symlink,$$($1.alias)))
 endif
 
+endif # Configure.DynamicLibraries
 endef

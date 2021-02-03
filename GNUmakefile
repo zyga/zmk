@@ -3,8 +3,8 @@
 # This file is part of zmk.
 #
 # Zmk is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License.
+# it under the terms of the GNU Lesser General Public License version 3 as
+# published by the Free Software Foundation.
 #
 # Zmk is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -29,6 +29,9 @@ ZMK.manPages = \
 	zmk.Configure.5 \
 	zmk.Coverity.5 \
 	zmk.Directories.5 \
+	zmk.Library.A.5 \
+	zmk.Library.DyLib.5 \
+	zmk.Library.So.5 \
 	zmk.OS.5 \
 	zmk.Program.5 \
 	zmk.Script.5 \
@@ -62,7 +65,7 @@ man/%: man/%.in | $(CURDIR)/man
 $(foreach f,$(ZMK.manPages),$(eval $(call ZMK.Expand,ManPage,man/$f)))
 
 # Build the release tarball.
-ZMK.releaseArchive?=$(NAME)_$(VERSION).tar.gz
+ZMK.releaseArchive?=$(NAME)-$(VERSION).tar.gz
 $(ZMK.releaseArchive).Files = GNUmakefile README.md LICENSE NEWS
 $(ZMK.releaseArchive).Files += $(addsuffix .in,$(addprefix man/,$(ZMK.manPages)))
 $(ZMK.releaseArchive).Files += $(addprefix examples/hello-c/,Makefile Test.mk hello.c)

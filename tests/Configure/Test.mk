@@ -17,15 +17,22 @@ t:: \
 	config-disable-maintainer-mode \
 	config-enable-silent-rules \
 	config-disable-silent-rules \
+	config-enable-static \
+	config-disable-static \
+	config-enable-dynamic \
+	config-disable-dynamic \
 	config-program-prefix \
 	config-program-suffix \
 	config-program-transform-name \
 	config-prefix \
+	config-exec-prefix \
+	config-exec_prefix \
 	config-bindir \
 	config-sbindir \
 	config-libdir \
 	config-libexecdir \
 	config-includedir \
+	config-oldincludedir \
 	config-mandir \
 	config-infodir \
 	config-sysconfdir \
@@ -76,6 +83,8 @@ debug-defaults: debug-defaults.log
 	GREP -qFx 'DEBUG: Configure.DependencyTracking=yes' <$<
 	GREP -qFx 'DEBUG: Configure.MaintainerMode=yes' <$<
 	GREP -qFx 'DEBUG: Configure.SilentRules=' <$<
+	GREP -qFx 'DEBUG: Configure.StaticLibraries=yes' <$<
+	GREP -qFx 'DEBUG: Configure.DynamicLibraries=yes' <$<
 	GREP -qFx 'DEBUG: Configure.ProgramPrefix=' <$<
 	GREP -qFx 'DEBUG: Configure.ProgramSuffix=' <$<
 	GREP -qFx 'DEBUG: Configure.ProgramTransformName=' <$<
@@ -100,6 +109,8 @@ config-defaults: config.defaults.mk
 	GREP -v -qF 'Configure.DependencyTracking=' <$<
 	GREP -v -qF 'Configure.MaintainerMode=' <$<
 	GREP -v -qF 'Configure.SilentRules=' <$<
+	GREP -v -qF 'Configure.StaticLibraries=' <$<
+	GREP -v -qF 'Configure.DynamicLibraries=' <$<
 	GREP -v -qF 'Configure.ProgramPrefix=' <$<
 	GREP -v -qF 'Configure.ProgramSuffix=' <$<
 	GREP -v -qF 'Configure.ProgramTransformName=' <$<
@@ -152,6 +163,26 @@ config-disable-silent-rules: config.disable-silent-rules.mk
 	# configure --disable-dependency-tracking sets Configure.SilentRules= (empty but set)
 	GREP -qFx 'Configure.SilentRules=' <$<
 
+config.enable-static.mk: configureOptions += --enable-static
+config-enable-static: config.enable-static.mk
+	# configure --enable-static sets Configure.StaticLibraries=yes
+	GREP -qFx 'Configure.StaticLibraries=yes' <$<
+
+config.disable-static.mk: configureOptions += --disable-static
+config-disable-static: config.disable-static.mk
+	# configure --disable-static sets Configure.StaticLibraries= (empty but set)
+	GREP -qFx 'Configure.StaticLibraries=' <$<
+
+config.enable-dynamic.mk: configureOptions += --enable-dynamic
+config-enable-dynamic: config.enable-dynamic.mk
+	# configure --enable-dynamic sets Configure.DynamicLibraries=yes
+	GREP -qFx 'Configure.DynamicLibraries=yes' <$<
+
+config.disable-dynamic.mk: configureOptions += --disable-dynamic
+config-disable-dynamic: config.disable-dynamic.mk
+	# configure --disable-dynamic sets Configure.DynamicLibraries= (empty but set)
+	GREP -qFx 'Configure.DynamicLibraries=' <$<
+
 config.program-prefix.mk: configureOptions += --program-prefix=awesome-
 config-program-prefix: config.program-prefix.mk
 	# configure --program-prefix=foo sets Configure.ProgramPrefix=foo
@@ -177,8 +208,18 @@ config-exec-prefix: config.exec-prefix.mk
 	# configure --exec-prefix=/foo sets exec_prefix=/foo
 	GREP -qFx 'exec_prefix=/foo' <$<
 
+config.exec_prefix.mk: configureOptions += --exec_prefix=/foo
+config-exec_prefix: config.exec_prefix.mk
+	# configure --exec_prefix=/foo sets exec_prefix=/foo
+	GREP -qFx 'exec_prefix=/foo' <$<
+
 dirs=bindir sbindir libdir libexecdir includedir mandir infodir sysconfdir datadir localstatedir runstatedir sharedstatedir
 $(foreach d,$(dirs),config.$d.mk): configureOptions += --$*=/foo
 $(addprefix config-,$(dirs)): config-%: config.%.mk
 	# configure --$*=/foo sets $*=/foo
 	GREP -qFx '$*=/foo' <$<
+
+config.oldincludedir.mk: configureOptions += --oldincludedir=/unused
+config-oldincludedir: config.oldincludedir.mk
+	# configure --oldincludedir=/unused doesn't do anything
+	GREP -v -qFx '/unused' <$<
