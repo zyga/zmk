@@ -131,9 +131,9 @@ This variable is automatically used by zmk when building executables.
 \# The following variables are specific to zmk.
 \#
 .Ss Toolchain.DependencyTracking
-If expands to
+Expands to
 .Em yes ,
-then compilation of C, C++ and Objective C source files
+if compilation of C, C++ and Objective C source files
 will automatically generate dependency rules for Make.
 .Pp
 The default value is
