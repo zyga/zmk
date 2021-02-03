@@ -3,6 +3,7 @@
 include zmk/internalTest.mk
 
 t:: all install uninstall clean \
+    all-sysroot \
     all-destdir install-destdir uninstall-destdir clean-destdir \
     all-enable-dynamic-libs all-disable-dynamic-libs
 
@@ -15,6 +16,8 @@ $(eval $(ZMK.isolateHostToolchain))
 %-enable-dynamic-libs.log: ZMK.makeOverrides += Configure.DynamicLibraries=yes
 # Some logs behave as if configure --disable-dynamic was used
 %-disable-dynamic-libs.log: ZMK.makeOverrides += Configure.DynamicLibraries=
+# Some logs behave as if a sysroot was requested.
+%-sysroot.log: ZMK.makeOverrides += Toolchain.SysRoot=/path
 # Test depends on source files
 %.log: foo.c
 
@@ -57,6 +60,14 @@ clean: clean.log
 	GREP -qFx 'rm -f ./libfoo.so.1-foo.o' <$<
 	GREP -qFx 'rm -f ./libbar.so-bar.o' <$<
 	GREP -qFx 'rm -f ./libbar.so-bar.d' <$<
+
+all-sysroot: all-sysroot.log
+	# Building a shared library compiles objects against the configured sysroot.
+	GREP -qFx 'cc -fpic -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF libfoo.so.1-foo.d) -c --sysroot=/path -o libfoo.so.1-foo.o $(ZMK.test.OutOfTreeSourcePath)foo.c' <$<
+	GREP -qFx 'cc -fpic -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF libbar.so-bar.d) -c --sysroot=/path -o libbar.so-bar.o $(ZMK.test.OutOfTreeSourcePath)bar.c' <$<
+	# Links objects together with the configured sysroot in scope.
+	GREP -qFx 'cc -shared -Wl,-soname=libfoo.so.1 --sysroot=/path -o libfoo.so.1 libfoo.so.1-foo.o' <$<
+	GREP -qFx 'cc -shared -Wl,-soname=libbar.so --sysroot=/path -o libbar.so libbar.so-bar.o' <$<
 
 all-destdir: all-destdir.log
 	# Building a shared library compiles objects

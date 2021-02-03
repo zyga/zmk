@@ -111,6 +111,15 @@ option. It represents the
 describing the system for which any generated code will be made. This variable
 is needed infrequently, usually by tools such as compilers, to prepare them for
 creating binary code for a given architecture.
+.Ss Configure.SysRoot
+This variable is set by the
+.Nm configure
+script when invoked with the
+.Em --with-libtool-sysroot=...
+option. It represents the explicit root directory of the file system where the
+compiler should look for libraries and headers. It is typically used during
+cross-compilation, to isolate the build process from whatever headers and
+libraries are installed natively on the system.
 .Ss Configure.DependencyTracking
 This variable is controlled by the
 .Nm configure

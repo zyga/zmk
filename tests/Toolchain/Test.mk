@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 include zmk/internalTest.mk
 
-t:: debug-defaults debug-dependency-tracking \
+t:: debug-defaults debug-sysroot debug-dependency-tracking \
 	debug-mingw-cc-detection debug-mingw-cxx-detection \
 	debug-watcom-dos-cc-detection debug-watcom-dos-cxx-detection \
 	debug-watcom-win16-cc-detection debug-watcom-win16-cxx-detection \
@@ -28,6 +28,11 @@ debug-defaults: debug-defaults.log
 	# By default CC=cc and CXX is either c++ or g++.
 	GREP -qFx 'DEBUG: CC=cc' <$<
 	GREP -qx 'DEBUG: CXX=[cg][+][+]' <$<
+
+debug-sysroot.log: ZMK.makeOverrides += Configure.SysRoot=/path
+debug-sysroot: debug-sysroot.log
+	# SysRoot setting is inherited from the configuration system.
+	GREP -qFx 'DEBUG: Toolchain.SysRoot=/path' <$<
 
 debug-dependency-tracking.log: ZMK.makeOverrides += Configure.DependencyTracking=yes
 debug-dependency-tracking: debug-dependency-tracking.log

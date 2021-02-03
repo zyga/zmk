@@ -52,6 +52,9 @@ Toolchain.CC.IsCross ?=
 # Is the C++ compiler a cross-compiler?
 Toolchain.CXX.IsCross ?=
 
+# Should the compiler be invoked with an explicit sysroot?
+Toolchain.SysRoot ?= $(Configure.SysRoot)
+
 # Should compiling produce dependency information for make?
 Toolchain.DependencyTracking ?= $(Configure.DependencyTracking)
 

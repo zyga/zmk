@@ -56,6 +56,14 @@ Changes in the next release:
 * The Configure module no longer breaks in out-of-tree builds and no special
   care is required to support that anymore.
 
+* ZMK is now able to use an explicit sysroot for all activities.
+  The configure script now accepts --with-libtool-sysroot which sets
+  $(Configure.SysRoot). The Toolchain module defines $(Toolchain.SysRoot) which
+  defaults to whatever was configured. The templates ObjectGroup, Library.So,
+  Library.DyLib and Program now pass the sysroot argument when
+  Toolchain.SysRoot is non-empty. Lastly the PVS module similarly passes
+  a non-empty sysroot when invoking the pre-processor.
+
 Changes in 0.4.2:
 
 * The PVS module no longer fails when running the pvs-report target.

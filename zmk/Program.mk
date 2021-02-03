@@ -32,7 +32,7 @@ $1$$(exe): LDLIBS += -lobjc
 endif # no objective C objects
 $1$$(exe): $$($1.Objects)
 	$$(call Silent.Say,$$($1.SuggestedLinkerSymbol),$$@)
-	$$(Silent.Command)$$(strip $$(if $$($1.ObjectsObjC),$$(LINK.m),$$(if $$($1.ObjectsCxx),$$(LINK.cc),$$(LINK.o))) -o $$@ $$^ $$(LDLIBS))
+	$$(Silent.Command)$$(strip $$(if $$($1.ObjectsObjC),$$(LINK.m),$$(if $$($1.ObjectsCxx),$$(LINK.cc),$$(LINK.o))) $$(if $$(Toolchain.SysRoot),--sysroot=$$(Toolchain.SysRoot)) -o $$@ $$^ $$(LDLIBS))
 
 # Install program binary.
 $1.InstallDir ?= $$(bindir)
