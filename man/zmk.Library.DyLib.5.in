@@ -1,0 +1,27 @@
+.Dd Feb 2, 2021
+.Os zmk @VERSION@
+.Dt zmk.Library.DyLib 5 PRM
+.Sh NAME
+.Nm Library.So
+.Nd template for compiling C/C++/ObjC shared Mach-O libraries
+.Sh SYNOPSIS
+.Bd -literal
+include z.mk
+
+# libName is any valid identifier.
+libName.dylib.Sources = hello.c
+$(eval $(call ZMK.Expand,Library.DyLib,libName.dylib))
+.Ed
+.Sh DESCRIPTION
+This manual page is a stub.
+.Pp
+When
+.Nm configure
+script is invoked with
+.Em --disable-shared
+then this template behaves as if it was empty.
+.Sh TARGETS
+.Sh VARIABLES
+.Sh HISTORY
+.Sh AUTHORS
+.An "Zygmunt Krynicki" Aq Mt me@zygoon.pl

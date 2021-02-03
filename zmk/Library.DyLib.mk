@@ -20,6 +20,7 @@ $(eval $(call ZMK.Import,Toolchain))
 
 Library.DyLib.Variables=Sources ExportList
 define Library.DyLib.Template
+ifeq ($(Configure.DynamicLibraries),yes)
 
 # Compile library objects.
 $1: CFLAGS += -fpic
@@ -64,4 +65,5 @@ $$($1.alias).SymlinkTarget = $1
 $$(eval $$(call ZMK.Expand,Symlink,$$($1.alias)))
 endif
 
+endif # Configure.DynamicLibraries
 endef

@@ -44,6 +44,12 @@ Changes in the next release:
 * The configure script now accepts but ignores --oldincludedir for compatibility
   with some build systems.
 
+* The Configure module now supports configuration of static and dynamic
+  libraries with the new configuration script options: --enable-static,
+  --disable-static, --enable-dynamic and --disable-dynamic. Both library types
+  are enabled by default. The values are stored and inhibit expansion of
+  appropriate templates.
+
 Changes in 0.4.2:
 
 * The PVS module no longer fails when running the pvs-report target.

@@ -1,0 +1,27 @@
+.Dd Feb 2, 2021
+.Os zmk @VERSION@
+.Dt zmk.Library.A 5 PRM
+.Sh NAME
+.Nm Library.A
+.Nd template for compiling C/C++/ObjC static libraries
+.Sh SYNOPSIS
+.Bd -literal
+include z.mk
+
+# libName is any valid identifier.
+libName.a.Sources = hello.c
+$(eval $(call ZMK.Expand,Library.A,libName.a))
+.Ed
+.Sh DESCRIPTION
+This manual page is a stub.
+.Pp
+When
+.Nm configure
+script is invoked with
+.Em --disable-static
+then this template behaves as if it was empty.
+.Sh TARGETS
+.Sh VARIABLES
+.Sh HISTORY
+.Sh AUTHORS
+.An "Zygmunt Krynicki" Aq Mt me@zygoon.pl

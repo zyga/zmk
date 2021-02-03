@@ -151,6 +151,28 @@ and
 (default). When enabled it expands to
 .Em yes
 and silences make rules defined by zmk.
+.Ss Configure.StaticLibraries
+This variable is controlled by the
+.Nm configure
+script options
+.Em --enable-static
+(default) and
+.Em --disable-static .
+When static libraries are disabled the template
+.Nm Library.A
+becomes inactive.
+.Ss Configure.DynamicLibraries
+This variable is controlled by the
+.Nm configure
+script options
+.Em --enable-dynamic
+(default) and
+.Em --disable-dynamic .
+When dynamic libraries are disabled the templates
+.Nm Library.So
+and
+.Nm Library.DyLib
+become inactive.
 .Ss Configure.ProgramPrefix
 This variable is set by the
 .Nm configure
