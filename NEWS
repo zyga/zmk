@@ -1,4 +1,4 @@
-Changes in the next release:
+Changes in 0.5:
 
 * The Program.Test template no longer fails with syntax error when computing
   test coverage.

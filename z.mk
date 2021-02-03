@@ -32,7 +32,7 @@ VERSION ?= $(or $(Project.Version),$(error define VERSION - the static version o
 .SUFFIXES:
 
 # Version of the zmk library.
-ZMK.Version = 0.4.2
+ZMK.Version = 0.5
 
 # Location of include files used by the makefile system. Normally this is the
 # zmk subdirectory of /usr/include, as this is where make is importing things
