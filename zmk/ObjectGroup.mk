@@ -40,12 +40,13 @@ ObjectGroup.Variables=Sources Objects ObjectsC ObjectsCxx ObjectsObjC
 define ObjectGroup.Template
 # Sources are not re-defined with := so that they can expand lazily.
 $1.Sources ?= $$(error define $1.Sources - the list of source files to compile)
+$1.GeneratedSources ?= $$(if $$($1.Sources),,$$(error define $1.GeneratedSources - the list of generated source files to compile))
 # NOTE: Strip out the out-of-tree-source-path so that all the $1.sources (note
 # the lower-case) variables use source-relative paths. This is important when
 # we want to derive object paths using source paths (same file with .o
 # extension replaced but rooted at the build tree, not the source tree). When
 # ZMK needs to support generated source files this should be changed.
-$1.sources = $$(patsubst $$(ZMK.OutOfTreeSourcePath)%,%,$$($1.Sources))
+$1.sources = $$(patsubst $$(ZMK.OutOfTreeSourcePath)%,%,$$($1.Sources)) $$($1.GeneratedSources)
 
 $1.sourcesC = $$(filter %.c,$$($1.sources))
 $1.sourcesCxx = $$(filter %.cpp %.cxx %.cc,$$($1.sources))
