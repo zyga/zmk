@@ -73,7 +73,7 @@ endif
 distcheck:: distcheck-$1
 
 .PHONY: distcheck-$1
-distcheck-$1: ZMK.distCheckBase ?= $$(TMPDIR)/$1-distcheck
+distcheck-$1: ZMK.distCheckBase ?= $$(TMPDIR)$1-distcheck
 distcheck-$1: ZMK.absSrcdir ?= $$(abspath $$(ZMK.SrcDir))
 distcheck-$1: ZMK.srcDirMakefile ?= $$(or $$(wildcard $$(abspath $$(ZMK.SrcDir)/GNUmakefile)),$$(wildcard $$(abspath $$(ZMK.SrcDir)/Makefile)))
 distcheck-$1: | $$(TMPDIR)
