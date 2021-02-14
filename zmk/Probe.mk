@@ -42,14 +42,16 @@ $1.ProbeProgramText ?= $$(error define $1.ProbeProgramText - text of the probe p
 $1.ProbeExtension ?= .c
 $1.probeSourceFile ?= $$(Probe.NamePrefix)$1$$($1.ProbeExtension)
 
-$$($1.probeSourceFile): export ZMK_PROBE_PROGRAM_TEXT = $$($1.ProbeProgramText)
-$$($1.probeSourceFile):
+$$(eval $$(call ZMK.Expand,Directory,$$(CURDIR)))
+
+$$(CURDIR)/$$($1.probeSourceFile) $$($1.probeSourceFile): export ZMK_PROBE_PROGRAM_TEXT = $$($1.ProbeProgramText)
+$$(CURDIR)/$$($1.probeSourceFile) $$($1.probeSourceFile): | $$(CURDIR)
 	$$(call Silent.Say,GENERATE,$$@)
 	@echo "$$$${ZMK_PROBE_PROGRAM_TEXT}" >$$@
 
 # Add a rule to compile the program.
 # TODO: optimize Program template for single-source programs to avoid intermediate .o file.
-$$(Probe.NamePrefix)$1.Sources = $$($1.probeSourceFile)
+$$(Probe.NamePrefix)$1.GeneratedSources = $$($1.probeSourceFile)
 $$(Probe.NamePrefix)$1.InstallDir = noinst
 $$(eval $$(call ZMK.Expand,Program,$$(Probe.NamePrefix)$1))
 
