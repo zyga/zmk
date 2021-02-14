@@ -69,6 +69,16 @@ $$(if $$($1.ObjectsCxx),$$(if $$(Toolchain.CXX.IsAvailable),,$$(error Building $
 $$(foreach src,$$($1.sourcesC),$$(eval $$(call ObjectGroup.COMPILE.c,$1,$$(src))))
 $$(foreach src,$$($1.sourcesCxx),$$(eval $$(call ObjectGroup.COMPILE.cc,$1,$$(src))))
 $$(foreach src,$$($1.sourcesObjC),$$(eval $$(call ObjectGroup.COMPILE.m,$1,$$(src))))
+
+# If any probes are used, have everything depend on them.
+ifneq (,$$(filter Probe,$$(ZMK.ImportedModules)))
+# Except probes
+ifneq ($$(Probe.NamePrefix),$$(patsubst $$(Probe.NamePrefix)%,$$(Probe.NamePrefix),$1))
+$$($1.Objects): CPPFLAGS += -DHAVE_CONFIG_H
+$$($1.Objects): config.$(Project.Name).h
+endif
+endif
+
 # Create all support directories for out-of-tree builds
 $$(foreach d,$$(patsubst %/,%,$$(addprefix $$(CURDIR)/,$$(filter-out ./,$$(sort $$(dir $$($1.sources)))))),$$(eval $$(call ZMK.Expand,Directory,$$d)))
 
