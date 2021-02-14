@@ -1,0 +1,18 @@
+# Object files and binaries
+*.o
+hello
+hello.exe
+
+# Dependency data
+*.d
+
+# Locally bundled installation of zmk
+z.mk
+zmk
+
+# Probe system
+.zmk-probe.*
+
+# Configuration system
+config.*.mk
+config.*.h

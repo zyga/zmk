@@ -69,6 +69,7 @@ ZMK.releaseArchive?=$(NAME)-$(VERSION).tar.gz
 $(ZMK.releaseArchive).Files = GNUmakefile README.md LICENSE NEWS
 $(ZMK.releaseArchive).Files += $(addsuffix .in,$(addprefix man/,$(ZMK.manPages)))
 $(ZMK.releaseArchive).Files += $(addprefix examples/hello-c/,Makefile Test.mk hello.c)
+$(ZMK.releaseArchive).Files += $(addprefix examples/probe/,Makefile Test.mk hello.c)
 $(ZMK.releaseArchive).Files += $(addprefix examples/hello-cpp/,Makefile Test.mk hello.cpp)
 $(ZMK.releaseArchive).Files += $(addprefix examples/hello-objc/,Makefile Test.mk hello.m README.txt)
 $(ZMK.releaseArchive).Files += $(addprefix examples/libhello-c/,Makefile Test.mk hello.c hello.h)
