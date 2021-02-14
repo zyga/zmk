@@ -61,6 +61,7 @@ ZMK.modules = \
 	OS \
 	ObjectGroup \
 	PVS \
+	Probe \
 	Program \
 	Program.Test \
 	Script \
