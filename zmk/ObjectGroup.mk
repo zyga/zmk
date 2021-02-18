@@ -23,17 +23,17 @@ $(eval $(call ZMK.Import,OS))
 define ObjectGroup.COMPILE.c
 $$(dir $2)$1-$$(basename $$(notdir $2)).o: $$(ZMK.OutOfTreeSourcePath)$2 | $$(patsubst %/,%,$$(CURDIR)/$$(dir $2))
 	$$(call Silent.Say,CC,$$@)
-	$$(Silent.Command)$$(strip $$(COMPILE.c) $$(if $$(Toolchain.SysRoot),--sysroot=$$(Toolchain.SysRoot)) -o $$@ $$<)
+	$$(Silent.Command)$$(strip $$(subst $$(ZMK.OutOfTreeSourcePath)$$(ZMK.OutOfTreeSourcePath),$$(ZMK.OutOfTreeSourcePath),$$(subst -iquote ,-iquote $$(ZMK.OutOfTreeSourcePath),$$(COMPILE.c))) $$(if $$(Toolchain.SysRoot),--sysroot=$$(Toolchain.SysRoot)) -o $$@ $$<)
 endef
 define ObjectGroup.COMPILE.cc
 $$(dir $2)$1-$$(basename $$(notdir $2)).o: $$(ZMK.OutOfTreeSourcePath)$2 | $$(patsubst %/,%,$$(CURDIR)/$$(dir $2))
 	$$(call Silent.Say,CXX,$$@)
-	$$(Silent.Command)$$(strip $$(COMPILE.cc) $$(if $$(Toolchain.SysRoot),--sysroot=$$(Toolchain.SysRoot)) -o $$@ $$<)
+	$$(Silent.Command)$$(strip $$(subst $$(ZMK.OutOfTreeSourcePath)$$(ZMK.OutOfTreeSourcePath),$$(ZMK.OutOfTreeSourcePath),$$(subst -iquote ,-iquote $$(ZMK.OutOfTreeSourcePath),$$(COMPILE.cc))) $$(if $$(Toolchain.SysRoot),--sysroot=$$(Toolchain.SysRoot)) -o $$@ $$<)
 endef
 define ObjectGroup.COMPILE.m
 $$(dir $2)$1-$$(basename $$(notdir $2)).o: $$(ZMK.OutOfTreeSourcePath)$2 | $$(patsubst %/,%,$$(CURDIR)/$$(dir $2))
 	$$(call Silent.Say,OBJC,$$@)
-	$$(Silent.Command)$$(strip $$(COMPILE.m) $$(if $$(Toolchain.SysRoot),--sysroot=$$(Toolchain.SysRoot)) -o $$@ $$<)
+	$$(Silent.Command)$$(strip $$(subst $$(ZMK.OutOfTreeSourcePath)$$(ZMK.OutOfTreeSourcePath),$$(ZMK.OutOfTreeSourcePath),$$(subst -iquote ,-iquote $$(ZMK.OutOfTreeSourcePath),$$(COMPILE.m))) $$(if $$(Toolchain.SysRoot),--sysroot=$$(Toolchain.SysRoot)) -o $$@ $$<)
 endef
 
 ObjectGroup.Variables=Sources Objects ObjectsC ObjectsCxx ObjectsObjC
