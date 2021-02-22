@@ -11,8 +11,10 @@ ifneq (,$(Toolchain.CC.IsGcc))
 # autoconf/automake compatibility.
 ifneq (,$(and $(Configure.Configured),$(Configure.HostArchTriplet),$(Configure.BuildArchTriplet)))
 ifneq ($(Configure.BuildArchTriplet),$(Configure.HostArchTriplet))
+ifeq ($(origin CC),default)
 CC = $(Configure.HostArchTriplet)-gcc
 $(if $(Toolchain.debug),$(info DEBUG: gcc cross-compiler selected CC=$(CC)))
+endif # !default CC
 endif # !cross-compiling
 endif # !configured
 
@@ -49,8 +51,10 @@ ifneq (,$(Toolchain.CXX.IsGcc))
 # autoconf/automake compatibility.
 ifneq (,$(and $(Configure.Configured),$(Configure.HostArchTriplet),$(Configure.BuildArchTriplet)))
 ifneq ($(Configure.BuildArchTriplet),$(Configure.HostArchTriplet))
+ifeq ($(origin CXX),default)
 CXX = $(Configure.HostArchTriplet)-g++
 $(if $(Toolchain.debug),$(info DEBUG: g++ cross-compiler selected CXX=$(CXX)))
+endif # !default CXX
 endif # !cross-compiling
 endif # !configured
 
