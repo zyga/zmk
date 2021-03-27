@@ -51,14 +51,14 @@ $1.sourcesC = $$(filter %.c,$$($1.sources))
 $1.sourcesCxx = $$(filter %.cpp %.cxx %.cc,$$($1.sources))
 $1.sourcesObjC = $$(filter %.m,$$($1.sources))
 
-# Object files contain the object group name prepndend to the file name and the extension replaced with .o
+# Object files contain the object group name prepended to the file name and the extension replaced with .o
 $1.ObjectsC ?= $$(foreach src,$$($1.sourcesC),$$(dir $$(src))$1-$$(basename $$(notdir $$(src))).o)
 $1.ObjectsCxx ?= $$(foreach src,$$($1.sourcesCxx),$$(dir $$(src))$1-$$(basename $$(notdir $$(src))).o)
 $1.ObjectsObjC ?= $$(foreach src,$$($1.sourcesObjC),$$(dir $$(src))$1-$$(basename $$(notdir $$(src))).o)
 
 $1.Objects ?= $$(strip $$($1.ObjectsC) $$($1.ObjectsCxx) $$($1.ObjectsObjC))
 
-# Suggested linger depends on the cardinality of variou types of objects.
+# Suggested linger depends on the cardinality of various types of objects.
 $1.SuggestedLinkerSymbol ?= $$(if $$($1.ObjectsObjC),OBJCLD,$$(if $$($1.ObjectsCxx),CXXLD,CCLD))
 
 # Check if we have the required compiler.
