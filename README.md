@@ -43,6 +43,6 @@ backwards-incompatible changes in normal circumstances. ZMK is implemented as a
 Make library, which effectively means there are only make rules and variables.
 ZMK considers all capitalized symbols, such as `ZMK.Program` to be the public
 API covered by the stability guarantee. Internal symbols either start with a
-lower case character, or have one immediately follwing a dot, for example
+lower case character, or have one immediately following a dot, for example
 `zmk.foo` or `ZMK.foo`.
 character, for example `ZMK.test`
