@@ -1,0 +1,91 @@
+.Dd Jun 21, 2021
+.Os zmk @VERSION@
+.Dt zmk.Symlink 5 PRM
+.Sh NAME
+.Nm Symlink
+.Nd template for creating symbolic links
+.Sh SYNOPSIS
+.Bd -literal
+include z.mk
+# "link" is any valid identifier.
+link.SymlinkTarget = target
+$(eval $(call ZMK.Expand,Symlink,link))
+.Ed
+.Sh DESCRIPTION
+The template
+.Nm Symlink
+once
+.Em expanded
+with a
+.Em link name
+to creates rules for creating, removing, installing and removing a single
+symbolic link to a given target file.
+.Pp
+This template behaves like the Program template, in that it creates the
+symbolic link both locally, during development as well as when the project
+is installed.
+.Sh TARGETS
+This module provides the following targets.
+.Ss $(link)
+This target represents the symbolic link
+.Ss all
+This
+.Em phony
+target depends on
+.Em $(link)
+.Ss clean
+This
+.Em phony
+target removes
+.Em $(link)
+.Ss install
+This target creates the symbolic link
+.Em $(link)
+in
+.Em $(link.InstallDir) ,
+with the name
+.Em $(link.InstallName)
+The target directory is automatically created if required.
+.Ss uninstall
+This
+.Em phony
+target removes
+.Em $(link)
+as installed by the
+.Em install
+target.
+.Sh VARIABLES
+This module provides the following variables.
+.Ss $(link).SymlinkTarget
+The target of the symbolic link.
+.Pp
+There is no default value. This variable must be set before
+.Em expanding
+the template.
+.Ss $(programName).InstallDir
+The directory
+.Em $(link)
+is installed to.
+.Pp
+There is no default value. This variable must be set before
+.Em expanding
+the template. To avoid installation set the install directory
+to the special value
+.Em noinst .
+.Ss $(link).InstallName
+The name of the program after installation.
+.Pp
+The default value is
+.Em $(link)
+with the directory part removed.
+.Ss DESTDIR
+Path added to all installation targets.
+.Pp
+This variable is normally set externally, to install a compiled program
+into a staging area during construction of a compiled binary package.
+.Sh HISTORY
+The
+.Nm
+template first appeared in zmk 0.1
+.Sh AUTHORS
+.An "Zygmunt Krynicki" Aq Mt me@zygoon.pl
