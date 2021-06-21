@@ -9,6 +9,8 @@ Changes in the next version:
   specific issue while doing so in a way which eventually disables the
   workaround.
 
+* The Symlink template is now documented with a dedicated manual page
+
 Changes in 0.5:
 
 * The Program.Test template no longer fails with syntax error when computing
