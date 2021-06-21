@@ -4,7 +4,7 @@
 IFS=:
 
 for dir in $PATH; do
-	# shellcheck disable=2039
+	# shellcheck disable=3013
 	if [ -x "$dir/grep" ] && [ ! "$0" -ef "$dir/grep" ]; then
 		grep="$dir/grep"
 		break
