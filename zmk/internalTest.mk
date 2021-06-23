@@ -66,13 +66,13 @@ ZMK.test.readFile=$(shell cat "$1")
 ZMK.test.valueOfKey=$(strip $(patsubst $2=%,%,$(filter $2=%,$1)))
 
 # Use real os-release(5) information if available or synthesize minimal placeholder.
-ifneq (,$(findstring $(OS.test.Kernel),Linux FreeBSD NetBSD OpenBSD GNU GNU/kFreeBSD SunOS Haiku))
+ifneq (,$(findstring $(OS.test.Kernel),Linux FreeBSD NetBSD OpenBSD GNU GNU/kFreeBSD SunOS))
 ZMK.test.OSRelease=$(or $(call ZMK.test.readFile,/etc/os-release),$(error zmk integration tests depends on /etc/os-release))
-endif
-ifeq ($(OS.test.Kernel),Darwin)
+else ifeq ($(OS.test.Kernel),Darwin)
 ZMK.test.OSRelease=ID=macos VERSION_ID=$(word 2,$(shell sysctl kern.osproductversion))
-endif
-ifeq ($(OS.test.Kernel),Windows_NT)
+else ifeq ($(OS.test.Kernel),Haiku)
+ZMK.test.OSRelease=ID=haiku VERSION_ID=zmk-unimplemented)
+else ifeq ($(OS.test.Kernel),Windows_NT)
 ZMK.test.OSRelease=ID=windows VERSION_ID=zmk-unimplemented
 endif
 
