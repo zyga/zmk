@@ -209,6 +209,10 @@ source directory. This may be a relative path.
 .Ss ZMK.ImportedModules
 The set of modules imported so far. This can be used for diagnostic purposes.
 Please import modules by calling
+.Ss ZMK.BugFixes
+A list of bug identifiers representing the set of bugs that are resolved in
+zmk. Membership test can be used to conditionally enable hot-fixes that patch
+a part of ZMK in a given project, when upgrading zmk itself is not feasible.
 .Nm ZMK.Import .
 .Ss VPATH
 When building out-of-tree, ZMK sets

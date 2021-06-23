@@ -1,3 +1,14 @@
+Changes in the next version:
+
+* ZMK now defines `ZMK.BugFixes` as a set of identifiers of issues that were
+  known and addressed inside the library. Specific bugs may gain stable identifiers
+  that, once addressed, are added to the list in the next release of the library.
+
+  This mechanism is intended to enable hot-fixes, which are applied to the
+  makefile of a specific project, which update or replace part of zmk to fix a
+  specific issue while doing so in a way which eventually disables the
+  workaround.
+
 Changes in 0.5:
 
 * The Program.Test template no longer fails with syntax error when computing
