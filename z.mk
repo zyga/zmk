@@ -186,3 +186,7 @@ $$(eval $$(call $1.Template,$2))
 ZMK.expandStack := $$(shell expr $$(ZMK.expandStack) - 1)
 $$(if $$(findstring expand,$$(DEBUG)),$$(foreach n,$$($1.Variables),$$(eval $$(call ZMK.showVariable,$2.$$n))))
 endef
+
+# List of identifiers of known bug fixes present in this build.
+define ZMK.BugFixes
+endef
