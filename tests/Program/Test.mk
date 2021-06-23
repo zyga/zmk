@@ -27,6 +27,8 @@ all: all.log
 	GREP -qFx 'c++ -o prog5 prog5-main.o' <$<
 	GREP -qFx 'cc -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF src/prog6-main.d) -c -o src/prog6-main.o $(ZMK.test.OutOfTreeSourcePath)src/main.c' <$<
 	GREP -qFx 'cc -o prog6 src/prog6-main.o' <$<
+	GREP -qFx 'cc -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF subdir/prog7-main.d) -c -o subdir/prog7-main.o $(ZMK.test.OutOfTreeSourcePath)main.c' <$<
+	GREP -qFx 'cc -o subdir/prog7 subdir/prog7-main.o' <$<
 all-sysroot: all-sysroot.log
 	# C/C++/ObjC programs can be built against the configured sysroot.
 	GREP -qFx 'cc -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF prog1-main.d) -c --sysroot=/path -o prog1-main.o $(ZMK.test.OutOfTreeSourcePath)main.c' <$<
@@ -41,6 +43,8 @@ all-sysroot: all-sysroot.log
 	GREP -qFx 'c++ --sysroot=/path -o prog5 prog5-main.o' <$<
 	GREP -qFx 'cc -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF src/prog6-main.d) -c --sysroot=/path -o src/prog6-main.o $(ZMK.test.OutOfTreeSourcePath)src/main.c' <$<
 	GREP -qFx 'cc --sysroot=/path -o prog6 src/prog6-main.o' <$<
+	GREP -qFx 'cc -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF subdir/prog7-main.d) -c --sysroot=/path -o subdir/prog7-main.o $(ZMK.test.OutOfTreeSourcePath)main.c' <$<
+	GREP -qFx 'cc --sysroot=/path -o subdir/prog7 subdir/prog7-main.o' <$<
 install: install.log
 	# C/C++/ObjC programs can be installed.
 	GREP -qFx 'install -d /usr/local/bin' <$<
@@ -50,6 +54,7 @@ install: install.log
 	GREP -qFx 'install -m 0755 prog4 /usr/local/bin/prog4' <$<
 	GREP -qFx 'install -m 0755 prog5 /usr/local/bin/prog5' <$<
 	GREP -qFx 'install -m 0755 prog6 /usr/local/bin/prog6' <$<
+	GREP -qFx 'install -m 0755 subdir/prog7 /usr/local/bin/prog7' <$<
 uninstall: uninstall.log
 	# C/C++/ObjC programs can be uninstalled.
 	GREP -qFx 'rm -f /usr/local/bin/prog1' <$<
@@ -58,6 +63,7 @@ uninstall: uninstall.log
 	GREP -qFx 'rm -f /usr/local/bin/prog4' <$<
 	GREP -qFx 'rm -f /usr/local/bin/prog5' <$<
 	GREP -qFx 'rm -f /usr/local/bin/prog6' <$<
+	GREP -qFx 'rm -f /usr/local/bin/prog7' <$<
 clean: clean.log
 	# C/C++/ObjC programs can be cleaned.
 	GREP -qFx 'rm -f ./prog1-main.o'  <$<
@@ -78,6 +84,7 @@ clean: clean.log
 	GREP -qFx 'rm -f src/prog6-main.o'  <$<
 	GREP -qFx 'rm -f src/prog6-main.d'  <$<
 	GREP -qFx 'rm -f prog6' <$<
+	GREP -qFx 'rm -f subdir/prog7' <$<
 
 
 t:: all-exe
@@ -91,11 +98,12 @@ all-exe: all-exe.log
 
 
 t:: install-custom-install-name
-install-custom-install-name.log: ZMK.makeOverrides += prog1.InstallName=Prog1
+install-custom-install-name.log: ZMK.makeOverrides += prog1.InstallName=Prog1 subdir/prog7.InstallName=Prog7
 install-custom-install-name: install-custom-install-name.log
 	# Program can have a custom InstallName
 	GREP -qFx 'install -d /usr/local/bin' <$<
 	GREP -qFx 'install -m 0755 prog1 /usr/local/bin/Prog1' <$<
+	GREP -qFx 'install -m 0755 subdir/prog7 /usr/local/bin/Prog7' <$<
 
 t:: install-custom-install-mode
 install-custom-install-mode.log: ZMK.makeOverrides += prog1.InstallMode=0700
@@ -104,19 +112,21 @@ install-custom-install-mode: install-custom-install-mode.log
 	GREP -qFx 'install -m 0700 prog1 /usr/local/bin/prog1' <$<
 
 t:: install-custom-install-dir
-install-custom-install-dir.log: ZMK.makeOverrides += prog1.InstallDir=/usr/local/sbin
+install-custom-install-dir.log: ZMK.makeOverrides += prog1.InstallDir=/usr/local/sbin subdir/prog7.InstallDir=/usr/local/sbin
 install-custom-install-dir: install-custom-install-dir.log
 	# Program can have a custom InstallDir
 	GREP -qFx 'install -m 0755 prog1 /usr/local/sbin/prog1' <$<
+	GREP -qFx 'install -m 0755 subdir/prog7 /usr/local/sbin/prog7' <$<
 
 t:: install-custom-deep-install-dir
-install-custom-deep-install-dir.log: ZMK.makeOverrides += prog1.InstallDir=/usr/local/lib/custom/bin
+install-custom-deep-install-dir.log: ZMK.makeOverrides += prog1.InstallDir=/usr/local/lib/custom/bin subdir/prog7.InstallDir=/usr/local/lib/custom/bin
 install-custom-deep-install-dir: install-custom-deep-install-dir.log
 	# Program with nested directories in InstallDir creates each directory.
 	GREP -qFx 'install -d /usr/local/lib' <$<
 	GREP -qFx 'install -d /usr/local/lib/custom' <$<
 	GREP -qFx 'install -d /usr/local/lib/custom/bin' <$<
 	GREP -qFx 'install -m 0755 prog1 /usr/local/lib/custom/bin/prog1' <$<
+	GREP -qFx 'install -m 0755 subdir/prog7 /usr/local/lib/custom/bin/prog7' <$<
 
 t:: install-program-prefix
 install-program-prefix.log: ZMK.makeOverrides += Configure.ProgramPrefix=prefix-
@@ -125,6 +135,7 @@ install-program-prefix: install-program-prefix.log
 	GREP -qFx 'cc -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF prog1-main.d) -c -o prog1-main.o $(ZMK.test.OutOfTreeSourcePath)main.c' <$<
 	GREP -qFx 'cc -o prog1 prog1-main.o' <$<
 	GREP -qFx 'install -m 0755 prog1 /usr/local/bin/prefix-prog1' <$<
+	GREP -qFx 'install -m 0755 subdir/prog7 /usr/local/bin/prefix-prog7' <$<
 
 t:: install-program-suffix
 install-program-suffix.log: ZMK.makeOverrides += Configure.ProgramSuffix=-suffix
@@ -133,14 +144,16 @@ install-program-suffix: install-program-suffix.log
 	GREP -qFx 'cc -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF prog1-main.d) -c -o prog1-main.o $(ZMK.test.OutOfTreeSourcePath)main.c' <$<
 	GREP -qFx 'cc -o prog1 prog1-main.o' <$<
 	GREP -qFx 'install -m 0755 prog1 /usr/local/bin/prog1-suffix' <$<
+	GREP -qFx 'install -m 0755 subdir/prog7 /usr/local/bin/prog7-suffix' <$<
 
 t:: install-program-transform-name
-install-program-transform-name.log: ZMK.makeOverrides += Configure.ProgramTransformName=s/prog1/potato/g
+install-program-transform-name.log: ZMK.makeOverrides += Configure.ProgramTransformName='s/prog\([1-9]\)/potato\1/g'
 install-program-transform-name: install-program-transform-name.log
 	# Configured program transform expression is applied during the install phase.
 	GREP -qFx 'cc -MMD$(if $(ZMK.test.IsOutOfTreeBuild), -MF prog1-main.d) -c -o prog1-main.o $(ZMK.test.OutOfTreeSourcePath)main.c' <$<
 	GREP -qFx 'cc -o prog1 prog1-main.o' <$<
-	GREP -qFx 'install -m 0755 prog1 /usr/local/bin/potato' <$<
+	GREP -qFx 'install -m 0755 prog1 /usr/local/bin/potato1' <$<
+	GREP -qFx 'install -m 0755 subdir/prog7 /usr/local/bin/potato7' <$<
 
 t:: install-exe
 install-exe.log: ZMK.makeOverrides += exe=.exe
