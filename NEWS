@@ -21,6 +21,8 @@ Changes in the next version:
 
   This issue is identified in ZMK.BugFixes as zmk-issue-80
 
+* ZMK integration tests no longer fail on Haiku
+
 Changes in 0.5:
 
 * The Program.Test template no longer fails with syntax error when computing
