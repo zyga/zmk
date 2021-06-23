@@ -11,6 +11,16 @@ Changes in the next version:
 
 * The Symlink template is now documented with a dedicated manual page
 
+* The Symlink template no longer retains the sub-directory related to the
+  placement in the development tree after installation, matching the behavior
+  of the Program template.
+
+  This is a backwards incompatible change resulting from the fact that
+  previous behavior was simply wrong. There are additional tests checking
+  various combinations of this behavior now.
+
+  This issue is identified in ZMK.BugFixes as zmk-issue-80
+
 Changes in 0.5:
 
 * The Program.Test template no longer fails with syntax error when computing

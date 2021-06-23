@@ -83,6 +83,29 @@ Path added to all installation targets.
 .Pp
 This variable is normally set externally, to install a compiled program
 into a staging area during construction of a compiled binary package.
+.Sh BUGS
+Prior to version 0.5.1, the
+.Em install
+target misbehaved when
+.Em $(link)
+contains a non-empty directory prefix. Incorrectly, the same prefix is
+replicated, somewhat confusingly in the installed symlink.
+.Pp
+Consider this example:
+.Bd -literal 4
+include z.mk
+subdir/link.SymlinkTarget = target
+subdir/link.InstallDir = $(bindir)
+$(eval $(call ZMK.Expand,Symlink,subdir/link))
+.Ed
+Running
+.Em make install
+on the following example would create the symbolic link
+.Em $(bindir)/subdir/link -> target,
+which was unexpected.
+.Pp
+This bug was given the identifier
+.Em zmk-issue-80 .
 .Sh HISTORY
 The
 .Nm

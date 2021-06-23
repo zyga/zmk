@@ -189,4 +189,5 @@ endef
 
 # List of identifiers of known bug fixes present in this build.
 define ZMK.BugFixes
+zmk-issue-80
 endef

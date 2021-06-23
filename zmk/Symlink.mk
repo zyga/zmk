@@ -25,12 +25,11 @@ define Symlink.Template
 $1.InstallDir ?= $$(error define $1.InstallDir - the destination directory, or noinst to skip installation)
 $1.SymlinkTarget ?= $$(error define $1.SymlinkTarget - the target of the symbolic link)
 $1.InstallName ?= $$(notdir $1)
-$1.sourceDir = $$(patsubst %/,%,$$(dir $1))
 
 # Create the directory where the symbolic link is built in.
-$$(eval $$(call ZMK.Expand,Directory,$$($1.sourceDir)))
+$$(eval $$(call ZMK.Expand,Directory,$$(dir $1)))
 # Create the symbolic link in the build directory.
-$1: | $$($1.sourceDir)
+$1: | $$(patsubst %/,%,$$(dir $1))
 	$$(call Silent.Say,SYMLINK,$$@)
 	$$(Silent.Command)$$(strip ln -sf $$($1.SymlinkTarget) $$@)
 # React to "all" and "clean" targets.
@@ -40,18 +39,15 @@ $$(eval $$(call ZMK.Expand,AllClean,$1))
 ifneq ($$($1.InstallDir),noinst)
 
 # Create the directory where the symbolic link is installed to.
-$1.targetDir = $$(patsubst %/,%,$$(dir $$($1.InstallDir)/$1))
-$$(eval $$(call ZMK.Expand,Directory,$$($1.targetDir)))
+$$(eval $$(call ZMK.Expand,Directory,$$($1.InstallDir)))
 # Create the symbolic link in the install directory.
-$$(DESTDIR)$$($1.targetDir)/$$($1.InstallName):| $$(DESTDIR)$$($1.targetDir)
+$$(DESTDIR)$$($1.InstallDir)/$$($1.InstallName):| $$(DESTDIR)$$($1.InstallDir)
 	$$(call Silent.Say,SYMLINK,$$@)
 	$$(Silent.Command)$$(strip ln -sf $$($1.SymlinkTarget) $$@)
 # React to "install" and "uninstall" targets.
-install:: $$(DESTDIR)$$($1.targetDir)/$$($1.InstallName)
+install:: $$(DESTDIR)$$($1.InstallDir)/$$($1.InstallName)
 uninstall::
-	$$(call Silent.Say,RM,$$($1.targetDir)/$$($1.InstallName))
-	$$(Silent.Command)rm -f $$(DESTDIR)$$($1.targetDir)/$$($1.InstallName)
-else # noinst
-$1.targetDir = noinst
+	$$(call Silent.Say,RM,$$($1.InstallDir)/$$($1.InstallName))
+	$$(Silent.Command)rm -f $$(DESTDIR)$$($1.InstallDir)/$$($1.InstallName)
 endif # !noinst
 endef
