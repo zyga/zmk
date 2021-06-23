@@ -1,4 +1,4 @@
-Changes in the next version:
+Changes in 0.5.1
 
 * ZMK now defines `ZMK.BugFixes` as a set of identifiers of issues that were
   known and addressed inside the library. Specific bugs may gain stable identifiers
