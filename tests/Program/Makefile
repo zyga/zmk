@@ -14,3 +14,6 @@ $(eval $(call ZMK.Expand,Program,prog5))
 # Source code can be in arbitrary tree structure.
 prog6.Sources = src/main.c
 $(eval $(call ZMK.Expand,Program,prog6))
+# The binary can be in arbitrary tree structure.
+subdir/prog7.Sources = main.c
+$(eval $(call ZMK.Expand,Program,subdir/prog7))
