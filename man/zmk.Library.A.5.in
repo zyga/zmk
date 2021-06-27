@@ -1,4 +1,4 @@
-.Dd Feb 2, 2021
+.Dd Jun 27, 2021
 .Os zmk @VERSION@
 .Dt zmk.Library.A 5 PRM
 .Sh NAME
@@ -13,7 +13,19 @@ libName.a.Sources = hello.c
 $(eval $(call ZMK.Expand,Library.A,libName.a))
 .Ed
 .Sh DESCRIPTION
-This manual page is a stub.
+The template
+.Nm Library.A
+once
+.Em expanded
+with a
+.Em static library name
+to creates rules for compiling, cleaning, installing and removing a single
+statically linked library written in C, C++ or Objective C.
+.Pp
+Source files are compiled to object files prefixed with
+.Em $(libName.a)- ,
+so that a single source file can be compiled separately with
+distinct preprocessor, compiler and linker options.
 .Pp
 When
 .Nm configure
@@ -21,7 +33,75 @@ script is invoked with
 .Em --disable-static
 then this template behaves as if it was empty.
 .Sh TARGETS
+This module provides the following targets.
+.Ss $(libName.a)
+This target represents the static library.
+.Ss all
+This
+.Em phony
+target depends on
+.Em $(libName.a)
+.Ss clean
+This
+.Em phony
+target removes
+.Em $(libName.a)
+as well as constituent
+.Em object files
+and
+.Em dependency files .
+.Ss install
+This
+.Em phony
+target copies
+.Em $(libName.a)
+to
+.Em $(libName.a.InstallDir) ,
+with the name
+.Em $(libName.a.InstallName)
+and mode
+.Em $(libName.a.InstallMode) .
+The target directory is automatically created if required.
+.Ss uninstall
+This
+.Em phony
+target removes
+.Em $(libName.a)
+as installed by the
+.Em install
+target.
 .Sh VARIABLES
+This module provides the following variables.
+.Ss Configure.StaticLibraries
+This variable which is provided by the
+.Nm Configure
+module controls if static libraries are enabled in the entire package.
+The default value is
+.Em yes ,
+making static libraries enabled unless disabled at configuration time.
+.Ss libName.a.Sources
+List of source files to compile.
+.Pp
+There is no default value. This variable must be set before
+.Em expanding
+the template.
+.Ss libdir
+The default value of
+.Nm
+$(libName.a).InstallDir .
+This variable is formally defined in the
+.Nm Directories
+module.
+.Ss AR
+Variable holding the name of the
+.Nm ar
+tool, which composes statically linked libraries from individual object files.
+.Ss ARFLAGS
+Variable holding command line options passed to the tool denoted by
+.Nm $(AR) .
 .Sh HISTORY
+The
+.Nm
+template first appeared in zmk 0.1
 .Sh AUTHORS
 .An "Zygmunt Krynicki" Aq Mt me@zygoon.pl
