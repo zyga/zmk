@@ -1,4 +1,5 @@
-# Copyrigth 2019-2024 Zygmunt Krynicki.
+# SPDX-FileCopyrightText: 2019-2024 Zygmunt Krynicki
+# SPDX-License-Identifier: LGPL-3.0-only
 #
 # This file is part of zmk.
 #
@@ -66,7 +67,8 @@ ifneq ($(Project.Name),)
 # ZMK provides a custom configuration script, this is is the full text
 define Configure.script
 #!/bin/sh
-# Copyrigth 2019-2024 Zygmunt Krynicki.
+# SPDX-FileCopyrightText: 2019-2024 Zygmunt Krynicki
+# SPDX-License-Identifier: LGPL-3.0-only
 #
 # This file is part of zmk.
 #
