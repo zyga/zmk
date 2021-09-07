@@ -19,7 +19,7 @@ $(eval $(call ZMK.Import,Directories))
 # $1 is the header group name
 # $2 is the header file (path)name
 
-HeaderGroup.Variables=Headers InstallDir InstallMode 
+HeaderGroup.Variables=Headers InstallDir InstallMode
 define HeaderGroup.Template
 # Headers are not re-defined with := so that they can expand lazily.
 $1.Headers ?= $$(error define $1.Headers - the list of header files to install)
