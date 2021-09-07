@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 include zmk/internalTest.mk
 
-t:: integration 
+t:: integration
 
 # Test logs will contain debugging messages specific to the configure module
 %.log: ZMK.makeOverrides += DEBUG=configure

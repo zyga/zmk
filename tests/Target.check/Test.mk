@@ -13,6 +13,6 @@ check: check.log
 # Provide the target explicitly with override.
 static-check.log: ZMK.makeTarget=static-check
 static-check: static-check.log
-	# The static check target runs just the static checks. 
+	# The static check target runs just the static checks.
 	GREP -qFx 'echo "target :static-check:"' <$<
 	GREP -v -qFx 'echo "target :check:"' <$<

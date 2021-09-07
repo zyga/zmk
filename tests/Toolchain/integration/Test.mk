@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 include zmk/internalTest.mk
 
-t:: integration 
+t:: integration
 
 # Test logs will contain debugging messages
 %.log: ZMK.makeOverrides += DEBUG=toolchain
