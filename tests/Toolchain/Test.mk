@@ -7,6 +7,7 @@ t:: debug-defaults debug-sysroot debug-dependency-tracking \
 	debug-watcom-win16-cc-detection debug-watcom-win16-cxx-detection \
 	debug-watcom-win32-cc-detection debug-watcom-win32-cxx-detection \
 	debug-gcc-configured-cross debug-g++-configured-cross \
+	debug-debug-build-enabled debug-debug-build-disabled
 
 # Test logs will contain debugging messages
 %.log: ZMK.makeOverrides += DEBUG=toolchain
@@ -186,3 +187,13 @@ debug-g++-configured-cross: debug-g++-configured-cross.log
 	GREP -qFx 'DEBUG: Toolchain.CXX.IsCross=yes' <$<
 	GREP -qFx 'DEBUG: Toolchain.ImageFormat=ELF' <$<
 	GREP -qFx 'DEBUG: Toolchain.IsCross=yes' <$<
+
+debug-debug-build-enabled.log: ZMK.makeOverrides += Configure.Configured=yes
+debug-debug-build-enabled.log: ZMK.makeOverrides += Configure.DebugBuild=yes
+debug-debug-build-enabled: debug-debug-build-enabled.log
+	GREP -qFx 'DEBUG: CFLAGS= -g' <$<
+
+debug-debug-build-disabled.log: ZMK.makeOverrides += Configure.Configured=yes
+debug-debug-build-disabled.log: ZMK.makeOverrides += Configure.DebugBuild=
+debug-debug-build-disabled: debug-debug-build-disabled.log
+	GREP -qFx 'DEBUG: CFLAGS= ' <$<

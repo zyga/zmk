@@ -1,3 +1,12 @@
+Changes in the next release:
+
+* The Configure module now sets `Configure.DebugBuild` to either `yes`, `no` or
+  empty value (default) in response to the `configure` script command line
+  options `--enable-debug` and `--disable-debug` respectively.
+
+* The Toolchain module adds `-g` to `CFLAGS` when `Configure.DebugBuild` is set
+  to `yes`.
+
 Changes in 0.5.1
 
 * ZMK now defines `ZMK.BugFixes` as a set of identifiers of issues that were
