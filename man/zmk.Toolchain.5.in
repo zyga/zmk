@@ -46,6 +46,14 @@ or
 .Em -fpic .
 Please refer to your compiler manual for details.
 .Pp
+When
+.Nm Configure.Configured
+is non-empty and
+.Nm Configure.DebugBuild
+is non-empty then
+.Em -g
+is automatically appended and applies to all programs.
+.Pp
 This variable is often abused, mainly for simplicity, as a kitchen-sink that
 holds all of the compiler and linker options. This is discouraged.
 .Ss CPPFLAGS

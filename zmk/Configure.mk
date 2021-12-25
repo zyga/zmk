@@ -29,6 +29,7 @@ Configure.MaintainerMode ?= yes
 Configure.SilentRules ?=
 Configure.StaticLibraries ?= yes
 Configure.DynamicLibraries ?= yes
+Configure.DebugBuild ?=
 Configure.ProgramPrefix ?=
 Configure.ProgramSuffix ?=
 Configure.ProgramTransformName ?=
@@ -105,6 +106,8 @@ while [ "$$#" -ge 1 ]; do
             echo "  --disable-static            Disable static libraries"
             echo "  --enable-dynamic            Enable dynamic or shared libraries"
             echo "  --disable-dynamic           Disable dynamic or shared libraries"
+            echo "  --enable-debug              Enable debugging features"
+            echo "  --disable-debug             Disable debugging features"
             echo
             echo "Autotools compatibility options"
             echo "  --with-libtool-sysroot=DIR  Set the compiler sysroot to DIR"
@@ -191,6 +194,9 @@ while [ "$$#" -ge 1 ]; do
         --disable-static)               staticLibraries=no && shift ;;
         --enable-dynamic)               dynamicLibraries=yes && shift ;;
         --disable-dynamic)              dynamicLibraries=no && shift ;;
+
+        --enable-debug)                 debugBuild=yes && shift ;;
+        --disable-debug)                debugBuild=no && shift ;;
 
         --program-prefix=*)             programPrefix="$$(rhs "$$1")" && shift ;;
         --program-suffix=*)             programSuffix="$$(rhs "$$1")" && shift ;;
@@ -340,6 +346,19 @@ done
         implicit)
             echo "#   Configure.DynamicLibraries was not specified."
             echo "#   This feature is enabled by default, if supported."
+            ;;
+    esac
+    echo
+    echo "# Support for debugging."
+    case "$${debugBuild:-implicit}" in
+        yes)
+            echo "Configure.DebugBuild=yes"
+            ;;
+        no)
+            echo "Configure.DebugBuild="
+            ;;
+        implicit)
+            echo "#   Configure.DebugBuild was not specified."
             ;;
     esac
     echo

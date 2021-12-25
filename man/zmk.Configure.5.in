@@ -182,6 +182,14 @@ When dynamic libraries are disabled the templates
 and
 .Nm Library.DyLib
 become inactive.
+.Ss Configure.DebugBuild
+This variable is controlled by the
+.Nm configure
+script options
+.Em --enable-debug
+and
+.Em --disable-debug .
+Debug builds are disabled by default.
 .Ss Configure.ProgramPrefix
 This variable is set by the
 .Nm configure

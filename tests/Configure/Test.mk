@@ -22,6 +22,8 @@ t:: \
 	config-disable-static \
 	config-enable-dynamic \
 	config-disable-dynamic \
+	config-enable-debug \
+	config-disable-debug \
 	config-program-prefix \
 	config-program-suffix \
 	config-program-transform-name \
@@ -87,6 +89,7 @@ debug-defaults: debug-defaults.log
 	GREP -qFx 'DEBUG: Configure.SilentRules=' <$<
 	GREP -qFx 'DEBUG: Configure.StaticLibraries=yes' <$<
 	GREP -qFx 'DEBUG: Configure.DynamicLibraries=yes' <$<
+	GREP -qFx 'DEBUG: Configure.DebugBuild=' <$<
 	GREP -qFx 'DEBUG: Configure.ProgramPrefix=' <$<
 	GREP -qFx 'DEBUG: Configure.ProgramSuffix=' <$<
 	GREP -qFx 'DEBUG: Configure.ProgramTransformName=' <$<
@@ -114,6 +117,7 @@ config-defaults: config.defaults.mk
 	GREP -v -qF 'Configure.SilentRules=' <$<
 	GREP -v -qF 'Configure.StaticLibraries=' <$<
 	GREP -v -qF 'Configure.DynamicLibraries=' <$<
+	GREP -v -qF 'Configure.DebugBuild=' <$<
 	GREP -v -qF 'Configure.ProgramPrefix=' <$<
 	GREP -v -qF 'Configure.ProgramSuffix=' <$<
 	GREP -v -qF 'Configure.ProgramTransformName=' <$<
@@ -191,6 +195,16 @@ config.disable-dynamic.mk: configureOptions += --disable-dynamic
 config-disable-dynamic: config.disable-dynamic.mk
 	# configure --disable-dynamic sets Configure.DynamicLibraries= (empty but set)
 	GREP -qFx 'Configure.DynamicLibraries=' <$<
+
+config.enable-debug.mk: configureOptions += --enable-debug
+config-enable-debug: config.enable-debug.mk
+	# configure --enable-debug sets Configure.DebugBuild=yes
+	GREP -qFx 'Configure.DebugBuild=yes' <$<
+
+config.disable-debug.mk: configureOptions += --disable-debug
+config-disable-debug: config.disable-debug.mk
+	# configure --disable-debug sets Configure.DebugBuild= (empty but set)
+	GREP -qFx 'Configure.DebugBuild=' <$<
 
 config.program-prefix.mk: configureOptions += --program-prefix=awesome-
 config-program-prefix: config.program-prefix.mk

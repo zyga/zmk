@@ -33,6 +33,10 @@ TARGET_ARCH ?=
 LDLIBS ?=
 LDFLAGS ?=
 
+ifeq ($(Configure.Configured),yes)
+CFLAGS += $(if $(Configure.DebugBuild),-g)
+endif
+
 # The exe variable expands to .exe when the compiled binary should have such suffix.
 exe ?=
 
