@@ -191,9 +191,9 @@ debug-g++-configured-cross: debug-g++-configured-cross.log
 debug-debug-build-enabled.log: ZMK.makeOverrides += Configure.Configured=yes
 debug-debug-build-enabled.log: ZMK.makeOverrides += Configure.DebugBuild=yes
 debug-debug-build-enabled: debug-debug-build-enabled.log
-	GREP -qFx 'DEBUG: CFLAGS= -g' <$<
+	GREP -qEx 'DEBUG: CFLAGS= ?-g' <$<
 
 debug-debug-build-disabled.log: ZMK.makeOverrides += Configure.Configured=yes
 debug-debug-build-disabled.log: ZMK.makeOverrides += Configure.DebugBuild=
 debug-debug-build-disabled: debug-debug-build-disabled.log
-	GREP -qFx 'DEBUG: CFLAGS= ' <$<
+	GREP -qEx 'DEBUG: CFLAGS= ?' <$<
