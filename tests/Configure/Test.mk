@@ -43,6 +43,13 @@ t:: \
 	config-localstatedir \
 	config-runstatedir \
 	config-sharedstatedir \
+	config-env-CC \
+	config-env-CXX \
+	config-env-OBJC \
+	config-env-CFLAGS \
+	config-env-CXXFLAGS \
+	config-env-OBJCFLAGS \
+	config-env-CPPFLAGS
 
 # Test logs will contain debugging messages specific to the configure module
 %.log: ZMK.makeOverrides += DEBUG=configure
@@ -59,8 +66,9 @@ c::
 # enable parallelism.
 configureOptions ?=
 configureOptions += $(if $(ZMK.test.IsOutOfTreeBuild),ZMK.SrcDir=$(ZMK.test.SrcDir))
+configureEnvironment ?=
 config.%.mk: configure Test.mk
-	$(strip ZMK_CONFIGURE_MAKEFILE=$@ ./$< $(configureOptions))
+	$(strip ZMK_CONFIGURE_MAKEFILE=$@ $(configureEnvironment) ./$< $(configureOptions))
 c::
 	rm -f config.*.mk
 
@@ -121,6 +129,12 @@ config-defaults: config.defaults.mk
 	GREP -v -qF 'Configure.ProgramPrefix=' <$<
 	GREP -v -qF 'Configure.ProgramSuffix=' <$<
 	GREP -v -qF 'Configure.ProgramTransformName=' <$<
+
+config.CC.mk: configureEnvironment += CC=foo-cc
+config-CC: config.CC.mk
+	# CC=foo-cc configure sets Toolchain.C.BuildArchTriplet
+	GREP -qFx 'Configure.BuildArchTriplet=foo-linux-gnu' <$<
+	GREP -qFx 'Configure.Options=$(if $(ZMK.test.IsOutOfTreeBuild),ZMK.SrcDir=$(ZMK.test.SrcDir) )--build=foo-linux-gnu' <$<
 
 config.build.mk: configureOptions += --build=foo-linux-gnu
 config-build: config.build.mk
@@ -246,3 +260,32 @@ config.oldincludedir.mk: configureOptions += --oldincludedir=/unused
 config-oldincludedir: config.oldincludedir.mk
 	# configure --oldincludedir=/unused doesn't do anything
 	GREP -v -qFx '/unused' <$<
+
+config.env-CC.mk: configureEnvironment += CC=potato-cc
+config-env-CC: config.env-CC.mk
+	GREP -qFx 'CC=potato-cc' <$<
+
+config.env-CXX.mk: configureEnvironment += CXX=potato-c++
+config-env-CXX: config.env-CXX.mk
+	GREP -qFx 'CXX=potato-c++' <$<
+
+# XFAIL: At present this is not implemented.
+config.env-OBJC.mk: configureEnvironment += OBJC=potato-objc
+config-env-OBJC: config.env-OBJC.mk
+	! GREP -qFx 'OBJC=potato-objc' <$<
+
+config.env-CFLAGS.mk: configureEnvironment += CFLAGS=-fpotato
+config-env-CFLAGS: config.env-CFLAGS.mk
+	GREP -qFx 'CFLAGS=-fpotato' <$<
+
+config.env-CXXFLAGS.mk: configureEnvironment += CXXFLAGS=-fpotato
+config-env-CXXFLAGS: config.env-CXXFLAGS.mk
+	GREP -qFx 'CXXFLAGS=-fpotato' <$<
+
+config.env-OBJCFLAGS.mk: configureEnvironment += OBJCFLAGS=-fpotato
+config-env-OBJCFLAGS: config.env-OBJCFLAGS.mk
+	GREP -qFx 'OBJCFLAGS=-fpotato' <$<
+
+config.env-CPPFLAGS.mk: configureEnvironment += CPPFLAGS=-Ipotato
+config-env-CPPFLAGS: config.env-CPPFLAGS.mk
+	GREP -qFx 'CPPFLAGS=-Ipotato' <$<
