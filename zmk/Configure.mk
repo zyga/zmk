@@ -147,6 +147,7 @@ while [ "$$#" -ge 1 ]; do
             echo "Memorized environment variables:"
             echo "  CC                          Name of the C compiler"
             echo "  CXX                         Name of the C++ compiler"
+            echo "  OBJC                        Name of the Objective-C compiler"
             echo "  CFLAGS                      Options for the C compiler"
             echo "  CXXFLAGS                    Options for the C++ compiler"
             echo "  CPPFLAGS                    Options for the preprocessor"
@@ -222,6 +223,7 @@ while [ "$$#" -ge 1 ]; do
 
         CC=*)                           CC="$$(rhs "$$1")" && shift ;;
         CXX=*)                          CXX="$$(rhs "$$1")" && shift ;;
+        OBJC=*)                         OBJC="$$(rhs "$$1")" && shift ;;
         CFLAGS=*)                       CFLAGS="$$(rhs "$$1")" && shift ;;
         CXXFLAGS=*)                     CXXFLAGS="$$(rhs "$$1")" && shift ;;
         OBJCFLAGS=*)                    OBJCFLAGS="$$(rhs "$$1")" && shift ;;
@@ -273,6 +275,7 @@ done
     echo "# Inherited environment variables and overrides."
     test -n "$$CC"                  && echo "CC=$$CC"                           || echo "#   CC was not specified."
     test -n "$$CXX"                 && echo "CXX=$$CXX"                         || echo "#   CXX was not specified."
+    test -n "$$OBJC"                && echo "OBJC=$$OBJC"                       || echo "#   OBJC was not specified."
     test -n "$$CFLAGS"              && echo "CFLAGS=$$CFLAGS"                   || echo "#   CFLAGS was not specified."
     test -n "$$CXXFLAGS"            && echo "CXXFLAGS=$$CXXFLAGS"               || echo "#   CXXFLAGS was not specified."
     test -n "$$OBJCFLAGS"           && echo "OBJCFLAGS=$$OBJCFLAGS"             || echo "#   OBJCFLAGS was not specified."

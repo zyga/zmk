@@ -4,6 +4,10 @@ Changes in the next release:
   empty value (default) in response to the `configure` script command line
   options `--enable-debug` and `--disable-debug` respectively.
 
+* The Toolchain and Configure modules support Objective-C better: the `OBJC`
+  environment variable is now recognized and remembered during configuration.
+  Documentation is updated to reflect this.
+
 * The Toolchain module adds `-g` to `CFLAGS` when `Configure.DebugBuild` is set
   to `yes`.
 

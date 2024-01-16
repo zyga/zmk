@@ -269,10 +269,9 @@ config.env-CXX.mk: configureEnvironment += CXX=potato-c++
 config-env-CXX: config.env-CXX.mk
 	GREP -qFx 'CXX=potato-c++' <$<
 
-# XFAIL: At present this is not implemented.
 config.env-OBJC.mk: configureEnvironment += OBJC=potato-objc
 config-env-OBJC: config.env-OBJC.mk
-	! GREP -qFx 'OBJC=potato-objc' <$<
+	GREP -qFx 'OBJC=potato-objc' <$<
 
 config.env-CFLAGS.mk: configureEnvironment += CFLAGS=-fpotato
 config-env-CFLAGS: config.env-CFLAGS.mk

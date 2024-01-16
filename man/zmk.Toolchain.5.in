@@ -36,6 +36,8 @@ The C compiler.
 The pre-processor, responsible for macros and include directives.
 .Ss CXX
 The C++ compiler.
+.Ss OBJC
+The Objective-C compiler.
 .Ss CFLAGS
 Configuration options for the C compiler.
 .Pp
