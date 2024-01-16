@@ -100,7 +100,8 @@ $(eval $(call ZMK.Expand,Tarball.Src,$(ZMK.releaseArchive)))
 check:: check-unit
 
 # Some hackery is performed to map slashes to dashes, except in "(lib)?hello-".
-tests = $(patsubst -%-,%,$(subst /,-,$(subst $(ZMK.SrcDir)/,/,$(dir $(shell find $(ZMK.SrcDir) -name Test.mk)))))
+# Exclude any files in hidden directories, such as .git.
+tests = $(patsubst -%-,%,$(subst /,-,$(subst $(ZMK.SrcDir)/,/,$(dir $(shell find $(ZMK.SrcDir) -not -path './.*' -name Test.mk)))))
 .PHONY: check-unit
 check-unit: $(addprefix check-,$(tests))
 .PHONY: $(addprefix check-,$(tests))

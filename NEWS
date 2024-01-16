@@ -11,6 +11,10 @@ Changes in the next release:
 * The Toolchain module adds `-g` to `CFLAGS` when `Configure.DebugBuild` is set
   to `yes`.
 
+* ZMK self-tests are no longer looking into hidden directories when looking for
+  unit tests. This notably fixes support for the Debian `dgit` tool which uses
+  `.git` for storing local state that looks like the source tree.
+
 Changes in 0.5.1
 
 * ZMK now defines `ZMK.BugFixes` as a set of identifiers of issues that were
