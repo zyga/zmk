@@ -4,9 +4,9 @@
 name: Tests
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 jobs:
   make-check:
     strategy:
@@ -16,21 +16,21 @@ jobs:
       DEBUG: expand,import,version
     runs-on: ${{ matrix.system }}
     steps:
-    - uses: actions/checkout@v2
-    - run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
-    - run: git fetch --prune --unshallow --tags
-    - name: register make problem matcher
-      run: echo "::add-matcher::${{ github.workspace }}/.github/make.json"
-    - name: Check make version
-      run: make --version
-    - name: Install missing ObjC compiler
-      if: runner.os == 'Linux'
-      run: sudo apt-get install gobjc
-    - name: Run distcheck
-      run: make --warn-undefined-variables distcheck -j2
-    - name: Create dist archive
-      run: make --warn-undefined-variables dist
-    - uses: actions/upload-artifact@v2
-      with:
-        name: dist-archive
-        path: zmk_*.tar.gz
+      - uses: actions/checkout@v2
+      - run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+      - run: git fetch --prune --unshallow --tags
+      - name: register make problem matcher
+        run: echo "::add-matcher::${{ github.workspace }}/.github/make.json"
+      - name: Check make version
+        run: make --version
+      - name: Install missing ObjC compiler
+        if: runner.os == 'Linux'
+        run: sudo apt-get install gobjc
+      - name: Run distcheck
+        run: make --warn-undefined-variables distcheck -j2
+      - name: Create dist archive
+        run: make --warn-undefined-variables dist
+      - uses: actions/upload-artifact@v2
+        with:
+          name: dist-archive
+          path: zmk_*.tar.gz
