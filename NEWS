@@ -1,4 +1,4 @@
-Changes in the next release:
+Changes in 0.6.0:
 
 * The Configure module now sets `Configure.DebugBuild` to either `yes`, `no` or
   empty value (default) in response to the `configure` script command line
@@ -14,6 +14,8 @@ Changes in the next release:
 * ZMK self-tests are no longer looking into hidden directories when looking for
   unit tests. This notably fixes support for the Debian `dgit` tool which uses
   `.git` for storing local state that looks like the source tree.
+
+* ZMK is now compliant with the REUSE toolkit.
 
 Changes in 0.5.1
 
