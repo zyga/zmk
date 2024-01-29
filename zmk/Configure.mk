@@ -1,4 +1,4 @@
-# Copyright 2019-2021 Zygmunt Krynicki.
+# Copyrigth 2019-2024 Zygmunt Krynicki.
 #
 # This file is part of zmk.
 #
@@ -66,7 +66,7 @@ ifneq ($(Project.Name),)
 # ZMK provides a custom configuration script, this is is the full text
 define Configure.script
 #!/bin/sh
-# Copyright 2019-2021 Zygmunt Krynicki.
+# Copyrigth 2019-2024 Zygmunt Krynicki.
 #
 # This file is part of zmk.
 #
