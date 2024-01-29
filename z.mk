@@ -1,4 +1,4 @@
-# Copyright 2019-2021 Zygmunt Krynicki.
+# Copyright 2019-2024 Zygmunt Krynicki.
 #
 # This file is part of zmk.
 #
@@ -102,7 +102,7 @@ endif
 MAKECMDGOALS ?=
 ZMK.NoBanner ?=
 ifeq ($(or $(ZMK.NoBanner),$(MAKECMDGOALS)),)
-$(info z.mk v$(ZMK.Version), Copyright (c) 2019-2021 Zygmunt Krynicki)
+$(info z.mk v$(ZMK.Version), Copyright (c) 2019-2024 Zygmunt Krynicki)
 endif
 
 # Meta-targets that don't have specific specific commands
