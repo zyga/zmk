@@ -26,6 +26,7 @@ endif
 CPPFLAGS ?=
 CFLAGS ?=
 CXXFLAGS ?=
+OBJC ?= $(CC)
 OBJCFLAGS ?=
 OBJCXXFLAGS ?=
 ARFLAGS = -cr
@@ -104,4 +105,4 @@ ifneq (,$(and $(Toolchain.DependencyTracking),$(or $(Toolchain.IsGcc),$(Toolchai
 $(if $(Toolchain.debug),$(info DEBUG: compiling object files will generate make dependency information))
 endif
 
-$(if $(Toolchain.debug),$(foreach v,CC CXX CPP CFLAGS CXXFLAGS CPPFLAGS OBJCFLAGS OBJCXXFLAGS ARFLAGS TARGET_ARCH LDLIBS LDFLAGS $(sort $(filter Toolchain.%,$(.VARIABLES))),$(info DEBUG: $v=$($v))))
+$(if $(Toolchain.debug),$(foreach v,CC CXX OBJC CPP CFLAGS CXXFLAGS CPPFLAGS OBJCFLAGS OBJCXXFLAGS ARFLAGS TARGET_ARCH LDLIBS LDFLAGS $(sort $(filter Toolchain.%,$(.VARIABLES))),$(info DEBUG: $v=$($v))))

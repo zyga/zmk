@@ -29,6 +29,7 @@ debug-defaults: debug-defaults.log
 	# By default CC=cc and CXX is either c++ or g++.
 	GREP -qFx 'DEBUG: CC=cc' <$<
 	GREP -qx 'DEBUG: CXX=[cg][+][+]' <$<
+	GREP -qx 'DEBUG: OBJC=cc' <$<
 
 debug-sysroot.log: ZMK.makeOverrides += Configure.SysRoot=/path
 debug-sysroot: debug-sysroot.log
