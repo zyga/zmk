@@ -154,4 +154,17 @@ endif
 	@echo "dist-check successful"
 
 $$(eval $$(call ZMK.Expand,Tarball,$1))
+# - rename the .version-from-git file to .version (see GitVersion module)
+# - strip $(ZMK.Path), this effectively bundles ZMK into the root directory of the archive
+ifeq ($$(Tarball.isGNU),yes)
+$1: Tarball.tarOptions += --xform='s@.version-from-git@.version@'
+ifneq ($$(ZMK.Path),.)
+$1: Tarball.tarOptions += --xform='s@$$(ZMK.Path)/@@g'
+endif
+else
+$1: Tarball.tarOptions += -s '@^.version-from-git@$$($1.Name)/.version@'
+ifneq ($$(ZMK.Path),.)
+$1: Tarball.tarOptions += -s '@$$(ZMK.Path)/@@g'
+endif
+endif
 endef

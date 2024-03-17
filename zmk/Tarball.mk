@@ -41,23 +41,13 @@ dist:: $1
 
 # Apply transforms, using either GNU or BSD tar syntax.
 # - strip $(CURDIR), this fixes out-of-tree configure
-# - strip $(ZMK.Path), this effectively bundles ZMK into the root directory of the archive
 # - insert directory with archive name up front
-# - rename the .version-from-git file to .version (see GitVersion module)
 ifeq ($$(Tarball.isGNU),yes)
 $1: Tarball.tarOptions += --absolute-names
 $1: Tarball.tarOptions += --xform='s@$$(CURDIR)/@@g'
-ifneq ($$(ZMK.Path),.)
-$1: Tarball.tarOptions += --xform='s@$$(ZMK.Path)/@@g'
-endif
-$1: Tarball.tarOptions += --xform='s@.version-from-git@.version@'
 $1: Tarball.tarOptions += --xform='s@^@$$($1.Name)/@'
 else
 $1: Tarball.tarOptions += -s '@$$(CURDIR)/@@g'
-ifneq ($$(ZMK.Path),.)
-$1: Tarball.tarOptions += -s '@$$(ZMK.Path)/@@g'
-endif
-$1: Tarball.tarOptions += -s '@^.version-from-git@$$($1.Name)/.version@'
 $1: Tarball.tarOptions += -s '@^.@$$($1.Name)/~@'
 endif
 
