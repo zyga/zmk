@@ -1,0 +1,131 @@
+.\" SPDX-FileCopyrightText: 2019-2024 Zygmunt Krynicki
+.\" SPDX-License-Identifier: LGPL-3.0-only
+.\"
+.\" This file is part of zmk.
+.\"
+.\" Zmk is free software: you can redistribute it and/or modify
+.\" it under the terms of the GNU Lesser General Public License version 3 as
+.\" published by the Free Software Foundation.
+.\"
+.\" Zmk is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU Lesser General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU Lesser General Public License
+.\" along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
+.Dd March 17, 2024
+.Os zmk @VERSION@
+.Dt zmk.Tarball 5 PRM
+.Sh NAME
+.Nm Tarball
+.Nd module for creating arbitrary archives
+.Sh SYNOPSIS
+.Bd -literal
+include z.mk
+
+# archiveName is any valid identifier.
+archiveName.tar.gz.Files = example.c example.h Makefile
+$(eval $(call ZMK.Expand,Tarball,archiveName.tar.gz))
+.Ed
+.Sh DESCRIPTION
+The template
+.Nm Tarball
+once
+.Em expanded
+with a
+.Em archive name
+to creates rules for creating the archive using either GNU or BSD tar programs.
+The archive can be correctly created when building out-of-tree.
+The contents of the archive are always sorted, even if the list of files is not.
+.Sh TARGETS
+This module provides the following targets
+.Ss dist
+This
+.Em phony
+depends on
+.Nm $(archiveName) .
+.Ss $(archiveName)
+This target describes the archive itself.
+.Pp
+The archive depends only on the list of files given by the
+.Nm $(archiveName).Files .
+.Sh VARIABLES
+.Ss $(archiveName).Name
+The
+.Nm $(archiveName).Name
+variable is, by default, set to the name of the archive without the
+.Em .tar.*
+extension.
+.Pp
+The value controls the name of the directory holding all the files inside the archive.
+.Ss $(archiveName).Files
+The
+.Nm $(archiveName).Files
+variable contains the list of files to place in the archive.
+.Sh IMPLEMENTATION NOTES
+This module actively detects the type of tar used - BSD tar or GNU tar. Both programs have
+smimilar capabilities but the command line syntax differs, sometimes widely. Any
+.Nm tar
+program that prints the word
+.Em GNU
+in response to
+.Fl help
+is regarded as GNU tar.
+.Pp
+When used on
+.Em Darwin
+the option
+.Fl no-mac-metadata
+is automatically used to exclude MacOS specific meta-data that is raraly, if ever, desired.
+.Pp
+The module pattern variable assignment to provide correct compression flag
+depending on the extension. At present this is related ot the limited set of
+supported extensions but this can be abused to support a custom extension
+should you need any.
+.Pp for example to create a
+.Em .tar.foo
+archives by using the hypothetical
+.Fl foo
+switch we only need to define the right compression flag
+.Bd -literal
+%.tar.foo: Tarball.compressFlag=--foo
+.Ed
+.Sh EXAMPLES
+Including three files. Remember that they are all placed inside the
+.Pa example/
+directory that is only present in the archive itself.
+.Bd -literal
+include z.mk
+
+example.tar.gz.Files = example.c example.h Makefile
+$(eval $(call ZMK.Expand,Tarball,example.tar.gz))
+.Ed
+.Sh ENVIRONMENT
+This module does not rely on any environment variables.
+.Sh BUGS
+Only archives with the extension
+.Em .tar.gz ,
+.Em .tar.bz2
+and
+.Em .tar.xz
+are currently supported.
+.Pp
+When
+.Nm $(archiveName).Files
+contains shell or make
+.Em globs
+or
+.Em directory names
+then dependencies are not precise, which may lead to unexpected behavior. For best results,
+even though this is tedious, do list files explicitly. This way generated files, outdated files,
+missing files are all properly reported and an archive is only created if possible and only
+updated if required.
+.Sh SEE ALSO
+.Xr zmk.Tarball.Src 5
+.Sh HISTORY
+The
+.Nm
+module first appeared in zmk 0.3
+.Sh AUTHORS
+.An "Zygmunt Krynicki" Aq Mt me@zygoon.pl

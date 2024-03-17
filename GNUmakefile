@@ -38,6 +38,8 @@ ZMK.manPages = \
 	zmk.Script.5 \
 	zmk.Silent.5 \
 	zmk.Symlink.5 \
+	zmk.Tarball.5 \
+	zmk.Tarball.Src.5 \
 	zmk.Toolchain.5
 
 # Use git to augment version.

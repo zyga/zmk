@@ -1,0 +1,122 @@
+.\" SPDX-FileCopyrightText: 2019-2024 Zygmunt Krynicki
+.\" SPDX-License-Identifier: LGPL-3.0-only
+.\"
+.\" This file is part of zmk.
+.\"
+.\" Zmk is free software: you can redistribute it and/or modify
+.\" it under the terms of the GNU Lesser General Public License version 3 as
+.\" published by the Free Software Foundation.
+.\"
+.\" Zmk is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU Lesser General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU Lesser General Public License
+.\" along with Zmk.  If not, see <https://www.gnu.org/licenses/>.
+.Dd March 17, 2024
+.Os zmk @VERSION@
+.Dt zmk.Tarball.Src 5 PRM
+.Sh NAME
+.Nm Tarball.Src
+.Nd module for creating release archives
+.Sh SYNOPSIS
+.Bd -literal
+include z.mk
+
+archiveName = $(NAME)-$(VERSION).tar.gz
+$(archiveName).Files = hello.c
+$(eval $(call ZMK.Expand,Tarball.Src,$(archiveName)))
+.Ed
+.Sh DESCRIPTION
+.Sh TARGETS
+This module provides the following targets
+.Ss $(archiveName)
+This target describes the archive itself. The contents of this archive depends on
+several factors, see
+.Nm $(archiveName).Files .
+.Ss $(archiveName).asc
+.Ss dist
+.Ss distcheck
+.Sh VARIABLES
+.Ss $(ZMK_DO_NOT_BUNDLE)
+If the
+.Ev $(ZMK_DO_NOT_BUNDLE)
+variable is set to
+.Em yes
+then zmk will not automatically include itself into each source achive.
+.Pp
+By default a copy of zmk is bundled with each archive so that receipents of the
+software do not need to install zmk to compile programs that use it for their
+build system, similarly to how autotools works, but perhaps with less unreadable
+code in the process.
+.Ss $(archiveName).Name
+The
+.Nm $(archiveName).Name
+variable is, by default, set to the name of the archive without the
+.Em .tar.*
+extension.
+.Pp
+The value controls the name of the directory holding all the files inside the archive.
+.Ss $(archiveName).Files
+The
+.Nm $(archiveName).Files
+variable contains the list of files to place in the archive.
+.Pp
+Several files may be bundled automatically
+.Bl -bullet
+.It
+The
+.Em configure
+script is automatically included when the
+.Xr zmk.Configure 5
+module is imported. This way the generated archive contains a script
+which can be used for interactive configuration of the build system.
+.It
+The
+.Em zmk
+directory along with the entire source code of the locally
+used distribution of the build system.
+You can set the environment variable
+.Ev ZMK_DO_NOT_BUNDLE
+to
+.Em yes
+to prevent this from happening.
+.It
+The
+.Em .version-from-git
+file if tye
+.Xr zmk.GitVersion 5
+module is imported and
+.Em git
+history is present and it can be used to generate a version identifier.
+Note that the file is automatically renamed to just
+.Em .version
+when it is placed inside the archive.
+.It
+The
+.Em .version
+file if it was already present in the tree. This
+.El
+.Ss $(archiveName).Sign
+The
+.Nm $(archiveName).Sign
+variable is set to a non-empty value if the archive is to be GPG signed.
+.Pp
+GPG signatures are not created if GPG is not installed, if the user has no GPG keys
+if the tarball is a git snapshot or if the
+.Nm CI
+environment variable is set.
+.Sh EXAMPLES
+.Sh ENVIRONMENT
+The
+.Ev ZMK_DO_NOT_BUNDLE
+environment variable can be set to
+.Em yes
+to disable zmk from automatically bundling itself into each source archive.
+.Sh HISTORY
+The
+.Nm
+module first appeared in zmk 0.3
+.Sh AUTHORS
+.An "Zygmunt Krynicki" Aq Mt me@zygoon.pl
