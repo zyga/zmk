@@ -44,7 +44,7 @@ ifneq (,$$($1.ExportList))
 # If we have precise information about symbol export then switch default symbol
 # visibility to hidden and use the explicit list to control public symbols.
 $1: $$($1.ExportList)
-$1: LDFLAGS += -fvisibility=hidden -exported_symbols_list=$$($1.ExportList)
+$1: LDFLAGS += -fvisibility=hidden -exported_symbols_list $$($1.ExportList)
 endif # !symbol export control
 
 # Link library objects.
